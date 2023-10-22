@@ -14,7 +14,7 @@
 
 ![sitemap.png](/class-projects/class-project-2/slike/sitemap.png)
 
-### Upute chat GPT-u:
+### Upute ChatGPT-u:
 
 - *Navedi mi tri tipa korisnika, (user persona) koji koriste web aplikaciju za korištenje usluga gradske uprave kao što su predaja zahtjeva za, npr. upis djece u vrtić ili prijava na natječaj za stipendiju. Web aplikacija bila bi napravljena po uzoru na sustav e-građani.*
 - *Osim prijave za upis djece u vrtić ili prijave za stipendiju, moglo bi se zatražiti i usluge kao što je prijava za korištenje usluge odvoza otpada ili predaja zahtjeva za kupnju povlaštene karte za parkiranje. Isto tako, korisnici bi se mogli slati zahtjeve i za neke socijalne naknade, npr. umirovljenici bi mogli poslati zahtjev za isplatom božićnice. Uzmi ovo što sam sad napisao u razmatranju i ono prethodno pa mi opet napiši tri tipa korisnika. Usredotočite se na dob, količinu dostupnog vremena, tj. zaposlenost, ali i na vještinu rada s računalom.*
