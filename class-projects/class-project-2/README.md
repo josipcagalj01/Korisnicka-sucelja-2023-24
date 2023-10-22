@@ -12,7 +12,7 @@
 
 ## 2. Hijerarhijska struktura stranice:
 
-![sitemap.png](/class-projects/class-project-2/images/sitemap.png)
+![sitemap.png](/class-projects/class-project-2/slike/sitemap.png)
 
 ### Upute chat GPT-u:
 
