@@ -15,7 +15,11 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
-
+main {
+  max-width: 1250px;
+  margin: auto;
+  margin-top: 50px;
+}
 /*body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -26,6 +30,30 @@
     rgb(var(--background-start-rgb));
 }*/
 
-header {display: flex; justify-content: space-between; align-items: center;}
-header img {max-height: 90px; max-width: 90px; margin: 10px;}
-a { padding-left: 20px; padding-right: 20px;}
+.pagesNavigation {
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  column-gap:10px;
+  margin-top: 20px;
+}
+
+.pagesNavigation span {
+  width: 130px;
+}
+
+.pagesNavigation a {
+  padding: 3px;
+  background-color: lightgray;
+  width: 85px;
+  text-align: center;
+}
+
+.pagesNavigation a.hidden {
+  visibility: hidden;
+}
+
+.pagesNavigation a:hover {
+  background-color: grey;
+  color: white;
+}
