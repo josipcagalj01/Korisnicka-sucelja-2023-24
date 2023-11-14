@@ -1,0 +1,40 @@
+.briefInfo {
+    display: flex;
+    justify-content: space-between;
+    background-color: #eeeeee;
+    width: 100%;
+    padding: 20px;
+  }
+  .briefinfo div {
+    width: fit-content;
+}
+
+footer h2 {
+  margin-bottom: 15px;
+}
+
+.briefinfo div ul {
+    display: flex;
+    flex-direction: column;
+}
+
+  .CopyrightAndManofacturerInfo {
+    background-color: black;
+    height: 45px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .CopyrightAndManofacturerInfo p {
+    margin-left: 20px;
+    margin-right: 20px;
+    color: white;
+  }
+
+
+  
+.logo {
+    max-height: 100px;
+    max-width:100px;
+} 
+

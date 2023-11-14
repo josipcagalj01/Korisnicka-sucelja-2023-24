@@ -10,7 +10,7 @@ var pages = {
     Početna: "/",
     "O nama": "/about",
     "Građanski forum": "/forum?_page=1&_limit=10",
-    Prijava: "/login"
+    Prijava: "/prijava"
   };
 
 
@@ -35,12 +35,12 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 <header>
                     <img src={logo.src} alt="Logo" className="mr-2" />
                     <nav className="flex space-x-16 mx-2">
-                    <ul className="flex gap-8 menuItems">
-                        {Object.entries(pages).map(([name, path]) => (
-                        <li key={name} className = {this.props.currentPage===name ? 'current' : ''}>
-                            <Link href={path}>{name}</Link>
-                             </li>))}
-                    </ul>
+                        <ul className="flex gap-8 menuItems">
+                            {Object.entries(pages).map(([name, path]) => (
+                            <li key={name} className = {this.props.currentPage===name ? 'current' : ''}>
+                                <Link href={path}>{name}</Link>
+                            </li>))}
+                        </ul>
                     </nav>
                 </header>
             </>
