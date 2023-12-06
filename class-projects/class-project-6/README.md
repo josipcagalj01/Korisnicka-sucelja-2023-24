@@ -2,8 +2,8 @@
 
 ## Stranica za radnu površinu
 
-![HomepageHighFidelityDesktop.png](/class-projects/class-project-6/slike/HomepageHighFidelityDesktop.png)
+![HomePageHighFidelityDesktop.png](/class-projects/class-project-6/slike/HomePageHighFidelityDesktop.png)
 
 ## Stranica za mobilne uređaje
 
-![HomepageHighFidelityMobile.png](/class-projects/class-project-6/slike/HomepageHighFidelityMobile.png)
+![HomePageHighFidelityMobile.png](/class-projects/class-project-6/slike/HomePageHighFidelityMobile.png)
