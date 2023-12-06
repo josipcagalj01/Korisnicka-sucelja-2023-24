@@ -1,0 +1,92 @@
+h1.HomePageLargeTitle {
+    font-size:40px;
+}
+
+.HomePageBanner {
+    display: flex;
+  }
+  
+  .HomePageBanner, .HomePageAnnouncmentsBanner {
+    margin-bottom: 70px;
+  }
+  
+  .allignSelfRight {
+    display: flex;
+    justify-content: end;
+    width:100%;
+  }
+  .HomePageBanner {
+    column-gap: 30px;
+  }
+  
+  .HomePageBanner img {
+    max-width: 65%;
+    
+  }
+  
+.HomePageBannerTextContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width:100%
+  }
+  
+ .textContainer {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    margin-bottom:15px;
+  }
+  
+ .HomePageAnnouncmentsBanner a, .HomePageBannerTextContainer a {
+    padding: 5px;
+    border-style: solid;
+    border-color: grey;
+    border-width: 1px;
+    width: fit-content;
+  }
+  
+ .HomePageAnnouncmentsBanner a:hover, .HomePageBannerTextContainer a:hover {
+    background-color: lightgray;
+    /*color: white;*/
+  }
+  
+  .AnnouncmentsContainer {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .announcment {
+    width:23%;
+  }
+  
+  .announcment p {
+    margin-bottom: 5px;
+  }
+  
+  h2, h3, .announcmentImage {
+    margin-bottom: 7px;
+  }
+  
+  @media screen and (max-width: 600px) {
+    main {
+      max-width: 90%;
+    }
+    .AnnouncmentsContainer, .HomePageBanner {
+      flex-direction: column;
+      row-gap: 25px;
+    }
+  
+    .Reverse {
+      flex-direction: column-reverse;
+    }
+  
+    .HomePageBanner img {
+      max-width: 100%;
+    }
+  
+    .announcment {
+      width:100%;
+    }
+  }

@@ -1,5 +1,5 @@
 header {
-    background-color: #18069a;
+    background-color: #224789;
     display: flex; 
     justify-content: space-between; 
     align-items: center;
@@ -13,22 +13,60 @@ header img {
     margin-bottom: 8px;
 }
 
-.menuItems {
-    display: flex;
-    column-gap: 20px;
+nav {
     margin-right: 20px;
 }
 
-.menuItems {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    color: white;
+.menuItems, .dropdown {
+    display: flex;
     font-size: 13pt;
 }
 
-.menuItems a:hover {
+.menuItems {
+    column-gap: 20px;
+}
+
+.menuItems, .MenuIcon, .dropdown {
+    color: white;
+}
+
+.menuItems a:hover, .MenuIcon:hover {
     color: #ffcc00;
 }
 
 .current a {
     text-decoration: underline;
+}
+
+.MenuIcon {
+    font-size: 45px;
+    display:none;
+    
+}
+
+.dropDownContainer {
+    display: flex;
+    justify-content: end;
+    background-color: lightblue;
+    z-index: 5;
+    position: absolute;
+    width: 100%;
+}
+.displaynone { display: none;}
+
+.dropdown {
+    width: 100%;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+}
+
+@media screen and (max-width: 600px) {
+    .MenuIcon {
+        display: unset;
+    }
+    .menuItems {
+        display: none;
+    }
 }

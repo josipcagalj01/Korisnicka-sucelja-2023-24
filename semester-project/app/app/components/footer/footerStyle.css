@@ -10,7 +10,7 @@
 }
 
 footer h2 {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .briefinfo div ul {
@@ -18,8 +18,8 @@ footer h2 {
     flex-direction: column;
 }
 
-  .CopyrightAndManofacturerInfo {
-    background-color: black;
+.CopyrightAndManofacturerInfo {
+    background-color: #212427;
     height: 45px;
     display: flex;
     align-items: center;
@@ -30,11 +30,26 @@ footer h2 {
     margin-right: 20px;
     color: white;
   }
-
-
   
 .logo {
     max-height: 100px;
     max-width:100px;
+    align-self: center;
 } 
 
+.IconAndTextContainer {
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+}
+
+@media screen and (max-width: 600px) {
+  .briefInfo {
+    flex-direction: column;
+    row-gap: 20px;
+  }
+
+  .logo {
+    align-self: flex-start;
+  }
+}

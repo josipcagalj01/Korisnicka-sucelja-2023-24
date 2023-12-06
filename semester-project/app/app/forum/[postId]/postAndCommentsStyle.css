@@ -5,3 +5,26 @@
     border-radius: 5px;
     margin-top: 20px;
 }
+
+.pagesNavigation {
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    column-gap:10px;
+    margin-top: 20px;
+  }
+  
+  .pagesNavigation span {
+    width: 130px;
+  }
+  
+  .pagesNavigation a {
+    padding: 3px;
+    background-color: lightgray;
+    width: 85px;
+    text-align: center;
+  }
+  
+  .pagesNavigation a.hidden {
+    visibility: hidden;
+  }

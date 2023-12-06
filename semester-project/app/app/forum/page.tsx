@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-const inter = Inter({ subsets: ['latin'] })
+//import { Inter } from 'next/font/google'
+//const inter = Inter({ subsets: ['latin'] })
 import Header from '../components/header/page'
 import Link from 'next/link'
 import clsx from "clsx";
 
 export const metadata: Metadata = {
-  title: 'Građanski forum - eKaštela',
+  title: 'Građanski forum | eKaštela',
   description: 'Forum za upite, primjedbe i prijedloge upravi Grada Kaštela',
   
 }
@@ -48,7 +48,7 @@ async function Forum({searchParams}: {searchParams: Record<string, string | stri
   const posts = await getPosts({limit: pageSize, page: page});
 
     return (
-      <body className={inter.className}>
+      <body>
         <Header currentPage="Građanski forum" />
         <main>
           <h1>Ovo je forum na kojem korisnici gradskoj upravi postavljaju upite, daju primjedbe i prijedloge.</h1>

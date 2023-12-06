@@ -1,5 +1,5 @@
-import { Inter } from 'next/font/google'
-const inter = Inter({ subsets: ['latin'] })
+//import { Inter } from 'next/font/google'
+//const inter = Inter({ subsets: ['latin'] })
 import Header from '../../components/header/page'
 import { Post} from '../page'
 import './postAndCommentsStyle.css'
@@ -22,7 +22,7 @@ async function ForumPost({ params }: {params: Params}) {
     return (
       <>
         <head><title>{ok === true ? post.title : `Greška!`}</title></head>
-        <body className={inter.className}>
+        <body>
             <Header currentPage='Građanski forum' />
             <main className="flex flex-col items-center min-h-screen max-w-5xl m-auto p-10">
             {ok === true ? <div className='postContainer'>

@@ -4,10 +4,11 @@ const inter = Inter({ subsets: ['latin'] })
 import Header from './components/header/page'
 import Footer from './components/footer/page'
 import './globals.css'
+import'./homepage.css'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Početna - eKaštela',
+  title: 'Početna | eKaštela',
   description: 'Početna stranica platforme eKaštela',
 }
 
@@ -17,7 +18,7 @@ export default function Home() {
       <Header currentPage="Početna" />
         <main>
           <div className="flex justify-center HomePageBanner">
-            <img src="https://visitkastela.croatia.hr/cmsmedia/heroBig_Kastel_Novi_Kastel_Stafilic_suton_sm.jpg" alt="Slika #1"/>
+            <img src="https://www.kastela-info.hr/media/image/103/fn1920x1920/001-1v2qzejb85206n.webp?ebYW" alt="Slika #1"/>
             <div className='HomePageBannerTextContainer'>
               <div className='textContainer'>
                 <h1 className='HomePageLargeTitle'>e-Kaštela</h1>
@@ -30,8 +31,8 @@ export default function Home() {
             <h2>Nove obavijesti</h2>
             <div className='AnnouncmentsContainer'>
               <article className='announcment'>
-                <h3 className='announcmentTitle'>Održavanje</h3>
                 <img className='announcmentImage' src='https://nextbridge.com/wp-content/uploads/2022/02/Application-Maintenance-Support-Services.png' alt='slika'/>
+                <h3 className='announcmentTitle'>Održavanje 1</h3>
                 <p className='announcmentText'>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                   Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
@@ -40,8 +41,8 @@ export default function Home() {
                 <Link href='/#'> Opširnije</Link>
               </article>
               <article className='announcment'>
-                <h3 className='announcmentTitle'>Održavanje</h3>
                 <img className='announcmentImage' src='https://nextbridge.com/wp-content/uploads/2022/02/Application-Maintenance-Support-Services.png' alt='slika'/>
+                <h3 className='announcmentTitle'>Održavanje 2</h3>
                 <p className='announcmentText'>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                   Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
@@ -50,8 +51,8 @@ export default function Home() {
                 <Link href='/#'> Opširnije</Link>
               </article>
               <article className='announcment'>
-                <h3 className='announcmentTitle'>Održavanje</h3>
                 <img className='announcmentImage' src='https://nextbridge.com/wp-content/uploads/2022/02/Application-Maintenance-Support-Services.png' alt='slika'/>
+                <h3 className='announcmentTitle'>Održavanje 3</h3>
                 <p className='announcmentText'>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                   Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
@@ -60,8 +61,8 @@ export default function Home() {
                 <Link href='/#'> Opširnije</Link>
               </article>
               <article className='announcment'>
-                <h3 className='announcmentTitle'>Održavanje</h3>
                 <img className='announcmentImage' src='https://nextbridge.com/wp-content/uploads/2022/02/Application-Maintenance-Support-Services.png' alt='slika'/>
+                <h3 className='announcmentTitle'>Održavanje 4</h3>
                 <p className='announcmentText'>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                   Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
@@ -72,11 +73,11 @@ export default function Home() {
             </div>
             <div className='allignSelfRight'><Link href='/#' >Starije obavijesti</Link></div>
           </div>
-            <div className="flex justify-center HomePageBanner">
+            <div className="flex justify-center HomePageBanner Reverse">
               <div className='HomePageBannerTextContainer'>
                 <div className='textContainer'>
                   <h1 className='HomePageLargeTitle'>Bilo kad. Bilo gdje. S bilo kojeg uređaja.</h1>
-                  <p className='HomePageDescriptions'>Otkrijte novu protežnost komunikacije s gradskom upravom, ustanovama i tvrtkama.</p>
+                  <p className='HomePageDescriptions'>Otkrijte novu dimenziju komunikacije s gradskom upravom, ustanovama i tvrtkama.</p>
                 </div>
                 <Link href='/about'>Pregled dostupnih usluga</Link>
               </div>  
@@ -87,7 +88,7 @@ export default function Home() {
             <div className='HomePageBannerTextContainer'>
               <div className='textContainer'>
                 <h1 className='HomePageLargeTitle'>Cijenimo vaše mišljenje.</h1>
-                <p className='HomePageDescriptions'>Pitajte. Pohvalite. Kritizirajte. Informirajte se gradskim temama koje Vas zanimaju.</p>
+                <p className='HomePageDescriptions'>Pitajte i informirajte se o gradskim temama koje Vas zanimaju.</p>
               </div>
               <Link href='/forum'>Posjetite građanski forum</Link>
             </div>
