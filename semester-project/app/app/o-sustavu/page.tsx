@@ -6,68 +6,13 @@ import Footer from '../components/footer/page'
 import { Suspense } from 'react';
 import Loading from '../components/Loading/page'
 import ErrorInfo from '../components/errorinfo/page'
-import {getSession} from '../lib/getSession'
+import {getSession} from '../../lib/getSession'
+import {getAboutPageContent} from '../../lib/contentfulClient'
 
 export const metadata: Metadata = {
   title: 'O sustavu',
   description: 'Opće informacije o sustavu eKaštela',
 }
-
-const gqlAboutPageContent = `query aboutCollectionQuery {
-  aboutCollection {
-    items{
-      sys {
-      	id
-    	}
-    	imageurl, abouttext
-    }
-  }
-}`
-
-interface AboutPageContent {
-  sys: {
-    id: string;
-  };
-  abouttext: string,
-  imageurl:string,
-}
-
-interface AboutCollectionResponse {
-  aboutCollection: {
-    items: AboutPageContent[];
-  };
-}
-
-const BASE_URL=`https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}/environments/master`
-
-export const getAboutPageContent = async (): Promise<AboutPageContent[]> => {
-  try {
-    const response = await fetch(BASE_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.CONTENTFUL_ACCESS_TOKEN}`,
-      },
-      body: JSON.stringify({ query: gqlAboutPageContent }),
-    });
-    if(response.ok) {
-      const body = (await response.json()) as {
-      data: AboutCollectionResponse;
-      };
-      
-      const aboutPageContentToPublish: AboutPageContent[] = body.data.aboutCollection.items.map((item) => ({
-        sys: {id: item.sys.id},
-        abouttext: item.abouttext,
-        imageurl: item.imageurl,
-      }));
-      return aboutPageContentToPublish
-    }
-    else return []
-  } catch (error) {
-    console.log(error);
-    return []
-  }
-};
 
 async function RenderAboutPageContent() {
   const response = await getAboutPageContent()
@@ -91,7 +36,7 @@ async function AboutPage() {
     <>
       <Header currentPage='O sustavu' session={session}/>
       <main className='prose lg:prose-xl'>
-        <Suspense fallback={<Loading whatIsLoading='Podaci'/>}>
+        <Suspense fallback={<Loading />}>
           <RenderAboutPageContent/>
         </Suspense>  
       </main>

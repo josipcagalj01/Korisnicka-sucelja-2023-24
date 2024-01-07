@@ -4,6 +4,7 @@ h1.HomePageLargeTitle {
 
 .HomePageBanner {
 	display: flex;
+	position: relative;
 }
 
 .HomePageBanner,

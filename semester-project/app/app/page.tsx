@@ -8,7 +8,7 @@ import './homepage.css'
 import Link from 'next/link'
 import { Suspense } from 'react';
 import Loading from './components/Loading/page'
-import {getSession} from './lib/getSession'
+import {getSession} from '../lib/getSession'
 
 export const metadata: Metadata = {
   title: 'Početna | eKaštela',
@@ -34,7 +34,7 @@ export default async function Home() {
           <div className="flex justify-center HomePageAnnouncmentsBanner">
             <h2>Nove obavijesti</h2>
             <div className='AnnouncmentsContainer'>
-              <Suspense fallback={<Loading whatIsLoading='Novosti'/>}>
+              <Suspense fallback={<Loading/>}>
                 <News />
               </Suspense>
             </div>
