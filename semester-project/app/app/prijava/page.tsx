@@ -2,20 +2,28 @@ import type { Metadata } from 'next'
 //import { Inter } from 'next/font/google'
 //const inter = Inter({ subsets: ['latin'] })
 import Header from '../components/header/page'
+import Footer from '../components/footer/page'
+import SignInForm from '../components/signinform/page'
+import React from 'react'
+import {getSession} from '../lib/getSession'
+import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
-  title: 'Prijavi se | eKaštela',
-  description: 'Prijava u sustav eKaštela',
+  title: 'Prijava',
+  description: 'Stranica za prijavu u sustav eKaštela',
 }
 
-function LoginPage() {
+async function LoginPage() {
+  const session = await getSession()
+  if(session) redirect('/')
     return (
-      <body>
-        <Header currentPage="Prijava" />
-        <div className="flex justify-center">
-          <h1>Ovo je stranica za registraciju i prijavu u sustav.</h1>
-        </div>
-      </body>
+      <>
+          <Header currentPage="Prijava" session={session}/>
+          <main>
+              <SignInForm/>    
+          </main>
+          <Footer isLoggedIn={session ? true : false}/>
+      </>
     );
   }
 

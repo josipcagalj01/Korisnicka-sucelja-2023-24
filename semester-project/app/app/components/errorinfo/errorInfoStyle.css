@@ -1,0 +1,11 @@
+.errorInfoContainer, .errorImage {
+    margin: auto;
+}
+
+.errorInfoContainer, .errorMessage {
+    width:fit-content;
+}
+
+.errorMessage {
+    margin-top:20px;
+}
