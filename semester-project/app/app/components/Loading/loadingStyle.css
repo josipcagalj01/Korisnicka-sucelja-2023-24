@@ -1,0 +1,16 @@
+.spinner {
+    width: 100px;
+    height: 100px;
+}
+
+.loadingMessage {
+    width: fit-content;
+}
+
+.loadingSpinnerContainer, .spinner {
+    margin:auto;
+}
+
+.loadingSpinnerContainer {
+    width:fit-content;
+}

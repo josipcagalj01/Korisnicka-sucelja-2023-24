@@ -10,27 +10,27 @@ header img {
     max-width: 60px; 
     margin-left: 20px;
     margin-top: 8px;
-    margin-bottom: 8px;
+    margin-bottom: 8px;;
 }
 
-nav {
+.loginSection {
     margin-right: 20px;
 }
 
-.menuItems, .dropdown {
+.menuItems, .dropdown, .loginSection {
     display: flex;
     font-size: 13pt;
 }
 
-.menuItems {
+.menuItems, .loginSection {
     column-gap: 20px;
 }
 
-.menuItems, .MenuIcon, .dropdown {
+.menuItems, .MenuIcon, .dropdown, .loginSection {
     color: white;
 }
 
-.menuItems a:hover, .MenuIcon:hover {
+.menuItems a:hover, .MenuIcon:hover, .loginSection button:hover, .loginSection a:hover {
     color: #ffcc00;
 }
 
@@ -39,6 +39,7 @@ nav {
 }
 
 .MenuIcon {
+    margin-right: 20px;
     font-size: 45px;
     display:none;
     
@@ -48,9 +49,9 @@ nav {
     display: flex;
     justify-content: end;
     background-color: lightblue;
-    z-index: 5;
     position: absolute;
     width: 100%;
+    z-index: 40;
 }
 .displaynone { display: none;}
 
@@ -60,13 +61,23 @@ nav {
     display: flex;
     flex-direction: column;
     row-gap: 15px;
+    
 }
 
 @media screen and (max-width: 600px) {
     .MenuIcon {
         display: unset;
     }
-    .menuItems {
+    .menuItems, .loginSection {
         display: none;
+    }
+}
+
+@media screen and (max-height:880px) {
+    header img {
+        max-width: 45px;
+        max-height: 45px;
+        margin-top: 6px;
+        margin-bottom: 6px;
     }
 }

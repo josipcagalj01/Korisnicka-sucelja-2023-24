@@ -1,9 +1,13 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
-import Link from 'next/link'
 import favicon from './favicon.ico'
-const inter = Inter({ subsets: ['latin'] })
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: {
+    template: '%s | eKaštela',
+    default: ''
+  }
+}
 
 export default function RootLayout({
   children,
@@ -13,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="hr">
       <head> <link rel='icon' href={favicon.src} /></head>
+      <body>
         {children}
+      </body>
     </html>
   )
 }

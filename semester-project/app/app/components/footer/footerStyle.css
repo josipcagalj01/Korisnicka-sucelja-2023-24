@@ -1,3 +1,12 @@
+footer {
+  position: sticky;
+  top:100vh;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
 .briefInfo {
     display: flex;
     justify-content: space-between;
@@ -25,16 +34,17 @@ footer h2 {
     align-items: center;
   }
   
-  .CopyrightAndManofacturerInfo p {
+.CopyrightAndManofacturerInfo p {
     margin-left: 20px;
     margin-right: 20px;
     color: white;
-  }
+}
   
 .logo {
     max-height: 100px;
     max-width:100px;
     align-self: center;
+    background-color: white;
 } 
 
 .IconAndTextContainer {
@@ -49,7 +59,7 @@ footer h2 {
     row-gap: 20px;
   }
 
-  .logo {
+.logo {
     align-self: flex-start;
   }
 }

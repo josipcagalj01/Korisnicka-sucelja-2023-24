@@ -1,0 +1,101 @@
+Form {
+    
+    width: 300px;
+    margin: 20px;
+    
+    
+  
+}
+form * {
+        display: block;
+    }
+
+.formContainer {
+    border: 1px solid gray;
+    border-radius: 3px;
+    margin: 0;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background-color: #eeeeee;
+    
+}
+
+@media screen and (max-width: 600px) {
+    .formContainer {
+        margin: auto;
+        position: static;
+        transform: none;
+        width:fit-content;
+        margin-bottom: 40px;
+    }
+}
+
+label {
+    margin-bottom: 5px;
+}
+
+input, .formErrorMessage {
+    margin-bottom: 10px;
+}
+
+input {
+    padding: 3px;
+    border: 1px solid darkgray;
+    border-radius: 3px;
+}
+
+.formErrorMessage, .formOkMessage {
+    width: fit-content;
+    max-width: 95%;
+    margin-left: auto;
+    margin-right:auto;
+    text-align: center;
+}
+
+.formErrorMessage {
+    color: red;
+}
+
+.formOkMessage {
+    color: green;
+}
+
+.logInButton, .signUpButton, input {
+    width: 100%;
+}
+
+.logInButton, .signUpButton {
+    margin-top: 10px;
+    border: 1px solid lightblue;
+    background-color: #6480ca;
+    color: white;
+    height: 40px;
+}
+
+.logInButton:hover, .signUpButton:hover {
+    background-color: #5a78c7;
+    color: #ffcc00;
+}
+
+.formContainer a{
+    border: 1px solid grey;
+    background-color: white;
+}
+
+.linkText {
+    margin: 5px;
+}
+
+.formContainer a:hover {
+    background-color: lightgray;
+}
+
+.registrationLinkContainer, .loginLinkContainer {
+    margin: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
