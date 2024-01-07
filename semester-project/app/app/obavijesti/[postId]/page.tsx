@@ -5,7 +5,7 @@ import { Post} from '../page'
 import './postAndCommentsStyle.css'
 import { Metadata } from 'next'
 import Footer from '../../components/footer/page'
-import { getSession } from '../../lib/getSession'
+import { getSession } from '../../../lib/getSession'
 
 interface Params {
     postId: string;

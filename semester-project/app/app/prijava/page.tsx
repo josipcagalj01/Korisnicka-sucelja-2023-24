@@ -5,7 +5,7 @@ import Header from '../components/header/page'
 import Footer from '../components/footer/page'
 import SignInForm from '../components/SignInForm/page'
 import React from 'react'
-import {getSession} from '../lib/getSession'
+import {getSession} from '../../lib/getSession'
 import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {

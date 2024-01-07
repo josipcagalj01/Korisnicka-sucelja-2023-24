@@ -1,4 +1,4 @@
-import {authOptions} from '../lib/auth'
+import {authOptions} from './auth'
 import { getServerSession } from 'next-auth'
 import {cache} from 'react'
 

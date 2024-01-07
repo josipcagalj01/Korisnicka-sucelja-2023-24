@@ -64,3 +64,58 @@ export const getNews = async (): Promise<newsPackage> => {
       return {count: -1, news: []}
     }
   };
+
+
+const gqlAboutPageContent = `query aboutCollectionQuery {
+    aboutCollection {
+      items{
+        sys {
+          id
+        }
+        imageurl, abouttext
+      }
+  }
+}`
+
+  interface AboutPageContent {
+    sys: {
+      id: string;
+    };
+    abouttext: string,
+    imageurl:string,
+  }
+  
+  interface AboutCollectionResponse {
+    aboutCollection: {
+      items: AboutPageContent[];
+    };
+  }
+  
+  export const getAboutPageContent = async (): Promise<AboutPageContent[]> => {
+    try {
+      const response = await fetch(BASE_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.CONTENTFUL_ACCESS_TOKEN}`,
+        },
+        body: JSON.stringify({ query: gqlAboutPageContent }),
+      });
+      if(response.ok) {
+        const body = (await response.json()) as {
+        data: AboutCollectionResponse;
+        };
+        
+        const aboutPageContentToPublish: AboutPageContent[] = body.data.aboutCollection.items.map((item) => ({
+          sys: {id: item.sys.id},
+          abouttext: item.abouttext,
+          imageurl: item.imageurl,
+        }));
+        return aboutPageContentToPublish
+      }
+      else return []
+    } catch (error) {
+      console.log(error);
+      return []
+    }
+  };

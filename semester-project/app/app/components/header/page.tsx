@@ -5,7 +5,7 @@ import * as React from 'react';
 import './headerStyle.css';
 import logo from 'public/logo.png'
 import Logout from '../Logout/page'
-import {Session} from '../../lib/getSession'
+import {Session} from '../../../lib/getSession'
 var pages = {
 	Početna: "/",
 	"O sustavu": "/o-sustavu",

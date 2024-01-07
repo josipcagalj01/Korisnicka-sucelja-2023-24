@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 //const inter = Inter({ subsets: ['latin'] })
 import Header from '../components/header/page'
 import Footer from '../components/footer/page'
-import { getSession } from '../lib/getSession'
+import { getSession } from '../../lib/getSession'
 import './[postId]/postAndCommentsStyle.css'
 import Link from 'next/link'
 import clsx from "clsx";
