@@ -4,7 +4,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation'
-import '../signupform/signUpFormStyle.css'
+import '../SignUpForm/signUpFormStyle.css'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { useState } from "react";

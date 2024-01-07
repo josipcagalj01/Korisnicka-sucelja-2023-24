@@ -22,7 +22,7 @@ export const authOptions: NextAuthOptions = {
 						username: {label: 'Username', type: 'username', placeholder: "netko"},
 						password: {label: 'Password', type: 'password'}
           },
-          /* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/
+          
 					// @ts-ignore
           async authorize(credentials) {
           	if(!credentials?.username || !credentials.password) return null
