@@ -3,7 +3,7 @@ footer {
   top:100vh;
 }
 
-footer a:hover {
+footer a:hover, footer button:hover {
   text-decoration: underline;
 }
 
