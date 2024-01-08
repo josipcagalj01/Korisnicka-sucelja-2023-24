@@ -13,7 +13,7 @@ import Logout from '../Logout/page'
 
 var pages = {
     Početna: "/",
-    "O nama": "/o-sustavu",
+    "O sustavu": "/o-sustavu",
     "Obavijesti": "/obavijesti?_page=1&_limit=10",
 };
 
