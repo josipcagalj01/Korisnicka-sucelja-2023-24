@@ -1,4 +1,3 @@
-import * as React from 'react';
 import spinner from 'public/spinner.gif'
 import './loadingStyle.css'
 
@@ -8,7 +7,7 @@ interface loadingProps {
 	color?:string
 }
 
-export default function Loading ({message, bold=false, color=''}:loadingProps) {
+export default function Loading ({message, bold, color}:loadingProps) {
 	const style = {color: color, 'fontWeight':`${bold ? 'bold' : 'normal'}`}
     return (
 		<div className='loadingSpinnerContainer'>

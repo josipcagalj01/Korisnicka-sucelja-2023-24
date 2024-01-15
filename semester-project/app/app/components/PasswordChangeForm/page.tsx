@@ -9,7 +9,7 @@ import Loading from '../Loading/page'
 import { Session } from '../../../lib/getSession'
 import { signOut } from 'next-auth/react'
 
-interface changePasswordFormParams {
+interface changePasswordFormProps {
     session:Session | null
 }
 
@@ -25,7 +25,7 @@ const formSchema = z.object({
   })
   .refine((data)=>data.password===data.confirmPassword, {path: ['confirmPassword'], message: 'Ponovo unesena nova lozinka nije unesenoj u polje iznad.'})
   
-  const ChangePassordForm = (params:changePasswordFormParams) => {
+  const ChangePassordForm = (props:changePasswordFormProps) => {
     const [attemptFailed, setAttemptFailed] = useState(false)
     const [serverMessage,setServerMessage] = useState('')
     const [attemptOccurred, setAttemptOccurred] = useState(false)
@@ -40,7 +40,7 @@ const formSchema = z.object({
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-					id:params.session?.user.id,
+					id:props.session?.user.id,
           oldpassword:values.oldPassword,
           password: values.password
         })
