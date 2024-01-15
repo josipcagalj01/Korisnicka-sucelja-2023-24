@@ -48,7 +48,7 @@ async function Announcment({ params }: {params: Params}) {
   return (
     <>
       <main>
-				<Suspense fallback={<Loading message='Obavijest se učitava ...'/>}>
+				<Suspense fallback={<Loading/>}>
 					<RenderAnnouncment announcmentId={params.announcmentId}/>
 				</Suspense>
       </main>

@@ -70,7 +70,7 @@ const formSchema = z.object({
         <div className='formContainer'>
           <form onSubmit={handleSubmit(onSubmit)} className='signUpForm'>
             <h3>Registracija</h3>
-            {loading && <Loading message='Izrada korisničkog računa u tijeku ...'bold={false} color='black'/>}
+            {loading && <Loading />}
             {!signUpFailed && signUpAttemptOccurred && <b className='formOkMessage'>{serverMessage} Pričekajte da Vas preusmjerimo na stranicu za prijavu</b>}
             {signUpFailed && <b className='formErrorMessage'>{serverMessage}</b>}
             <label htmlFor='pin'>OIB</label>
