@@ -64,7 +64,7 @@ const formSchema = z.object({
         <div className='formContainer'>
           <form onSubmit={handleSubmit(onSubmit)} className='signUpForm'>
 						<h3>Promjena lozinke</h3>
-            {loading && <Loading message='Sustav obrađuje Vaš zahtjev. Molim pričekajte ...'/>}
+            {loading && <Loading message='Sustav obrađuje Vaš zahtjev. Molim pričekajte ...' bold={false} color='black'/>}
             {!attemptFailed && attemptOccurred && <Loading message={`${serverMessage} Pričekajte da Vas preusmjerimo na stranicu za prijavu`} color='green' bold={true}/>}
             {attemptFailed && <b className='formErrorMessage'>{serverMessage}</b>}
             <label htmlFor='password'>Trenutna lozinka</label>

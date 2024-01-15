@@ -35,7 +35,7 @@ export default async function Home() {
         
         <div className="HomePageAnnouncmentsBanner">
           <h2>Nove obavijesti</h2>
-          <Suspense fallback={<Loading message='Učitavanje obavijesti'/>}>
+          <Suspense fallback={<Loading message='Učitavanje obavijesti' bold={false} color='black'/>}>
             <News limit={0} offset={0} desiredId={undefined}/>
           </Suspense>
           <Link href='/obavijesti?_page=1&_limit=10' className='marginLeftAuto displayBlock fitContent borderedLink'> <p className='linkText'>Starije obavijesti</p> </Link>

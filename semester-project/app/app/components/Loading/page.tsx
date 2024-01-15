@@ -3,8 +3,8 @@ import './loadingStyle.css'
 
 interface loadingProps {
 	message: string,
-	bold?:boolean,
-	color?:string
+	bold:boolean,
+	color:string
 }
 
 export default function Loading ({message, bold, color}:loadingProps) {

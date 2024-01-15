@@ -34,7 +34,7 @@ async function AboutPage() {
   return (
     <>
       <main className='prose lg:prose-xl'>
-        <Suspense fallback={<Loading  message='Učitavanje stranice ...'/>}>
+        <Suspense fallback={<Loading message='Učitavanje stranice ...' bold={false} color='black' />}>
           <RenderAboutPageContent/>
         </Suspense>  
       </main>

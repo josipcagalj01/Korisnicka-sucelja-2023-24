@@ -99,7 +99,7 @@ export default async function News(props:newsProps) {
   else if (data.count===0) return (<p>Nema novih obavijesti</p>)
   else return (
     <>
-      <Suspense fallback={<Loading message='Obavijesti se učitavaju'/>}>
+      <Suspense fallback={<Loading message='Obavijesti se učitavaju' bold={false} color='black'/>}>
         <div className='AnnouncmentsContainer'>
           {data.news.map((announcment) => (
             <article className='announcment' key={announcment.id}>

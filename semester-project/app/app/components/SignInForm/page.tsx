@@ -51,7 +51,7 @@ const SignInForm = () => {
 			<div className='formContainer'>
 				<form onSubmit={handleSubmit(onSubmit)} className='w-full signInForm'>
 					<h3>Prijava</h3>
-					{loading && <Loading message='Provjera vjerodajnica...'/>}
+					{loading && <Loading message='Provjera vjerodajnica...'bold={false} color='black'/>}
 					{loginSuccess && loginAttemptOccurred && <Loading bold={true} color='green' message='Uspješno ste prijavljeni. Preglednik trenutno čeka odgovor usluge kojoj namjeravate pristupiti.'/>}
 					{!loginSuccess && <b className='formErrorMessage'>{errorMessage}</b>}
 					<label htmlFor='username'>Korisničko ime</label>
