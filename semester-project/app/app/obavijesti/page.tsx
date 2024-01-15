@@ -29,7 +29,7 @@ async function Announcments({ searchParams }: { searchParams: Record<string, str
 		<>
 			<main>
 				<h1>Obavijesti</h1>
-				<Suspense fallback={<Loading message='Učitavanje obavijesti ...' />}>
+				<Suspense fallback={<Loading/>}>
 					<News offset={pageSize * (page - 1)} limit={pageSize} desiredId={undefined} />
 				</Suspense>
 				{_limit && _page && (

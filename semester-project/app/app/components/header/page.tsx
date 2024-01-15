@@ -85,7 +85,7 @@ const Header = () => {
 													<li key={name} className={`dropDownItem ${path.startsWith('/obavijesti') ? 'current' : ''}`}>
 														<Link href={path}>{name}</Link>
 													</li>))}
-													<li className='dropDownItem'><Logout icon={true}/></li>
+													<li className='dropDownItem'><Logout/></li>
 												</ul>}
 											</div>
 										</ClickAwayListener>
