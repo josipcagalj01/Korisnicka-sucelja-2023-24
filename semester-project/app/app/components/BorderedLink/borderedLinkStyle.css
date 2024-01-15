@@ -1,0 +1,14 @@
+.borderedLink {
+	border: 1px solid grey;
+	width: fit-content;
+	background-color: white;
+	opacity: 1;
+}
+
+.borderedLink:hover {
+    background-color: lightgray;
+}
+
+.linkText {
+	margin: 5px;
+}

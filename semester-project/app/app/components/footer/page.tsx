@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import * as React from 'react';
 
@@ -9,7 +10,7 @@ import faxicon from 'public/faxicon.png'
 import mailicon from 'public/mailicon.png'
 import './footerStyle.css'
 import Logout from '../Logout/page'
-
+import { useSession } from 'next-auth/react';
 
 var pages = {
     Početna: "/",
@@ -21,7 +22,9 @@ interface FooterProps {
 	isLoggedIn: boolean
 }
 
-const Footer = (props: FooterProps)=> {
+const Footer = ()=> {
+
+	const session=useSession({required:false})
 	return (
 		<>
 			<footer>
@@ -40,12 +43,12 @@ const Footer = (props: FooterProps)=> {
 					</div>
 					<div>
 						<h2>Poveznice</h2>
-						<ul className="flex gap-8 ">
+						<ul>
 							{Object.entries(pages).map(([name, path]) => (
 								<li key={name}>
 									<Link href={path}>{name}</Link>
 								</li>))}
-								{props.isLoggedIn ? <li key='logout'><Logout/></li> : <li key='prijava'><Link href='/prijava'>Prijava</Link></li>}
+								{session.data ? <li key='logout'><Logout/></li> : <li key='prijava'><Link href='/prijava'>Prijava</Link></li>}
 						</ul>
 					</div>
 					<div>

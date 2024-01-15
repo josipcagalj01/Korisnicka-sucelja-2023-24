@@ -1,13 +1,10 @@
-const gqlHomePageNewsSection = `query newsCollectionQuery {
-    newsCollection {
-      items {
-        sys {
-          id
-        }
-        id,title,body,imageurl,imagetitle
-      }
-    }
-  }`;
+const BASE_URL=`https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}/environments/master`
+
+export interface newsParams {
+  offset: number,
+  limit: number
+  desiredId:number | undefined
+}
   
   interface NewstCollectionResponse {
     newsCollection: {
@@ -15,7 +12,7 @@ const gqlHomePageNewsSection = `query newsCollectionQuery {
     };
   }
   
-  interface News {
+export interface News {
     sys: {
       id: string;
     };
@@ -24,16 +21,28 @@ const gqlHomePageNewsSection = `query newsCollectionQuery {
     body: string,
     imageurl:string,
     imagetitle: string
-  }
+}
 
-interface newsPackage {
+export interface newsPackage {
     count: number,
     news: News[]
 }
 
-const BASE_URL=`https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}/environments/master`
 
-export const getNews = async (): Promise<newsPackage> => {
+
+export const getNews = async (params:newsParams): Promise<newsPackage> => {
+
+  const query = `query newsCollectionQuery {
+    newsCollection ${ params.offset>0 || params.limit>0 || params.desiredId != undefined ? `(${params.offset>0 ? `skip:${params.offset} ` : ""}${params.limit>0 ? `limit:${params.limit}` : ''} ${params.desiredId!=undefined &&params.desiredId>=0  ? `where: {id:${params.desiredId}}` : ""})` : ''} {
+      items {
+        sys {
+          id
+        }
+        id,title,body,imageurl,imagetitle
+      }
+    }
+  }`
+
     try {
       const response = await fetch(BASE_URL, {
         method: "POST",
@@ -41,7 +50,7 @@ export const getNews = async (): Promise<newsPackage> => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.CONTENTFUL_ACCESS_TOKEN}`,
         },
-        body: JSON.stringify({ query: gqlHomePageNewsSection }),
+        body: JSON.stringify({ query: query }),
       });
       if(response.ok) {
         const body = (await response.json()) as {
@@ -65,6 +74,41 @@ export const getNews = async (): Promise<newsPackage> => {
     }
   };
 
+interface newsTotalCountResponse {
+  newsCollection: {
+    total:number
+  }
+}
+
+export async function getTotalNewsCount():Promise<number> {
+
+  const query = `query getTotalNewsCountQuery {
+    newsCollection {
+      total
+    }
+  }`
+
+  try {
+    const response = await fetch(BASE_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.CONTENTFUL_ACCESS_TOKEN}`,
+      },
+      body: JSON.stringify({ query: query }),
+    });
+    if(response.ok) {
+      const body = (await response.json()) as {
+      data: newsTotalCountResponse;
+      };
+      return body.data.newsCollection.total;
+    }
+    else return -1
+  } catch (error) {
+    console.log(error);
+    return -1
+  }
+}
 
 const gqlAboutPageContent = `query aboutCollectionQuery {
     aboutCollection {

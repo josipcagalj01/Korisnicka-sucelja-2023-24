@@ -1,0 +1,45 @@
+.AnnouncmentsContainer {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	column-gap: 20px;
+	row-gap: 20px;
+	margin-top: 20px;
+	width: 100%;
+}
+
+.announcment a {
+	border: unset;
+}
+
+.announcment p {
+	margin-bottom: 5px;
+}
+
+.announcment a:hover {
+	text-decoration: underline;
+	background-color: unset;
+}
+
+.announcment h3, .announcmentImage {
+	margin-bottom: 7px;
+}
+
+.announcmentImage {
+	height: 180px;
+	width:100%;
+	object-fit: cover;
+}
+
+@media screen and (max-width: 600px) {
+	.announcment {
+		width:100%;
+	}
+
+	.announcmentText {
+		display: none;
+	}
+
+	.AnnouncmentsContainer {
+		grid-template-columns: 1fr;
+	}
+}

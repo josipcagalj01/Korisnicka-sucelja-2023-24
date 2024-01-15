@@ -1,0 +1,32 @@
+.pagesNavigation {
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    column-gap:10px;
+    margin-top: 20px;
+		margin-bottom: 50px;
+    width: 100%;
+  }
+  
+.pagesNavigation a.disabled {
+  pointer-events: none;
+  opacity:0.5;
+  cursor: not-allowed;
+}
+  
+  .pagesNavigation a.hidden {
+    visibility: hidden;
+  }
+
+@media screen and (max-width: 600px) {
+
+	.pagesNavigation .desktop {
+    display:none;
+  }
+}
+
+@media screen and (min-width: 600px) {
+	.pagesNavigation .mobile {
+    display:none;
+  }
+}

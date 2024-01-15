@@ -13,21 +13,13 @@ export const metadata: Metadata = {
 	description: 'Stranica za registraciju u sustav eKaštela',
 }
 
-
-interface Params {
-	action: string;
-}
-
 async function SignUpPage() {
 	const session = await getSession()
 	if (session) redirect('/')
 	return (
 		<>
-			<Header currentPage="Prijava" session={null} />
-			<main>
-				<SignUpForm />
-			</main>
-			<Footer isLoggedIn={false} />
+			<SignUpForm />
+			
 		</>
 	);
 }

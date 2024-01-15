@@ -1,4 +1,5 @@
 'use client'
+import ClickAwayListener from '@mui/material/ClickAwayListener'
 import { useState } from "react";
 import Link from 'next/link'
 import * as React from 'react';
@@ -6,6 +7,9 @@ import './headerStyle.css';
 import logo from 'public/logo.png'
 import Logout from '../Logout/page'
 import {Session} from '../../../lib/getSession'
+import { usePathname } from 'next/navigation'
+import { useSession } from 'next-auth/react';
+
 var pages = {
 	Početna: "/",
 	"O sustavu": "/o-sustavu",
@@ -14,48 +18,87 @@ var pages = {
   };
 /*Prijava: "/prijava"*/
 
+var loggedUserActions = {
+	'Promjena lozinke' : '/promjena-lozinke'
+}
 
 export interface HeaderProps {
 	currentPage: string
 	session: Session | null
 }
 
-const Header = (props:HeaderProps) => {
-	const[menuIconClicked, setMenuIconClickedState] = useState(false)
 
+
+const Header = () => {
+	const[menuIconClicked, setMenuIconClickedState] = useState(false)
+	const[userNameClicked, setUserNameClicked] = useState(false)
+	
+	const handleClickAway = () => {
+		console.log('klik')
+    	if(menuIconClicked) setMenuIconClickedState(false);
+	}
+
+	const handleClickAway2 = () => {
+    	if(userNameClicked)setUserNameClicked(false);
+	}
+
+	/*const currentPath = usePathname()
+	console.log(currentPath)*/
+	const session = useSession({required:false})
 		return (
 			<>
 				<header>
+					
+						<ClickAwayListener onClickAway={handleClickAway}>
+							<div className='menuIconContainer mobile'>
+								<button onClick={() => {setMenuIconClickedState(!menuIconClicked);console.log('danas')}} type='submit' className='MenuIcon mobile'>{!menuIconClicked ? '≡' : '×'}</button>
+								{menuIconClicked && 
+								<ul className="flex gap-8 DropdownMenu DropdownMenuLeft">
+									{Object.entries(pages).map(([name, path]) => (
+									<li key={name} className = 'current'>
+										<Link href={path}>{name}</Link>
+									</li>))}
+								</ul>
+								}
+							</div>
+						</ClickAwayListener>	
 					<Link href='/'><img src={logo.src} alt="Logo" className="mr-2" /></Link>
 					<nav className="flex space-x-16 mx-2">
 						<ul className="flex gap-8 menuItems">
-							
 							{Object.entries(pages).map(([name, path]) => (
-							<li key={name} className = {props.currentPage===name ? 'current' : ''}>
+							<li key={name} className = {`desktop ${''===path ? 'current' : ''}`}>
 								<Link href={path}>{name}</Link>
 							</li>))}
-							
-						</ul>
+							{session.status==='authenticated' ?
+								<>
+									<li>
+										<ClickAwayListener onClickAway={handleClickAway2}>
+											<div>
+												<button type='submit' onClick={()=>setUserNameClicked(!userNameClicked)} className='userNameButton'>
+													<b className='desktop'>{session.data.user.name} {session.data.user.surname}</b>
+													<b className='mobile'>{session.data.user.name[0]} {session.data.user.surname[0]}</b>
+												</button>
+												{userNameClicked &&
+												<ul className='DropdownMenu DropdownMenuRight'>
+													<li className='mobile dropDownItem'><b>{session.data.user.name} {session.data.user.surname}</b></li>
+													{Object.entries(loggedUserActions).map(([name, path]) => (
+													<li key={name} className={`dropDownItem ${path.startsWith('/obavijesti') ? 'current' : ''}`}>
+														<Link href={path}>{name}</Link>
+													</li>))}
+													<li className='dropDownItem'><Logout icon={true}/></li>
+												</ul>}
+											</div>
+										</ClickAwayListener>
+									</li>
+								</> 
+								:
+								<li  key='prijava'><Link href='/prijava' >Prijava</Link></li>
+							}
+						</ul>			
 					</nav>
-					<ul className='loginSection'>
-						{props.session && <li><b>{props.session.user.name} {props.session.user.surname}</b></li>}
-						{!props.session ? <li className={props.currentPage==='Prijava' ? 'current' : ''}><Link href='/prijava' >Prijava</Link></li> : <li><Logout /></li>}
-					</ul>
-					<button onClick={() => {setMenuIconClickedState(!menuIconClicked)}} type='submit' className='MenuIcon'>{!menuIconClicked ? '≡' : '×'}</button>
 				</header>
-				<div className={!menuIconClicked ? 'dropDownContainer displaynone' : 'dropDownContainer'}>
-					<ul className="flex gap-8 dropdown ">
-					{props.session && <li><b>{props.session.user.name} {props.session.user.surname}</b></li>}
-					{Object.entries(pages).map(([name, path]) => (
-						<li key={name} className = {props.currentPage===name ? 'current' : ''}>
-							<Link href={path}>{name}</Link>
-						</li>))}
-						{!props.session ? <li className={props.currentPage==='Prijava' ? 'current' : ''}><Link href='/prijava' >Prijava</Link></li> : <li><Logout /></li>}
-					</ul>
-				</div>
 			</>
 		);
-	
 }
 
 export default Header;

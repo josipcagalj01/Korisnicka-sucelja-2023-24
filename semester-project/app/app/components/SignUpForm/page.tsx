@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {useRouter} from 'next/navigation'
 import './signUpFormStyle.css'
 import { useState } from "react";
+import Loading from '../Loading/page'
 
 interface serverResponse {
   user: any,
@@ -29,10 +30,12 @@ const formSchema = z.object({
     const [signUpFailed, setIfSignUpFailed] = useState(false)
     const [serverMessage,setServerMessage] = useState('')
     const [signUpAttemptOccurred, setSignUpAttemptOccurred] = useState(false)
+    const [loading, isLoading] = useState(false)
     const router = useRouter()
     const { register, handleSubmit, reset, formState: {errors}} = useForm<z.infer<typeof formSchema>>({resolver: zodResolver(formSchema), defaultValues: {pin:'', name:'', surname:'', address:'', username: '', email: '', password: '', confirmPassword: ''}})
   
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+      isLoading(true)
       const response = await fetch('/api/user', {
         method: 'POST',
         headers: {
@@ -50,6 +53,7 @@ const formSchema = z.object({
       })
       reset()
       const message:serverResponse = (await response.json())
+      isLoading(false)
       setServerMessage(message.message)
       if(response.ok) {
         router.push('/prijava')
@@ -64,7 +68,9 @@ const formSchema = z.object({
     return (
       <>
         <div className='formContainer'>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)} className='signUpForm'>
+            <h3>Registracija</h3>
+            {loading && <Loading message='Izrada korisničkog računa u tijeku ...'/>}
             {!signUpFailed && signUpAttemptOccurred && <b className='formOkMessage'>{serverMessage} Pričekajte da Vas preusmjerimo na stranicu za prijavu</b>}
             {signUpFailed && <b className='formErrorMessage'>{serverMessage}</b>}
             <label htmlFor='pin'>OIB</label>

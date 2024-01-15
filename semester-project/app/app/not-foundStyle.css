@@ -1,0 +1,18 @@
+.notFoundMessage {
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    row-gap:20px;
+}
+
+.errorCode {
+    font-size:60pt;
+}
+
+.notFoundMessage * {
+    width:fit-content;
+}
+
+.notFoundMessage h1, .notFoundMessage p {
+    text-align: center;
+}

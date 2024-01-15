@@ -31,28 +31,14 @@ async function RenderAboutPageContent() {
 
 async function AboutPage() {
   const session = await getSession()
-  //if(!session) redirect('../prijava')
   return (
     <>
-      <Header currentPage='O sustavu' session={session}/>
       <main className='prose lg:prose-xl'>
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<Loading  message='Učitavanje stranice ...'/>}>
           <RenderAboutPageContent/>
         </Suspense>  
       </main>
-      <Footer isLoggedIn={session ? true : false}/>
     </>
   )
 }
-
-  export default AboutPage;
-  /*return (
-      <>
-        
-        <div className="flex justify-center">
-          <h2>Dobar dan, {session?.user.name} {session?.user.surname}</h2>
-          <h1>Ovo je stranica s informacijama o sustavu, uslugama koje se nude i kako postati korisnik</h1>
-          <Logout />
-        </div>
-      </>
-    );*/
+export default AboutPage;

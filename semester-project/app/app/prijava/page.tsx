@@ -17,14 +17,12 @@ async function LoginPage() {
   const session = await getSession()
   if(session) redirect('/')
     return (
-      <>
-          <Header currentPage="Prijava" session={session}/>
-          <main>
-              <SignInForm/>    
-          </main>
-          <Footer isLoggedIn={session ? true : false}/>
-      </>
+  <>
+         
+          <SignInForm/>    
+      
+  </>
     );
   }
 
-  export default LoginPage;
+export default LoginPage;

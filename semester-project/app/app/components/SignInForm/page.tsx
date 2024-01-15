@@ -8,6 +8,7 @@ import '../SignUpForm/signUpFormStyle.css'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { useState } from "react";
+import Loading from '../Loading/page'
 
 const formSchema = z.object({
 	username: z.string().min(1, 'Potrebno je upisati korisničko ime').max(100),
@@ -17,18 +18,21 @@ const formSchema = z.object({
 const SignInForm = () => {
 	const [loginSuccess, setLoginSuccess] = useState(true)
 	const [errorMessage, setErrorMessage] = useState('')
+	const [loading, isLoading] = useState(false)
 	const [loginAttemptOccurred, setLoginAttemptOccurred] = useState(false)
 	const router = useRouter()
 
 	const { reset, register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof formSchema>>({ resolver: zodResolver(formSchema), defaultValues: { username: '', password: '' } })
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
+		isLoading(true)
 		const signInData = await signIn('credentials', {
-			username: values.username,
+			username: values.username.toLowerCase(),
 			password: values.password,
 			redirect: false
 		})
 		reset()
+		isLoading(false)
 		if (signInData?.error) {
 			console.log(signInData.error, 'podaci nisu u redu.')
 			setLoginSuccess(false)
@@ -45,8 +49,10 @@ const SignInForm = () => {
 	return (
 		<>
 			<div className='formContainer'>
-				<form onSubmit={handleSubmit(onSubmit)} className='w-full'>
-					{loginSuccess && loginAttemptOccurred && <b className='formOkMessage'>Uspješno ste prijavljeni. Preglednik trenutno čeka odgovor usluge kojoj namjeravate pristupiti</b>}
+				<form onSubmit={handleSubmit(onSubmit)} className='w-full signInForm'>
+					<h3>Prijava</h3>
+					{loading && <Loading message='Provjera vjerodajnica...'/>}
+					{loginSuccess && loginAttemptOccurred && <Loading bold={true} color='green' message='Uspješno ste prijavljeni. Preglednik trenutno čeka odgovor usluge kojoj namjeravate pristupiti.'/>}
 					{!loginSuccess && <b className='formErrorMessage'>{errorMessage}</b>}
 					<label htmlFor='username'>Korisničko ime</label>
 					<input type='text' {...register('username')} />

@@ -1,24 +1,29 @@
+.align-items-center {
+    align-items:center;
+}
+
 header {
     background-color: #224789;
-    display: flex; 
-    justify-content: space-between; 
+    display: flex;
+    column-gap: 20px;
     align-items: center;
+}
+
+header nav {
+    margin-left:auto;
 }
 
 header img {
     max-height: 60px; 
     max-width: 60px; 
-    margin-left: 20px;
-    margin-top: 8px;
-    margin-bottom: 8px;;
 }
 
-.loginSection {
-    margin-right: 20px;
-}
-
-.menuItems, .dropdown, .loginSection {
-    display: flex;
+.menuItems {
+    margin-right:20px;
+    position:relative;
+    height: 76px;
+    display:flex;
+    align-items: center;
     font-size: 13pt;
 }
 
@@ -26,11 +31,19 @@ header img {
     column-gap: 20px;
 }
 
-.menuItems, .MenuIcon, .dropdown, .loginSection {
+.menuItems, .MenuIcon {
     color: white;
 }
 
-.menuItems a:hover, .MenuIcon:hover, .loginSection button:hover, .loginSection a:hover {
+/*.dropDownItem, .menuItems {
+    
+}*/
+
+.dropDownItem {
+    font-size:14pt;
+}
+
+.menuItems a:hover, header button:hover, .loginSection button:hover, .loginSection a:hover, .dropDownItem a:hover {
     color: #ffcc00;
 }
 
@@ -39,16 +52,23 @@ header img {
 }
 
 .MenuIcon {
-    margin-right: 20px;
+    height:100%;
     font-size: 45px;
     display:none;
-    
+    width:100%;
+    text-align: center;
+}
+
+li.mobile b {
+    text-align: center;
 }
 
 .dropDownContainer {
+    position:relative;
     display: flex;
-    justify-content: end;
-    background-color: lightblue;
+    justify-content: flex-end;
+    background-color: rgb(89,108,161);
+
     position: absolute;
     width: 100%;
     z-index: 40;
@@ -61,6 +81,48 @@ header img {
     display: flex;
     flex-direction: column;
     row-gap: 15px;
+}
+
+.DropdownMenuRight {
+    right:0px;
+}
+
+.DropdownMenuRight li * {
+    display:block;
+    margin-left:auto;
+}
+
+.DropdownMenuLeft {
+    left:0px;
+}
+
+.DropdownMenu {
+    color:black;
+    background-color: white; /*lightgray/*rgb(89,108,161)*/;
+    border: 1px solid grey;
+    border-radius:2px;
+    position:absolute;
+    top:calc(100% + 5px);
+    z-index: 40;
+    width: max-content;
+    max-width:calc(100vw - 40px);
+}
+
+.menuIconContainer {
+    margin-left:20px;
+    height:76px;
+    position:relative;
+    width: 36px;
+}
+
+.DropdownMenu > li {
+    margin:15px;
+}
+
+.DropdownMenu > li * {
+    width:fit-content;
+    max-width: 100%;
+    word-wrap: break-word;
     
 }
 
@@ -68,16 +130,42 @@ header img {
     .MenuIcon {
         display: unset;
     }
-    .menuItems, .loginSection {
+
+    .desktop {
+        display:none;
+    }
+
+    .userNameButton {
+        font-size:11pt;
+        height: 52px;
+        width: 52px;
+        border-radius: 100%;
+        border: 2px solid white;
+    }
+
+    .userNameButton:hover {
+        border-color: #ffcc00;
+    }
+}
+
+@media screen and (min-width: 601px) {
+    .mobile {
         display: none;
+    }
+    
+    header img {
+        margin-left:20px;
     }
 }
 
 @media screen and (max-height:880px) {
+
+    .menuItems {
+        height: 74px;
+    }
+
     header img {
-        max-width: 45px;
-        max-height: 45px;
-        margin-top: 6px;
-        margin-bottom: 6px;
+        max-width: 50px;
+        max-height: 50px;
     }
 }

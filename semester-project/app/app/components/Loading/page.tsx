@@ -2,13 +2,18 @@ import * as React from 'react';
 import spinner from 'public/spinner.gif'
 import './loadingStyle.css'
 
+interface loadingProps {
+	message: string,
+	bold?:boolean,
+	color?:string
+}
 
-
-export default function Loading () {
+export default function Loading ({message, bold=false, color=''}:loadingProps) {
+	const style = {color: color, 'fontWeight':`${bold ? 'bold' : 'normal'}`}
     return (
 		<div className='loadingSpinnerContainer'>
 			<img src={spinner.src} className='spinner'alt='ucitavanje'/>
-			<p className='loadingMessage'>Podaci se učitavaju</p>
+			<p style={style} className='loadingMessage'>{message}</p>
 		</div>
 	)
 }
