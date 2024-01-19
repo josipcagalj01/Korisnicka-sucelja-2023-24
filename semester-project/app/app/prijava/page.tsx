@@ -16,7 +16,7 @@ async function LoginPage() {
 	if (session) redirect('/')
 	return (
 		<>
-			<SignInForm />
+			<SignInForm/>
 		</>
 	);
 }

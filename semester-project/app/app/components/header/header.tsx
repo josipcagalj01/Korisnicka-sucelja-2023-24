@@ -25,7 +25,7 @@ const Header = () => {
 	const [menuIconClicked, setMenuIconClickedState] = useState(false)
 	const [userNameClicked, setUserNameClicked] = useState(false)
 
-	const session = useSession({ required: false })
+	const session = useSession()
 
 	const handleClickAway = () => {
 		if (menuIconClicked) setMenuIconClickedState(false);
@@ -43,7 +43,7 @@ const Header = () => {
 					<div className='menuIconContainer mobile'>
 						<button onClick={() => setMenuIconClickedState(!menuIconClicked)} type='submit' className='MenuIcon mobile'>{!menuIconClicked ? '≡' : '×'}</button>
 						{menuIconClicked &&
-							<ul className="flex gap-8 DropdownMenu DropdownMenuLeft">
+							<ul className="flex gap-8 DropdownMenu DropdownMenuLeft" onClick={()=>handleClickAway()}>
 								{Object.entries(pages).map(([name, path]) => (
 									<li key={name} className={`dropDownItem ${path.split('?')[0] === currentPath ? 'current' : ''}`}>
 										<Link href={path}>{name}</Link>
@@ -70,7 +70,7 @@ const Header = () => {
 												<b className='mobile'>{session.data?.user.name[0]} {session.data?.user.surname[0]}</b>
 											</button>
 											{userNameClicked &&
-												<ul className='DropdownMenu DropdownMenuRight'>
+												<ul className='DropdownMenu DropdownMenuRight' onClick={()=>handleClickAway2()}>
 													<li className='mobile dropDownItem'><b>{session.data?.user.name} {session.data?.user.surname}</b></li>
 													{Object.entries(loggedUserActions).map(([name, path]) => (
 														<li key={name} className={`dropDownItem ${path.split('?')[0] === currentPath ? 'current' : ''}`}>
@@ -90,5 +90,4 @@ const Header = () => {
 		</>
 	);
 }
-
 export default Header;

@@ -3,12 +3,12 @@ import * as z from 'zod'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation'
 import '../SignUpForm/signUpFormStyle.css'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { useState } from "react";
 import Loading from '../Loading/loading'
+import { useSession } from 'next-auth/react';
 
 const formSchema = z.object({
 	username: z.string().min(1, 'Potrebno je upisati korisničko ime').max(100),
@@ -16,21 +16,24 @@ const formSchema = z.object({
 })
 
 const SignInForm = () => {
+	const session = useSession()
+	if(session.data) window.location.href= '/'
+
 	const [loginSuccess, setLoginSuccess] = useState(true)
 	const [errorMessage, setErrorMessage] = useState('')
 	const [loading, isLoading] = useState(false)
 	const [loginAttemptOccurred, setLoginAttemptOccurred] = useState(false)
-	const router = useRouter()
 
 	const { reset, register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof formSchema>>({ resolver: zodResolver(formSchema), defaultValues: { username: '', password: '' } })
-
-
+	
+		
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		isLoading(true)
 		const signInData = await signIn('credentials', {
 			username: values.username.toLowerCase(),
 			password: values.password,
-			redirect:false
+			redirect:false,
+			callbackUrl: '/o-sustavu'
 		})
 		reset()
 		isLoading(false)
@@ -43,10 +46,9 @@ const SignInForm = () => {
 		}
 		else {
 			setLoginAttemptOccurred(true)
-			router.push('/o-sustavu')
+			window.location.href = '/o-sustavu'
 		}
 	}
-
 	return (
 		<>
 			<div className='formContainer'>

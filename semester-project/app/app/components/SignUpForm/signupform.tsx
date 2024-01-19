@@ -28,6 +28,9 @@ const formSchema = z.object({
   .refine((data)=>data.password===data.confirmPassword, {path: ['confirmPassword'], message: 'Lozinka nije točna'})
   
   const SignUpForm = () => {
+    const session = useSession()
+    if(session.data) window.location.href= '/'
+
     const [signUpFailed, setIfSignUpFailed] = useState(false)
     const [serverMessage,setServerMessage] = useState('')
     const [signUpAttemptOccurred, setSignUpAttemptOccurred] = useState(false)

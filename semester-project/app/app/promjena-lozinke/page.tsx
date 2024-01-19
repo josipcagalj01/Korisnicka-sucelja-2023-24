@@ -17,7 +17,7 @@ async function LoginPage() {
 	if (!session) redirect('/')
 	return (
 		<>
-			{session ? <PasswordChangeForm session={session} />
+			{session ? <PasswordChangeForm/>
 				:
 				<>
 					<p>Pristup ovoj stranici moguć je samo autoriziranim korisnicima. Da biste pristupili ovoj stranici morate se prvo prijaviti.</p>
