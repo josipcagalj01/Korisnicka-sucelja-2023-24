@@ -30,8 +30,7 @@ const SignInForm = () => {
 		const signInData = await signIn('credentials', {
 			username: values.username.toLowerCase(),
 			password: values.password,
-			redirect: true,
-			callbackUrl:'/o-sustavu'
+			redirect:false
 		})
 		reset()
 		isLoading(false)
@@ -44,6 +43,7 @@ const SignInForm = () => {
 		}
 		else {
 			setLoginAttemptOccurred(true)
+			router.push('/o-sustavu')
 		}
 	}
 
