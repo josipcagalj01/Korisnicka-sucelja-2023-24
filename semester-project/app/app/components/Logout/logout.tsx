@@ -1,18 +1,19 @@
 'use client'
+import * as React from 'react';
 import {signOut} from 'next-auth/react'
 import logouticon from 'public/logouticon.png'
 
-/*interface logOutParams {
-    icon?:boolean
-}*/
+interface logOutProps {
+    icon?: boolean
+}
 
-export default function LogOut()
- {
+function LogOut(props: logOutProps) {
     return(
         <>
              <button onClick={()=>signOut({callbackUrl:'/prijava'})} type='submit' style={{display:'flex', alignItems:'center', columnGap:'5px'}}>
-                <img src={logouticon.src}/> Odjava
+                {props.icon && <img src={logouticon.src}/>} Odjava
              </button>
         </>
     )
 }
+export default LogOut

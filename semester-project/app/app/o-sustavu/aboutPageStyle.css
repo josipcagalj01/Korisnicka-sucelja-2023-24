@@ -1,0 +1,35 @@
+.aboutPageMain h2 {
+    margin-top:30px;
+}
+
+.aboutPageMain a:hover {
+    text-decoration: underline;
+}
+
+.aboutPageMain h3 {
+    margin-left:20px;
+}
+
+.aboutPageMain {
+    margin-bottom:50px;
+}
+
+.aboutPageMain ul {
+    list-style:revert;
+    padding: revert;
+}
+
+.aboutPageMain * {
+    margin:revert;
+}
+
+.aboutPageLandingBanner {
+    background:  url("../../public/002-6ph3m1vnnw7ir.webp");
+	background-repeat: no-repeat;
+	background-size:cover;
+	background-position: 0px 50px;
+	background-position-y: 50%;
+	margin-top: 50px;
+	height: 60vh;
+    
+}

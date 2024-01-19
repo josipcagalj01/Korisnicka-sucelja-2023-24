@@ -8,7 +8,7 @@ import '../SignUpForm/signUpFormStyle.css'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { useState } from "react";
-import Loading from '../Loading/page'
+import Loading from '../Loading/loading'
 
 const formSchema = z.object({
 	username: z.string().min(1, 'Potrebno je upisati korisničko ime').max(100),
@@ -24,12 +24,14 @@ const SignInForm = () => {
 
 	const { reset, register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof formSchema>>({ resolver: zodResolver(formSchema), defaultValues: { username: '', password: '' } })
 
+
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		isLoading(true)
 		const signInData = await signIn('credentials', {
 			username: values.username.toLowerCase(),
 			password: values.password,
-			redirect: false
+			redirect: true,
+			callbackUrl:'/o-sustavu'
 		})
 		reset()
 		isLoading(false)
@@ -41,7 +43,6 @@ const SignInForm = () => {
 			else setErrorMessage('Došlo je do greške. Trenutno nije moguće prijaviti Vas u sustav!')
 		}
 		else {
-			router.push('/o-sustavu')
 			setLoginAttemptOccurred(true)
 		}
 	}
@@ -51,8 +52,8 @@ const SignInForm = () => {
 			<div className='formContainer'>
 				<form onSubmit={handleSubmit(onSubmit)} className='w-full signInForm'>
 					<h3>Prijava</h3>
-					{loading && <Loading/>}
-					{loginSuccess && loginAttemptOccurred && <Loading/>}
+					{loading && <Loading message='Provjera vjerodajnica...' width={60} height={60}/>}
+					{loginSuccess && loginAttemptOccurred && <Loading bold={true} color='green' message='Uspješno ste prijavljeni. Preglednik trenutno čeka odgovor usluge kojoj namjeravate pristupiti.' width={60} height={60}/>}
 					{!loginSuccess && <b className='formErrorMessage'>{errorMessage}</b>}
 					<label htmlFor='username'>Korisničko ime</label>
 					<input type='text' {...register('username')} />
@@ -66,6 +67,7 @@ const SignInForm = () => {
 					<p>Nemate korisnički račun?</p>
 					<Link href='/registracija'><p className='linkText'>Registracija</p></Link>
 				</div>
+				
 			</div>
 		</>
 	);

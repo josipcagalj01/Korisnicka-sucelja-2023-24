@@ -5,11 +5,11 @@ import {useForm} from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
 import '../SignUpForm/signUpFormStyle.css'
 import { useState } from "react";
-import Loading from '../Loading/page'
+import Loading from '../Loading/loading'
 import { Session } from '../../../lib/getSession'
 import { signOut } from 'next-auth/react'
 
-interface changePasswordFormProps {
+interface changePasswordFormParams {
     session:Session | null
 }
 
@@ -25,7 +25,7 @@ const formSchema = z.object({
   })
   .refine((data)=>data.password===data.confirmPassword, {path: ['confirmPassword'], message: 'Ponovo unesena nova lozinka nije unesenoj u polje iznad.'})
   
-  const ChangePassordForm = (props:changePasswordFormProps) => {
+  const ChangePassordForm = (params:changePasswordFormParams) => {
     const [attemptFailed, setAttemptFailed] = useState(false)
     const [serverMessage,setServerMessage] = useState('')
     const [attemptOccurred, setAttemptOccurred] = useState(false)
@@ -40,7 +40,7 @@ const formSchema = z.object({
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-					id:props.session?.user.id,
+					id:params.session?.user.id,
           oldpassword:values.oldPassword,
           password: values.password
         })
@@ -64,8 +64,8 @@ const formSchema = z.object({
         <div className='formContainer'>
           <form onSubmit={handleSubmit(onSubmit)} className='signUpForm'>
 						<h3>Promjena lozinke</h3>
-            {loading && <Loading/>}
-            {!attemptFailed && attemptOccurred && <Loading/>}
+            {loading && <Loading message='Sustav obrađuje Vaš zahtjev. Molim pričekajte ...'/>}
+            {!attemptFailed && attemptOccurred && <Loading message={`${serverMessage} Pričekajte da Vas preusmjerimo na stranicu za prijavu`} color='green' bold={true}/>}
             {attemptFailed && <b className='formErrorMessage'>{serverMessage}</b>}
             <label htmlFor='password'>Trenutna lozinka</label>
             <input type='password' {...register('oldPassword')}/>

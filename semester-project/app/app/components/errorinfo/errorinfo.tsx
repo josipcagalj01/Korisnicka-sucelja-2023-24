@@ -1,6 +1,6 @@
 import errorIcon from 'public/erroricon.png'
 import './errorInfoStyle.css'
-
+import Image from 'next/image'
 interface errorInfoProps {
     message: string
 }
@@ -8,7 +8,7 @@ interface errorInfoProps {
 export default function ErrorInfo(props: errorInfoProps) {
     return (
         <div className="errorInfoContainer">
-            <img className='errorImage' src={errorIcon.src} alt='greska'/>
+            <Image className='errorImage' src={errorIcon.src} width={errorIcon.width} height={errorIcon.height} alt='greska'/>
             <p className='errorMessage'>{props.message}</p>
         </div>
     )

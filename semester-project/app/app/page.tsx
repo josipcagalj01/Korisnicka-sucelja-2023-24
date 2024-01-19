@@ -1,13 +1,11 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })
-import Header from './components/header/page'
-import Footer from './components/footer/page'
-import News from './components/News/page'
+import News from './components/News/news'
 import './homepage.css'
 import Link from 'next/link'
 import { Suspense } from 'react';
-import Loading from './components/Loading/page'
+import Loading from './components/Loading/loading'
 import {getSession} from '../lib/getSession'
 
 export const metadata: Metadata = {
@@ -34,11 +32,11 @@ export default async function Home() {
       <main className='homePageMain'>
         
         <div className="HomePageAnnouncmentsBanner">
-          <h2>Nove obavijesti</h2>
-          <Suspense fallback={<Loading/>}>
-            <News limit={0} offset={0} desiredId={undefined}/>
+          <h2>Najnovije obavijesti</h2>
+          <Suspense fallback={<Loading message='Učitavanje obavijesti'/>}>
+            <News limit={4} offset={0} desiredId={undefined}/>
           </Suspense>
-          <Link href='/obavijesti?_page=1&_limit=10' className='marginLeftAuto displayBlock fitContent borderedLink'> <p className='linkText'>Starije obavijesti</p> </Link>
+          <Link href='/obavijesti?_page=1&_limit=10' className='marginLeftAuto displayBlock fitContent borderedLink'> <p className='linkText'>Sve obavijesti</p> </Link>
         </div>
         <div className="flex justify-center HomePageBanner Reverse">
           <div className='HomePageBannerTextContainer'>

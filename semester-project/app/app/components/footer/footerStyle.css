@@ -41,8 +41,6 @@ footer h2 {
 }
   
 .logo {
-    max-height: 100px;
-    max-width:100px;
     align-self: center;
     background-color: white;
 } 

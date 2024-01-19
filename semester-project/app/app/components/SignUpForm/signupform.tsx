@@ -7,7 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {useRouter} from 'next/navigation'
 import './signUpFormStyle.css'
 import { useState } from "react";
-import Loading from '../Loading/page'
+import Loading from '../Loading/loading'
+import { useSession } from 'next-auth/react'
 
 interface serverResponse {
   user: any,
@@ -70,7 +71,7 @@ const formSchema = z.object({
         <div className='formContainer'>
           <form onSubmit={handleSubmit(onSubmit)} className='signUpForm'>
             <h3>Registracija</h3>
-            {loading && <Loading />}
+            {loading && <Loading message='Izrada korisničkog računa u tijeku ...'/>}
             {!signUpFailed && signUpAttemptOccurred && <b className='formOkMessage'>{serverMessage} Pričekajte da Vas preusmjerimo na stranicu za prijavu</b>}
             {signUpFailed && <b className='formErrorMessage'>{serverMessage}</b>}
             <label htmlFor='pin'>OIB</label>

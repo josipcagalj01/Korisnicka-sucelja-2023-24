@@ -20,7 +20,7 @@
 	background-color: unset;
 }
 
-.announcment h3, .announcmentImage {
+.announcment h3, .announcmentImageContainer {
 	margin-bottom: 7px;
 }
 
@@ -28,6 +28,12 @@
 	height: 180px;
 	width:100%;
 	object-fit: cover;
+}
+
+.announcmentImageContainer {
+	position:relative;
+	height: 180px;
+	width:100%;
 }
 
 @media screen and (max-width: 600px) {

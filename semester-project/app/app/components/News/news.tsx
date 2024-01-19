@@ -1,9 +1,11 @@
 import Link from 'next/link'
 import * as React from 'react';
-import ErrorInfo from '../errorinfo/page';
+import ErrorInfo from '../errorinfo/errorinfo';
 import { Suspense } from 'react';
-import Loading from '../Loading/page'
+import Loading from '../Loading/loading'
+import Image from 'next/image';
 import './newsStyle.css'
+import { getNews } from '../../../lib/contentfulClient';
 
 interface newsProps {
   offset: number,
@@ -11,7 +13,7 @@ interface newsProps {
   desiredId:number | undefined
 }
 
-const gqlNewsSection = `query newsCollectionQuery {
+/*const gqlNewsSection = `query newsCollectionQuery {
     newsCollection {
       items {
         sys {
@@ -88,7 +90,7 @@ export const getNews = async (params:newsProps): Promise<newsPackage> => {
     console.log(error);
     return {count: -1, news: []}
   }
-};
+};*/
 
 export default async function News(props:newsProps) {
   const data = await getNews(props)
@@ -97,24 +99,25 @@ export default async function News(props:newsProps) {
       <ErrorInfo message='Dogodila se greška pri učitavanju obavijesti.'/>
     </>)
   else if (data.count===0) return (<p>Nema novih obavijesti</p>)
-  else return (
+  else {
+    return (
     <>
-      <Suspense fallback={<Loading/>}>
+      <Suspense fallback={<Loading message='Obavijesti se učitavaju'/>}>
         <div className='AnnouncmentsContainer'>
           {data.news.map((announcment) => (
             <article className='announcment' key={announcment.id}>
-              <img className='announcmentImage' src={announcment.imageurl} alt={announcment.imagetitle} />
+              <div className='announcmentImageContainer'>
+                <Image src={announcment.image.url} alt={announcment.image.title} fill={true} sizes='180px' style={{objectFit:'cover'}}/>
+              </div>
               <Link href={'/obavijesti/' + announcment.id}>
                 <h3 className='announcmentTitle'>{announcment.title}</h3>
               </Link>
+              <p>{announcment.date}</p>
               <p className='announcmentText'> {announcment.body.substring(0, 200)}</p>
             </article>))}
         </div>
       </Suspense>
     </>
-		
 	)
+  }
 }
-
-
-

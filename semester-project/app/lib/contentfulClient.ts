@@ -1,8 +1,8 @@
 const BASE_URL=`https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}/environments/master`
 
-export interface newsParams {
+export interface newsProps {
   offset: number,
-  limit: number
+  limit: number,
   desiredId:number | undefined
 }
   
@@ -18,9 +18,12 @@ export interface News {
     };
     id: number,
     title: string,
+    date:string,
     body: string,
-    imageurl:string,
-    imagetitle: string
+    image: {
+      url:string,
+      title:string
+    }
 }
 
 export interface newsPackage {
@@ -30,15 +33,22 @@ export interface newsPackage {
 
 
 
-export const getNews = async (params:newsParams): Promise<newsPackage> => {
+export const getNews = async (props:newsProps): Promise<newsPackage> => {
 
   const query = `query newsCollectionQuery {
-    newsCollection ${ params.offset>0 || params.limit>0 || params.desiredId != undefined ? `(${params.offset>0 ? `skip:${params.offset} ` : ""}${params.limit>0 ? `limit:${params.limit}` : ''} ${params.desiredId!=undefined &&params.desiredId>=0  ? `where: {id:${params.desiredId}}` : ""})` : ''} {
+    newsCollection (order:date_DESC ${ props.offset>0 || props.limit>0 || props.desiredId != undefined ? `${props.offset>0 ? `skip:${props.offset} ` : ""}${props.limit>0 ? `limit:${props.limit}` : ''} ${props.desiredId!=undefined &&props.desiredId>=0  ? `where: {id:${props.desiredId}}` : ""})` : ''} {
       items {
         sys {
           id
         }
-        id,title,body,imageurl,imagetitle
+        id,
+        title,
+        date,
+        body,
+        image {
+          url
+          title
+        }
       }
     }
   }`
@@ -56,14 +66,13 @@ export const getNews = async (params:newsParams): Promise<newsPackage> => {
         const body = (await response.json()) as {
         data: NewstCollectionResponse;
         };
-        
         const newsToPublish: News[] = body.data.newsCollection.items.map((item) => ({
           sys: {id: item.sys.id},
           id: item.id,
           title: item.title,
+          date: `${item.date.split('T')[0].split('-')[2]}.${item.date.split('T')[0].split('-')[1]}.${item.date.split('T')[0].split('-')[0]}.`,
           body: item.body,
-          imageurl: item.imageurl,
-          imagetitle: item.imagetitle,
+          image: item.image
         }));
         return {count: newsToPublish.length, news: newsToPublish};
       }
@@ -116,7 +125,7 @@ const gqlAboutPageContent = `query aboutCollectionQuery {
         sys {
           id
         }
-        imageurl, abouttext
+        abouttext2 {json}, imageurl 
       }
   }
 }`
@@ -125,7 +134,7 @@ const gqlAboutPageContent = `query aboutCollectionQuery {
     sys: {
       id: string;
     };
-    abouttext: string,
+    abouttext2: any,
     imageurl:string,
   }
   
@@ -152,7 +161,7 @@ const gqlAboutPageContent = `query aboutCollectionQuery {
         
         const aboutPageContentToPublish: AboutPageContent[] = body.data.aboutCollection.items.map((item) => ({
           sys: {id: item.sys.id},
-          abouttext: item.abouttext,
+          abouttext2: item.abouttext2,
           imageurl: item.imageurl,
         }));
         return aboutPageContentToPublish

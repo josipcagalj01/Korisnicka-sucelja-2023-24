@@ -1,22 +1,19 @@
 //import { Inter } from 'next/font/google'
 //const inter = Inter({ subsets: ['latin'] })
-import Header from '../../components/header/page'
 import './newsPageStyle.css'
 import { Metadata } from 'next'
-import Footer from '../../components/footer/page'
 import { getSession } from '../../../lib/getSession'
 import {getNews} from '../../../lib/contentfulClient'
 import { newsPackage } from '../../../lib/contentfulClient'
-import ErrorInfo from '../../components/errorinfo/page'
+import ErrorInfo from '../../components/errorinfo/errorinfo'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
-import Loading from '../../components/Loading/page'
+import Loading from '../../components/Loading/loading'
+import Image from 'next/image'
 
 interface Params {
     announcmentId: number;
 }
-
-const BASE_API_URL = "https://jsonplaceholder.typicode.com";
 
 export const generateMetadata = async ({ params }: {params: Params}) : Promise<Metadata> => {
   let announcment:newsPackage={count:0, news:[]}
@@ -37,6 +34,7 @@ async function RenderAnnouncment(params:Params) {
 	return (
 		<>
 			<h1>{response.news[0].title}</h1>
+      <Image src={response.news[0].image.url} alt={response.news[0].image.title} width={800} height={600}/>
 			<br />
 			<p className="text-xl p-10">{response.news[0].body}</p>
 		</>
@@ -48,7 +46,7 @@ async function Announcment({ params }: {params: Params}) {
   return (
     <>
       <main>
-				<Suspense fallback={<Loading/>}>
+				<Suspense fallback={<Loading message='Obavijest se učitava ...'/>}>
 					<RenderAnnouncment announcmentId={params.announcmentId}/>
 				</Suspense>
       </main>

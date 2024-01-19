@@ -1,6 +1,8 @@
 import { Url } from "next/dist/shared/lib/router/router"
+import * as React from 'react';
 import Link from "next/link"
 import './borderedLinkStyle.css'
+
 interface linkProps {
     href:Url,
     children:React.ReactNode,
@@ -9,6 +11,6 @@ interface linkProps {
 
 export default function BorderedLink({href, children, className=''}:linkProps) {
     return (
-        <Link href={href} className={`borderedLink ${className}`}><p className='linkText'>{children}</p></Link>
+        <Link href={href ?? ''} className={`borderedLink ${className}`}><p className='linkText'>{children}</p></Link>
     )
 }

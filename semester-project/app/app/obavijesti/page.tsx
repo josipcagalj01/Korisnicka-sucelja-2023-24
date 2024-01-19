@@ -1,15 +1,13 @@
 import type { Metadata } from 'next'
 //import { Inter } from 'next/font/google'
 //const inter = Inter({ subsets: ['latin'] })
-import Header from '../components/header/page'
-import Footer from '../components/footer/page'
 import { getSession } from '../../lib/getSession'
 import './[announcmentId]/newsPageStyle.css'
-import News from '../components/News/page'
+import News from '../components/News/news'
 import { getTotalNewsCount } from '../../lib/contentfulClient'
 import { Suspense } from 'react';
-import Loading from '../components/Loading/page'
-import BorderedLink from '../components/BorderedLink/page'
+import Loading from '../components/Loading/loading'
+import BorderedLink from '../components/BorderedLink/button'
 
 export const metadata: Metadata = {
   title: 'Obavijesti',
@@ -29,7 +27,7 @@ async function Announcments({ searchParams }: { searchParams: Record<string, str
 		<>
 			<main>
 				<h1>Obavijesti</h1>
-				<Suspense fallback={<Loading/>}>
+				<Suspense fallback={<Loading message='Učitavanje obavijesti ...' />}>
 					<News offset={pageSize * (page - 1)} limit={pageSize} desiredId={undefined} />
 				</Suspense>
 				{_limit && _page && (
