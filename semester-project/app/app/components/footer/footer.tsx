@@ -18,10 +18,6 @@ var pages = {
     "Obavijesti": "/obavijesti?_page=1&_limit=10",
 };
 
-interface FooterProps {
-	isLoggedIn: boolean
-}
-
 const Footer = ()=> {
 
 	const session=useSession({required:false})
@@ -34,7 +30,7 @@ const Footer = ()=> {
 						<h2>Grad Kaštela</h2>
 						<div className='IconAndTextContainer'>
 							<Image src={locationicon.src} width={15} height={15} alt='lokacija' />
-							<p>Ulica braće Radić 2 <br />21212 Kaštel Sućurac</p>
+							<Link href='https://maps.app.goo.gl/CAwVywo7iLdihMtRA'><p>Ulica braće Radić 1<br />21212 Kaštel Sućurac</p></Link>
 						</div>
 						<div className='IconAndTextContainer'>
 							<Image src={websiteicon.src} width={15} height={15} alt="webstranica" />
@@ -53,7 +49,6 @@ const Footer = ()=> {
 					</div>
 					<div>
 						<h2>Kontakt</h2>
-
 						<div className='IconAndTextContainer'>
 							<Image src={phoneicon.src} width={15} height={15} alt='telefon' />
 							<Link href='tel:+38512345678'>+385 12 345 678</Link>
@@ -71,11 +66,8 @@ const Footer = ()=> {
 				<div className="CopyrightAndManofacturerInfo">
 					<p>Sva prava pridržana 2023 Grad Kaštela</p>
 				</div>
-
 			</footer>
 		</>
 	);
 }
-
-
 export default Footer;

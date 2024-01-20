@@ -6,17 +6,15 @@ import './homepage.css'
 import Link from 'next/link'
 import { Suspense } from 'react';
 import Loading from './components/Loading/loading'
-import {getSession} from '../lib/getSession'
+import Image from 'next/image'
+import digitalsociety from 'public/digitalsociety.jpg'
 
 export const metadata: Metadata = {
   title: 'Početna | eKaštela',
   description: 'Početna stranica informacijskog sustava eKaštela',
 }
 
-
-export default async function Home() {
-  const session = await getSession()
-  
+export default function Home() {
   return (
     <>
       
@@ -45,8 +43,8 @@ export default async function Home() {
               <p className='HomePageDescriptions'>Otkrijte novu dimenziju komunikacije s gradskom upravom, ustanovama i tvrtkama.</p>
               <Link href='/o-sustavu' className='borderedLink'> <p className='linkText'>Pregled dostupnih usluga</p> </Link>
             </div>
-          </div>
-          <img src="https://cdn2.hubspot.net/hubfs/524149/Imported_Blog_Media/man-using-cc-on-his-phone-7.gif" alt="Slika #2"></img>
+          </div><Image src={digitalsociety.src} height={500} width={500} alt='slika3'/>
+          
         </div>
       </main>
       

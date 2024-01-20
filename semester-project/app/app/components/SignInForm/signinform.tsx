@@ -33,7 +33,6 @@ const SignInForm = () => {
 			username: values.username.toLowerCase(),
 			password: values.password,
 			redirect:false,
-			callbackUrl: '/o-sustavu'
 		})
 		reset()
 		isLoading(false)
@@ -46,7 +45,7 @@ const SignInForm = () => {
 		}
 		else {
 			setLoginAttemptOccurred(true)
-			window.location.href = '/o-sustavu'
+			if(session.data) window.location.href= '/'
 		}
 	}
 	return (
@@ -69,7 +68,6 @@ const SignInForm = () => {
 					<p>Nemate korisnički račun?</p>
 					<Link href='/registracija'><p className='linkText'>Registracija</p></Link>
 				</div>
-				
 			</div>
 		</>
 	);

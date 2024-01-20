@@ -29,13 +29,14 @@
 }
 
 main {
-  max-width: 1250px;
+  max-width: 1300px;
   margin: auto;
   margin-top: 50px;
+  margin-bottom: 50px;
   z-index: -3;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1299px) {
 	main {
 		max-width: 90%;
 	}

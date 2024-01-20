@@ -1,9 +1,10 @@
 const BASE_URL=`https://graphql.contentful.com/content/v1/spaces/${process.env.CONTENTFUL_SPACE_ID}/environments/master`
 
 export interface newsProps {
-  offset: number,
-  limit: number,
-  desiredId:number | undefined
+  offset?: number,
+  limit?: number,
+  desiredId?:number | undefined,
+  category?:string | undefined
 }
   
   interface NewstCollectionResponse {
@@ -19,6 +20,7 @@ export interface News {
     id: number,
     title: string,
     date:string,
+    category:string,
     body: string,
     image: {
       url:string,
@@ -33,10 +35,9 @@ export interface newsPackage {
 
 
 
-export const getNews = async (props:newsProps): Promise<newsPackage> => {
-
+export const getNews = async ({offset=0,limit=0,desiredId=undefined,category=undefined}:newsProps): Promise<newsPackage> => {
   const query = `query newsCollectionQuery {
-    newsCollection (order:date_DESC ${ props.offset>0 || props.limit>0 || props.desiredId != undefined ? `${props.offset>0 ? `skip:${props.offset} ` : ""}${props.limit>0 ? `limit:${props.limit}` : ''} ${props.desiredId!=undefined &&props.desiredId>=0  ? `where: {id:${props.desiredId}}` : ""})` : ''} {
+    newsCollection (order:date_DESC ${offset>0 ? `skip:${offset} ` : ""} ${limit>0 ? `limit:${limit}` : ''} ${desiredId || category ? `where: {${desiredId ? `id:${desiredId}`:''} ${category ? `category:"${category}"`:''}}` : ''}) {
       items {
         sys {
           id
@@ -44,6 +45,7 @@ export const getNews = async (props:newsProps): Promise<newsPackage> => {
         id,
         title,
         date,
+        category,
         body,
         image {
           url
@@ -52,7 +54,7 @@ export const getNews = async (props:newsProps): Promise<newsPackage> => {
       }
     }
   }`
-
+  
     try {
       const response = await fetch(BASE_URL, {
         method: "POST",
@@ -71,6 +73,7 @@ export const getNews = async (props:newsProps): Promise<newsPackage> => {
           id: item.id,
           title: item.title,
           date: `${item.date.split('T')[0].split('-')[2]}.${item.date.split('T')[0].split('-')[1]}.${item.date.split('T')[0].split('-')[0]}.`,
+          category:item.category,
           body: item.body,
           image: item.image
         }));
@@ -89,14 +92,13 @@ interface newsTotalCountResponse {
   }
 }
 
-export async function getTotalNewsCount():Promise<number> {
+export async function getTotalNewsCount({category}:{category:string | undefined}):Promise<number> {
 
   const query = `query getTotalNewsCountQuery {
-    newsCollection {
+    newsCollection ${category ? `(where:{category:"${category}"})` :''} {
       total
     }
   }`
-
   try {
     const response = await fetch(BASE_URL, {
       method: "POST",

@@ -3,7 +3,13 @@
 	width: fit-content;
 	background-color: white;
 	opacity: 1;
+	color:black;
 }
+
+.borderedLink.current {
+	background-color: darkgray;
+	color:white;
+  }
 
 .borderedLink:hover {
     background-color: lightgray;

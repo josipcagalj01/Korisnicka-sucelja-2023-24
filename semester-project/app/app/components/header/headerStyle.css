@@ -62,17 +62,6 @@ header img {
 li.mobile b {
     text-align: center;
 }
-
-.dropDownContainer {
-    position:relative;
-    display: flex;
-    justify-content: flex-end;
-    background-color: rgb(89,108,161);
-
-    position: absolute;
-    width: 100%;
-    z-index: 40;
-}
 .displaynone { display: none;}
 
 .dropdown {
@@ -98,7 +87,7 @@ li.mobile b {
 
 .DropdownMenu {
     color:black;
-    background-color: white; /*lightgray/*rgb(89,108,161)*/;
+    background-color: #eeeeee;
     border: 1px solid grey;
     border-radius:2px;
     position:absolute;
@@ -145,6 +134,10 @@ li.mobile b {
 
     .userNameButton:hover {
         border-color: #ffcc00;
+    }
+
+    .DropdownMenu {
+        width:calc(100vw - 40px);
     }
 }
 
