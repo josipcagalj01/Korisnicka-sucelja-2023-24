@@ -11,10 +11,13 @@
 	color:white;
   }
 
-.borderedLink:hover {
-    background-color: lightgray;
-}
-
 .linkText {
 	margin: 5px;
+}
+
+@media (hover:hover) {
+	.borderedLink:hover {
+    	background-color: lightgray;
+		color:black;
+	}
 }

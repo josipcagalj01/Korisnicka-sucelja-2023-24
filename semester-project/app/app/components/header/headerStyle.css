@@ -43,9 +43,12 @@ header img {
     font-size:14pt;
 }
 
-.menuItems a:hover, header button:hover, .loginSection button:hover, .loginSection a:hover, .dropDownItem a:hover {
-    color: #ffcc00;
+@media (hover:hover) {
+    .menuItems a:hover, header button:hover, .loginSection button:hover, .loginSection a:hover, .dropDownItem a:hover {
+        color: #ffcc00;
+    }
 }
+
 
 .current a {
     text-decoration: underline;
