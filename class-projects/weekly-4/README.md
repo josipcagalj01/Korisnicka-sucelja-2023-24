@@ -6,7 +6,7 @@
 - sitne stilske izmjene
 - poboljšana responzivnost
 
-## Ciljevi u nastavku razvoja
+## Ciljevi u nastavku razvoja:
 
 - dodati nove relacije u bazu podataka
 - implementirati sučelje za predaju, zaprimanje i pregled korisničkih zahtjeva

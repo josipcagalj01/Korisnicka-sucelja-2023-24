@@ -1,7 +1,5 @@
 # Class projekti
 
-References to class projects:
-
 - [Class projekt 1: Osnove Figme](/class-projects/class-project-1/)
 - [Class projekt 2: Identifikacija karakteristika korisnika i potrebne organizacije sučelja aplikacije](/class-projects/class-project-2/)
 - [Class projekt 3: Postavljanje aplikacije na Vercel](/class-projects/class-project-3/)
