@@ -118,7 +118,7 @@ li.mobile b {
     
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 930px) {
     .MenuIcon {
         display: unset;
     }
@@ -144,7 +144,7 @@ li.mobile b {
     }
 }
 
-@media screen and (min-width: 601px) {
+@media screen and (min-width: 931px) {
     .mobile {
         display: none;
     }

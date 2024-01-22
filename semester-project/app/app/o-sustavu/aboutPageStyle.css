@@ -29,7 +29,11 @@
 	background-size:cover;
 	background-position: 0px 50px;
 	background-position-y: 50%;
-	margin-top: 50px;
 	height: 60vh;
-    
+}
+
+@media screen and (max-height:880px) {
+	.aboutPageLandingBanner {
+		max-height: calc(100vh - 64px);
+	}
 }

@@ -6,7 +6,7 @@ h1.HomePageLargeTitle {
 	margin-top:auto;
 }
 
-.HomePageBanner, .landingBanner {
+.generalInfoContainer, .landingBanner {
 	display: flex;
 	column-gap: 30px;
 }
@@ -17,13 +17,16 @@ h1.HomePageLargeTitle {
 	background-size:cover;
 	background-position: 0px 50px;
 	background-position-y: 50%;
-	margin-top: 50px;
 	height: 60vh;
+}
+
+.generalInfoContainer {
+	width:100%;
 }
 
 .HomePageBanner,
 .HomePageAnnouncmentsBanner {
-	margin-bottom: 70px;
+	margin-bottom: 40px;
 }
 
 .HomePageAnnouncmentsBanner {
@@ -39,13 +42,8 @@ h1.HomePageLargeTitle {
 	display: block;
 }
 
-.fitContent {
-	width:fit-content;
-}
-
-.HomePageBanner img, .landingBanner img {
-	width: 65%;
-	height:auto;
+.HomePageBanner h1 {
+	margin-bottom:20px;
 }
 
 .HomePageBannerTextContainer {
@@ -77,41 +75,40 @@ h1.HomePageLargeTitle {
 	align-items: center;
 }
 
-.borderedLink {
-	border: 1px solid grey;
-	width: fit-content;
-	background-color: white;
-	opacity: 1;
-}
-
-.linkText {
-	margin: 5px;
-}
-
-.HomePageAnnouncmentsBanner a:hover, .textContainer a:hover {
-	background-color: lightgray;
-	/*color: white;*/
-}
-
-
 h2 {
-	margin-bottom: 7px;
+	margin-bottom: 10px;
+}
+
+.imageContainer {
+	position:relative;
+	margin-bottom: 5px;
+	height:240px;
+	width:100%;
+}
+
+.imageAndLinkContainer {
+	width:30%;
+}
+
+.imageAndLinkContainer a:hover {
+	text-decoration: underline;
+}
+
+@media screen and (max-width:434px) {
+	.generalInfoContainer {
+		flex-direction: column;
+		row-gap:20px;
+	}
+}
+
+
+@media screen and (max-width:1100px) {
+	.imageAndLinkContainer {
+		width: 100%;
+	}
 }
 
 @media screen and (max-width: 600px) {
-
-	.HomePageBanner {
-		flex-direction: column;
-		row-gap: 25px;
-	}
-
-	.Reverse {
-		flex-direction: column-reverse;
-	}
-
-	.HomePageBanner img {
-		width: 100%;
-	}
 
 	.textContainerContainer {
 		height: unset;
@@ -122,8 +119,12 @@ h2 {
 
 @media screen and (max-height:880px) {
 	.landingBanner {
-		padding-top:40px;
-		padding-bottom: 40px;
 		max-height: calc(100vh - 64px);
+	}
+}
+
+@media screen and (max-height:480px) {
+	.textContainerContainer {
+		height: auto;
 	}
 }
