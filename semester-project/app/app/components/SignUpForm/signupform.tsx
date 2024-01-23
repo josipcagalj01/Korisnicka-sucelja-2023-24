@@ -9,6 +9,7 @@ import './signUpFormStyle.css'
 import { useState } from "react";
 import Loading from '../Loading/loading'
 import { useSession } from 'next-auth/react'
+import BorderedLink from '../BorderedLink/button'
 
 interface serverResponse {
   user: any,
@@ -105,7 +106,7 @@ const formSchema = z.object({
           </form>
           <div className='loginLinkContainer'>
             <p>Već imate korisnički račun?</p>
-            <Link href='/prijava'><p className='linkText'>Prijava</p></Link>
+            <BorderedLink href='/prijava'>Prijava</BorderedLink>
           </div>
         </div>
       </>

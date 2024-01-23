@@ -4,7 +4,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
 import '../SignUpForm/signUpFormStyle.css'
-import Link from 'next/link'
+import BorderedLink from '../BorderedLink/button';
 import { signIn } from 'next-auth/react'
 import { useState } from "react";
 import Loading from '../Loading/loading'
@@ -66,7 +66,7 @@ const SignInForm = () => {
 				</form>
 				<div className='registrationLinkContainer'>
 					<p>Nemate korisnički račun?</p>
-					<Link href='/registracija'><p className='linkText'>Registracija</p></Link>
+					<BorderedLink href='/registracija'>Registracija</BorderedLink>
 				</div>
 			</div>
 		</>

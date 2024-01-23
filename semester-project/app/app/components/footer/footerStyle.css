@@ -1,6 +1,13 @@
 footer {
   position: sticky;
+  background-color: #eeeeee;
+  width:100%;
   top:100vh;
+}
+
+.footerMain {
+  max-width:1500px;
+  margin:auto;
 }
 
 footer a:hover, footer button:hover {
@@ -9,10 +16,11 @@ footer a:hover, footer button:hover {
 
 .briefInfo {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    background-color: #eeeeee;
     width: 100%;
-    padding: 20px;
+    padding-top: 25px;
+    padding-bottom: 25px;
   }
   .briefinfo div {
     width: fit-content;
@@ -27,17 +35,30 @@ footer h2 {
     flex-direction: column;
 }
 
+.briefInfo li:not(:last-child) { 
+  margin-bottom: 3px;  
+}
+
+.CopyrightAndManofacturerInfoContainer {
+  background-color: #212427;
+  width:100%;
+  
+}
+
 .CopyrightAndManofacturerInfo {
-    background-color: #212427;
-    height: 45px;
-    display: flex;
-    align-items: center;
+  width:1500px;
+  margin:auto;
+  display: flex;
+  align-items: center;
+  height: 45px;
+    
   }
   
 .CopyrightAndManofacturerInfo p {
     margin-left: 20px;
     margin-right: 20px;
     color: white;
+    font-size:11pt;
 }
   
 .logo {
@@ -51,13 +72,33 @@ footer h2 {
   align-items: center;
 }
 
+.footerIcon {
+  opacity: 0.6;
+}
+
+@media screen and (max-width: 1499px) {
+  .CopyrightAndManofacturerInfo {
+    width:100%;
+  }
+
+  .briefInfo {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
 @media screen and (max-width: 434px) {
   .briefInfo {
     flex-direction: column;
     row-gap: 20px;
   }
-
-.logo {
-    align-self: flex-start;
-  }
 }
+
+@media screen and (min-width: 435px) and (max-width: 670px) {
+    .briefInfo {
+      display:grid;
+      grid-template-columns: auto auto;
+      justify-content: space-around;
+      row-gap: 20px;
+    }
+  }

@@ -2,6 +2,13 @@
     align-items:center;
 }
 
+.headerMain {
+    width:1500px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+}
+
 header {
     background-color: #224789;
     display: flex;
@@ -15,7 +22,8 @@ header nav {
 
 header img {
     max-height: 60px; 
-    max-width: 60px; 
+    max-width: 60px;
+    margin-left:20px;
 }
 
 .menuItems {
@@ -149,9 +157,7 @@ li.mobile b {
         display: none;
     }
     
-    header img {
-        margin-left:20px;
-    }
+    
 }
 
 @media screen and (max-height:880px) {
@@ -163,5 +169,11 @@ li.mobile b {
     header img {
         max-width: 50px;
         max-height: 50px;
+    }
+}
+
+@media screen and (max-width: 1499px) {
+    .headerMain {
+        width:100%;
     }
 }

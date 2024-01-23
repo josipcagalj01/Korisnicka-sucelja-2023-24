@@ -1,5 +1,5 @@
 h1.HomePageLargeTitle {
-	font-size: 40px;
+	font-size: 55px;
 }
 
 .homePageMain {
@@ -67,7 +67,7 @@ h1.HomePageLargeTitle {
 .textContainerContainer {
 	height:80%;
 	margin-left: auto;
-	margin-right: 20px;
+	margin-right: calc( (100vw - 1500px) / 2 + 20px);
 	margin-top: auto;
 	margin-bottom: auto;
 	background-color:rgba(255, 255, 255, 0.85);
@@ -92,6 +92,12 @@ h2 {
 
 .imageAndLinkContainer a:hover {
 	text-decoration: underline;
+}
+
+@media screen and (max-width:1499px) {
+	.textContainerContainer {
+		margin-right: 20px;
+	}
 }
 
 @media screen and (max-width:434px) {

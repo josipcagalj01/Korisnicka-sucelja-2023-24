@@ -15,7 +15,7 @@
 }
 
 .aboutPageMain ul {
-    list-style:revert;
+    list-style:square;
     padding: revert;
 }
 

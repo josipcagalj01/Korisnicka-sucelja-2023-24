@@ -39,53 +39,55 @@ const Header = () => {
 	return (
 		<>
 			<header>
-				<ClickAwayListener onClickAway={handleClickAway}>
-					<div className='menuIconContainer mobile'>
-						<button onClick={() => setMenuIconClickedState(!menuIconClicked)} type='submit' className='MenuIcon mobile'>{!menuIconClicked ? '≡' : '×'}</button>
-						{menuIconClicked &&
-							<ul className="flex gap-8 DropdownMenu DropdownMenuLeft" onClick={()=>handleClickAway()}>
-								{Object.entries(pages).map(([name, path]) => (
-									<li key={name} className={`dropDownItem ${path.split('?')[0] === currentPath ? 'current' : ''}`}>
-										<Link href={path}>{name}</Link>
-									</li>))}
-							</ul>
-						}
-					</div>
-				</ClickAwayListener>
-				<Link href='/'><Image src={logo.src} alt="Logo" className="mr-2" width={56} height={60} /></Link>
-				<nav className="flex space-x-16 mx-2">
-					<ul className="flex gap-8 menuItems">
-						{Object.entries(pages).map(([name, path]) => (
-							<li key={name} className={`desktop ${path.split('?')[0] === currentPath ? 'current' : ''}`}>
-								<Link href={path}>{name}</Link>
-							</li>))}
-						{session?.status === 'loading' && <li><Image src={spinner.src} width={50} height={50} alt='ucitavanje' /> </li>}
-						{session?.status === 'authenticated' &&
-							<>
-								<li>
-									<ClickAwayListener onClickAway={handleClickAway2}>
-										<div>
-											<button type='submit' onClick={() => setUserNameClicked(!userNameClicked)} className='userNameButton'>
-												<b className='desktop'>{session.data?.user.name} {session.data?.user.surname}</b>
-												<b className='mobile'>{session.data?.user.name[0]} {session.data?.user.surname[0]}</b>
-											</button>
-											{userNameClicked &&
-												<ul className='DropdownMenu DropdownMenuRight' onClick={()=>handleClickAway2()}>
-													<li className='mobile dropDownItem'><b>{session.data?.user.name} {session.data?.user.surname}</b></li>
-													{Object.entries(loggedUserActions).map(([name, path]) => (
-														<li key={name} className={`dropDownItem ${path.split('?')[0] === currentPath ? 'current' : ''}`}>
-															<Link href={path}>{name}</Link>
-														</li>))}
-													<li className='dropDownItem'><Logout /></li>
-												</ul>}
-										</div>
-									</ClickAwayListener>
-								</li>
-							</>}
-						{session?.status === 'unauthenticated' && <li className={`${'/prijava' === currentPath ? 'current' : ''}`} key='prijava'><Link href='/prijava' >Prijava</Link></li>
-						}
-					</ul>
-				</nav>
+				<div className='headerMain'>
+					<ClickAwayListener onClickAway={handleClickAway}>
+						<div className='menuIconContainer mobile'>
+							<button onClick={() => setMenuIconClickedState(!menuIconClicked)} type='submit' className='MenuIcon mobile'>{!menuIconClicked ? '≡' : '×'}</button>
+							{menuIconClicked &&
+								<ul className="flex gap-8 DropdownMenu DropdownMenuLeft" onClick={()=>handleClickAway()}>
+									{Object.entries(pages).map(([name, path]) => (
+										<li key={name} className={`dropDownItem ${path.split('?')[0] === currentPath ? 'current' : ''}`}>
+											<Link href={path}>{name}</Link>
+										</li>))}
+								</ul>
+							}
+						</div>
+					</ClickAwayListener>
+					<Link href='/'><Image src={logo.src} alt="Logo" className="mr-2" width={56} height={60} /></Link>
+					<nav className="flex space-x-16 mx-2">
+						<ul className="flex gap-8 menuItems">
+							{Object.entries(pages).map(([name, path]) => (
+								<li key={name} className={`desktop ${path.split('?')[0] === currentPath ? 'current' : ''}`}>
+									<Link href={path}>{name}</Link>
+								</li>))}
+							{session?.status === 'loading' && <li><Image src={spinner.src} width={50} height={50} alt='ucitavanje' /> </li>}
+							{session?.status === 'authenticated' &&
+								<>
+									<li>
+										<ClickAwayListener onClickAway={handleClickAway2}>
+											<div>
+												<button type='submit' onClick={() => setUserNameClicked(!userNameClicked)} className='userNameButton'>
+													<b className='desktop'>{session.data?.user.name} {session.data?.user.surname}</b>
+													<b className='mobile'>{session.data?.user.name[0]} {session.data?.user.surname[0]}</b>
+												</button>
+												{userNameClicked &&
+													<ul className='DropdownMenu DropdownMenuRight' onClick={()=>handleClickAway2()}>
+														<li className='mobile dropDownItem'><b>{session.data?.user.name} {session.data?.user.surname}</b></li>
+														{Object.entries(loggedUserActions).map(([name, path]) => (
+															<li key={name} className={`dropDownItem ${path.split('?')[0] === currentPath ? 'current' : ''}`}>
+																<Link href={path}>{name}</Link>
+															</li>))}
+														<li className='dropDownItem'><Logout /></li>
+													</ul>}
+											</div>
+										</ClickAwayListener>
+									</li>
+								</>}
+							{session?.status === 'unauthenticated' && <li className={`${'/prijava' === currentPath ? 'current' : ''}`} key='prijava'><Link href='/prijava' >Prijava</Link></li>
+							}
+						</ul>
+					</nav>
+				</div>
 			</header>
 		</>
 	);

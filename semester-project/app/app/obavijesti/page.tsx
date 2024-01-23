@@ -38,14 +38,14 @@ async function Announcments({ searchParams }: { searchParams: Record<string, str
 				{_limit && _page && (
 					<div className="flex gap-4 pagesNavigation">
 						<BorderedLink href={{ pathname: `/obavijesti`, query: { _page: 1, _limit: pageSize, _category: _category?.toString()} }} className={`${page < 2 && 'disabled'} desktop`}>Prva</BorderedLink>
-						<BorderedLink href={{ pathname: `/obavijesti`, query: { _page: 1, _limit: pageSize, _category: _category?.toString()} }} className={`${page < 2 && 'disabled'} mobile`}>{`<<`}</BorderedLink>
+						<BorderedLink href={{ pathname: `/obavijesti`, query: { _page: 1, _limit: pageSize, _category: _category?.toString()} }} className={`${page < 2 && 'disabled'} mobile`}>{`«`}</BorderedLink>
 						<BorderedLink href={{ pathname: `/obavijesti`, query: { _page: page-1, _limit: pageSize, _category: _category?.toString()} }} className={`${page < 2 && 'disabled'} desktop`}>Prethodna</BorderedLink>
-						<BorderedLink href={{ pathname: `/obavijesti`, query: { _page: page-1, _limit: pageSize, _category: _category?.toString()} }} className={`${page < 2 && 'disabled'} mobile`}>{`<`}</BorderedLink>
-						<span> Stranica {page} od {totalPages} </span>
+						<BorderedLink href={{ pathname: `/obavijesti`, query: { _page: page-1, _limit: pageSize, _category: _category?.toString()} }} className={`${page < 2 && 'disabled'} mobile`}>{`‹`}</BorderedLink>
+						<span className='currentPageInfo'> Stranica <br className='mobile'/>{page} od {totalPages} </span>
 						<BorderedLink href={{ pathname: `/obavijesti`, query: { _page: page+1, _limit: pageSize, _category: _category?.toString()} }} className={`${(totalPages - page) < 1 && 'disabled'} desktop`}>Sljedeća</BorderedLink>
-						<BorderedLink href={{ pathname: `/obavijesti`, query: { _page: page+1, _limit: pageSize, _category: _category?.toString()} }} className={`${(totalPages - page) < 1 && 'disabled'} mobile`}>{`>`}</BorderedLink>
+						<BorderedLink href={{ pathname: `/obavijesti`, query: { _page: page+1, _limit: pageSize, _category: _category?.toString()} }} className={`${(totalPages - page) < 1 && 'disabled'} mobile`}>{`›`}</BorderedLink>
 						<BorderedLink href={{ pathname: `/obavijesti`, query: { _page: totalPages, _limit: pageSize, _category: _category?.toString()} }} className={`${(totalPages - page) < 1 && 'disabled'} desktop`}>Posljednja</BorderedLink>
-						<BorderedLink href={{ pathname: `/obavijesti`, query: { _page: totalPages, _limit: pageSize, _category: _category?.toString()} }} className={`${(totalPages - page) < 1 && 'disabled'} mobile`}>{`>>`}</BorderedLink>
+						<BorderedLink href={{ pathname: `/obavijesti`, query: { _page: totalPages, _limit: pageSize, _category: _category?.toString()} }} className={`${(totalPages - page) < 1 && 'disabled'} mobile`}>{`»`}</BorderedLink>
 					</div>)}
 			</main>
 		</>

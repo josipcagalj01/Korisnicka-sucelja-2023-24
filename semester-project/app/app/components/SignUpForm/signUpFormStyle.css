@@ -1,6 +1,6 @@
 form {
     max-width:calc(100% - 40px);
-    width: 300px;
+    width: 310px;
     margin: 20px;
 }
 
@@ -69,7 +69,7 @@ input {
     border: 1px solid lightblue;
     background-color: #6480ca;
     color: white;
-    height: 40px;
+    height: 45px;
 }
 
 .logInButton:hover, .signUpButton:hover {
@@ -77,22 +77,16 @@ input {
     color: #ffcc00;
 }
 
-.formContainer a{
-    border: 1px solid grey;
-    background-color: white;
-}
-
-.linkText {
-    margin: 5px;
-}
-
-.formContainer a:hover {
-    background-color: lightgray;
-}
-
 .registrationLinkContainer, .loginLinkContainer {
     margin: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+@media screen and (max-width:320px) {
+    .loginLinkContainer, .registrationLinkContainer {
+        flex-direction:column;
+        row-gap:10px;
+    }
 }

@@ -31,7 +31,7 @@
 main {
   max-width: 1300px;
   margin: auto;
-  margin-top: 50px;
+  margin-top: 40px;
   margin-bottom: 50px;
   z-index: -3;
 }
@@ -44,7 +44,7 @@ main {
 
 body {
   font-family: 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  font-size:11pt;
+  font-size:12pt;
   min-height: 100vh;
   position: relative;
 
@@ -63,13 +63,13 @@ h1, h2, h3 {
 }
 
 h1 {
-  font-size:24pt;
+  font-size:26pt;
 }
 
 h2 {
-  font-size: 18pt;
+  font-size: 22pt;
 }
 
 h3 {
-  font-size: 16pt;
+  font-size: 18pt;
 }
