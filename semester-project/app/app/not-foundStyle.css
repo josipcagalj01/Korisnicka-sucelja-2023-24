@@ -20,3 +20,8 @@
 .notFoundMessage h1, .notFoundMessage p {
     text-align: center;
 }
+
+.errorMain {
+    display:flex;
+    align-items:center;
+}

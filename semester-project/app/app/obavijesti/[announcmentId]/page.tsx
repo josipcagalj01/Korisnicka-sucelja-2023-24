@@ -25,11 +25,11 @@ export const generateMetadata = async ({ params }: {params: Params}) : Promise<M
 async function RenderAnnouncment(params:Params) {
   const id = parseInt(params.announcmentId)
   
-  if(Number.isNaN(id)) return (<Error404/>)
+  if(Number.isNaN(id)) return (<main className='errorMain'><Error404/></main>)
   else {
     const response = await getAnnouncment({ offset: 0, limit: 0, desiredId: id })
 	  if (response.count === 0) 
-    return (<Error404/>)
+    return (<main className='errorMain'><Error404/></main>)
 	  else if(response.count===-1) return <ErrorInfo message='Došlo je do greške pri učitavanju obavijesti'/>
 	  return (
 		  <main>
