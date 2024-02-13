@@ -6,6 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --max-main-width: 1320px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -29,17 +30,10 @@
 }
 
 main {
-  max-width: 1300px;
-  margin: auto;
-  margin-top: 40px;
-  margin-bottom: 50px;
-  z-index: -3;
-}
-
-@media screen and (max-width: 1299px) {
-	main {
-		max-width: 90%;
-	}
+  width: calc(100% - 40px);
+  max-width: 1320px;
+  margin: 40px auto 40px auto;
+  flex:1;
 }
 
 body {
@@ -47,7 +41,9 @@ body {
   font-size:12pt;
   min-height: 100vh;
   position: relative;
-
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
   /*color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -57,13 +53,13 @@ body {
     rgb(var(--background-start-rgb));*/
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4 {
   font-family: Georgia, 'Times New Roman', Times, serif;
   line-height: normal;
 }
 
 h1 {
-  font-size:26pt;
+  font-size:28pt;
 }
 
 h2 {
@@ -72,4 +68,15 @@ h2 {
 
 h3 {
   font-size: 18pt;
+}
+
+h4 {
+  font-size:14pt;
+}
+
+@media screen and (max-width:480px) {
+  body {
+    justify-content: flex-start;
+  }
+  
 }

@@ -1,3 +1,7 @@
+.responsiveContainer {
+    width:100%;
+}
+
 .notFoundMessage {
     display:flex;
     flex-direction: column;

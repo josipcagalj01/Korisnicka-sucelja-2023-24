@@ -18,7 +18,7 @@ var pages = {
 };
 
 var loggedUserActions = {
-	'Promjena lozinke' : '/promjena-lozinke'
+	'Postavke računa': '/moj-racun'
 }
 
 const Header = () => {
@@ -77,7 +77,7 @@ const Header = () => {
 															<li key={name} className={`dropDownItem ${path.split('?')[0] === currentPath ? 'current' : ''}`}>
 																<Link href={path}>{name}</Link>
 															</li>))}
-														<li className='dropDownItem'><Logout /></li>
+														<li className='dropDownItem'><Logout/></li>
 													</ul>}
 											</div>
 										</ClickAwayListener>

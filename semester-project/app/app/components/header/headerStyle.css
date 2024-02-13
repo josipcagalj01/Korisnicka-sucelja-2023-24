@@ -3,10 +3,12 @@
 }
 
 .headerMain {
-    width:1500px;
+    width:calc(100vw - 40px);
+    max-width: var(--max-main-width);
     margin:auto;
     display:flex;
     align-items:center;
+    position:relative;
 }
 
 header {
@@ -21,13 +23,11 @@ header nav {
 }
 
 header img {
-    max-height: 60px; 
-    max-width: 60px;
-    margin-left:20px;
+    max-height: 60px;
+    width:auto;
 }
 
 .menuItems {
-    margin-right:20px;
     position:relative;
     height: 76px;
     display:flex;
@@ -42,10 +42,6 @@ header img {
 .menuItems, .MenuIcon {
     color: white;
 }
-
-/*.dropDownItem, .menuItems {
-    
-}*/
 
 .dropDownItem {
     font-size:14pt;
@@ -109,7 +105,6 @@ li.mobile b {
 }
 
 .menuIconContainer {
-    margin-left:20px;
     height:76px;
     position:relative;
     width: 36px;
@@ -134,6 +129,9 @@ li.mobile b {
     .desktop {
         display:none;
     }
+    header img {
+        margin-left:20px;
+    }
 
     .userNameButton {
         font-size:11pt;
@@ -141,10 +139,6 @@ li.mobile b {
         width: 52px;
         border-radius: 100%;
         border: 2px solid white;
-    }
-
-    .userNameButton:hover {
-        border-color: #ffcc00;
     }
 
     .DropdownMenu {
@@ -162,18 +156,11 @@ li.mobile b {
 
 @media screen and (max-height:880px) {
 
-    .menuItems {
-        height: 74px;
+    .menuItems, .menuIconContainer {
+        height: 66px;
     }
 
     header img {
-        max-width: 50px;
         max-height: 50px;
-    }
-}
-
-@media screen and (max-width: 1499px) {
-    .headerMain {
-        width:100%;
     }
 }

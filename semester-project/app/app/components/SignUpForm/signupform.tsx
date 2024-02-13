@@ -9,7 +9,6 @@ import './signUpFormStyle.css'
 import { useState } from "react";
 import Loading from '../Loading/loading'
 import { useSession } from 'next-auth/react'
-import BorderedLink from '../BorderedLink/button'
 
 interface serverResponse {
   user: any,
@@ -102,11 +101,15 @@ const formSchema = z.object({
             <label htmlFor='confirmPassword'>Ponovo unesite lozinku</label>
             <input type='password' {...register('confirmPassword')}/>
             {errors.confirmPassword && <b className='formErrorMessage'>{errors.confirmPassword.message}</b>}
-            <button type='submit' onClick={()=>{signUpFailed && setIfSignUpFailed(false); signUpAttemptOccurred && setSignUpAttemptOccurred(false)}} className='signUpButton'>Registracija</button>
+            <div className='buttonContainer'>
+              <button type='submit' onClick={()=>{signUpFailed && setIfSignUpFailed(false); signUpAttemptOccurred && setSignUpAttemptOccurred(false)}} className='formSubmitButton'>Registracija</button>
+              <button type='reset' onClick={()=>reset()} className='resetButton'>Odustani</button>
+            </div>
+            
           </form>
           <div className='loginLinkContainer'>
             <p>Već imate korisnički račun?</p>
-            <BorderedLink href='/prijava'>Prijava</BorderedLink>
+            <Link href='/prijava'><b>Prijava</b></Link>
           </div>
         </div>
       </>

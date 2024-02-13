@@ -26,8 +26,10 @@ export const authOptions: NextAuthOptions = {
           async authorize(credentials) {
           	if(!credentials?.username || !credentials.password) return null
 
-            const existingUser = await db.user.findUnique( {where: {username: credentials?.username}})
-            if(!existingUser) return null
+            let existingUser = await db.user.findUnique( {where: {username: credentials?.username}})
+            if(!existingUser) 
+              existingUser = await db.user.findUnique( {where: {email: credentials?.username}})
+            if(!existingUser)  return null
 
             const passwordMatch = await compare(credentials.password, existingUser.password)
             if(!passwordMatch) return null

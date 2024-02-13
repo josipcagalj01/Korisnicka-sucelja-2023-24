@@ -18,9 +18,9 @@ async function RenderAboutPageContent() {
   return (
     <>
     {response.length ? 
-      <>
+      <article className='text'>
         {documentToReactComponents(response[0].abouttext2.json)}
-      </> :
+      </article> :
       <ErrorInfo message='Dogodila se greška pri učitavanju stranice.'/>}
     </>
   )

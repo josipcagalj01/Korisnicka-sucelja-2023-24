@@ -5,18 +5,21 @@ import SignInForm from '../components/SignInForm/signinform'
 import React from 'react'
 import {getSession} from '../../lib/getSession'
 import { redirect } from 'next/navigation'
-import AuthProvider from '../context/AuthProvider'
+
 export const metadata: Metadata = {
   title: 'Prijava',
   description: 'Stranica za prijavu u sustav eKaštela',
 }
 
-async function LoginPage() {
+async function LoginPage({ searchParams }: { searchParams: Record<string, string | string[] | undefined>; }) {
+
+	const {callbackUrl} = searchParams
+
 	const session = await getSession()
 	if (session) redirect('/')
 	return (
 		<>
-			<SignInForm/>
+			<SignInForm callbackUrl={callbackUrl?.toString()}/>
 		</>
 	);
 }

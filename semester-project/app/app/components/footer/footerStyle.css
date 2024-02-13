@@ -1,12 +1,11 @@
 footer {
-  position: sticky;
   background-color: #eeeeee;
   width:100%;
-  top:100vh;
 }
 
-.footerMain {
-  max-width:1500px;
+.footerMain, .CopyrightAndManofacturerInfo {
+  width:calc(100vw - 40px);
+  max-width: var(--max-main-width);
   margin:auto;
 }
 
@@ -46,8 +45,6 @@ footer h2 {
 }
 
 .CopyrightAndManofacturerInfo {
-  width:1500px;
-  margin:auto;
   display: flex;
   align-items: center;
   height: 45px;
@@ -55,8 +52,7 @@ footer h2 {
   }
   
 .CopyrightAndManofacturerInfo p {
-    margin-left: 20px;
-    margin-right: 20px;
+
     color: white;
     font-size:11pt;
 }
@@ -76,21 +72,13 @@ footer h2 {
   opacity: 0.6;
 }
 
-@media screen and (max-width: 1499px) {
-  .CopyrightAndManofacturerInfo {
-    width:100%;
-  }
-
-  .briefInfo {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-}
-
 @media screen and (max-width: 434px) {
   .briefInfo {
     flex-direction: column;
     row-gap: 20px;
+  }
+  .logo {
+    align-self: flex-start;
   }
 }
 

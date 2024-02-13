@@ -6,9 +6,8 @@ h1.HomePageLargeTitle {
 	margin-top:auto;
 }
 
-.generalInfoContainer, .landingBanner {
+.landingBanner {
 	display: flex;
-	column-gap: 30px;
 }
 
 .landingBanner {
@@ -21,6 +20,9 @@ h1.HomePageLargeTitle {
 }
 
 .generalInfoContainer {
+	display:grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	column-gap: 30px;
 	width:100%;
 }
 
@@ -53,26 +55,27 @@ h1.HomePageLargeTitle {
 }
 
 .textContainer {
+	height: 80%;
 	width: fit-content;
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	row-gap: 15px;
 	margin-bottom: 15px;
-}
-
-.textContainerContainer .textContainer {
-	margin: 20px;
+	
+	margin-left:auto;
+	padding:20px;
+	background-color:rgba(255, 255, 255, 0.85);
+	vertical-align: middle;
 }
 
 .textContainerContainer {
-	height:80%;
-	margin-left: auto;
-	margin-right: calc( (100vw - 1500px) / 2 + 20px);
-	margin-top: auto;
-	margin-bottom: auto;
-	background-color:rgba(255, 255, 255, 0.85);
-	display: flex;
+	display:flex;
 	align-items: center;
+	height:100%;
+	width: calc(100vw - 40px);
+	max-width: var(--max-main-width);
+	margin:auto;
 }
 
 h2 {
@@ -80,29 +83,21 @@ h2 {
 }
 
 .imageContainer {
+	background-color: white;
 	position:relative;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 	height:240px;
 	width:100%;
 }
 
 .imageAndLinkContainer {
-	width:30%;
-}
-
-.imageAndLinkContainer a:hover {
-	text-decoration: underline;
-}
-
-@media screen and (max-width:1499px) {
-	.textContainerContainer {
-		margin-right: 20px;
-	}
+	background-color: #eceaea;
+	padding:7px;
 }
 
 @media screen and (max-width:434px) {
 	.generalInfoContainer {
-		flex-direction: column;
+		grid-template-columns: 1fr;
 		row-gap:20px;
 	}
 }
@@ -120,7 +115,6 @@ h2 {
 		height: unset;
 		margin-right: auto;
 	}
-
 }
 
 @media screen and (max-height:880px) {
@@ -130,7 +124,7 @@ h2 {
 }
 
 @media screen and (max-height:480px) {
-	.textContainerContainer {
+	.textContainer {
 		height: auto;
 	}
 }

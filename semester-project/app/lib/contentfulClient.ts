@@ -9,11 +9,11 @@ export interface newsProps {
   
   interface NewstCollectionResponse {
     newsCollection: {
-      items: News[];
+      items: NewsCardData[];
     };
   }
   
-export interface News {
+export interface NewsCardData {
     sys: {
       id: string;
     };
@@ -21,21 +21,145 @@ export interface News {
     title: string,
     date:string,
     category:string,
-    body: string,
+    summary:string,
     image: {
       url:string,
       title:string
     }
 }
 
-export interface newsPackage {
-    count: number,
-    news: News[]
+interface fullAnnouncmentResponse {
+  newsCollection: {
+    items:fullAnnouncment[]
+  }
 }
 
+interface fullAnnouncment {
+  sys: {
+    id: string;
+  },
+  id: number,
+    title: string,
+    date:string,
+    category:string,
+    body:any,
+    image: {
+      url:string,
+      title:string
+    }
+}
 
+export interface fullAnnouncmentPackage {
+  count:number,
+  announcment:fullAnnouncment[]
+}
 
-export const getNews = async ({offset=0,limit=0,desiredId=undefined,category=undefined}:newsProps): Promise<newsPackage> => {
+export const getAnnouncment = async ({ offset = 0, limit = 0, desiredId = undefined, category = undefined }: newsProps): Promise<fullAnnouncmentPackage> => {
+	const query = `query newsCollectionQuery {
+    newsCollection (order:date_DESC ${offset > 0 ? `skip:${offset} ` : ""} ${limit > 0 ? `limit:${limit}` : ''} ${desiredId || category ? `where: {${desiredId ? `id:${desiredId}` : ''} ${category ? `category:"${category}"` : ''}}` : ''}) {
+      items {
+        sys {
+          id
+        }
+        id,
+        title,
+        date,
+        category,
+        body {json},
+        image {
+          url
+          title
+        }
+      }
+    }
+  }`
+
+	try {
+		const response = await fetch(BASE_URL, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${process.env.CONTENTFUL_ACCESS_TOKEN}`,
+			},
+			body: JSON.stringify({ query: query }),
+		});
+		if (response.ok) {
+			const body = (await response.json()) as {
+				data: fullAnnouncmentResponse;
+			};
+			const newsToPublish: fullAnnouncment[] = body.data.newsCollection.items.map((item) => ({
+				sys: { id: item.sys.id },
+				id: item.id,
+				title: item.title,
+				date: `${item.date.split('T')[0].split('-')[2]}.${item.date.split('T')[0].split('-')[1]}.${item.date.split('T')[0].split('-')[0]}.`,
+				category: item.category,
+				body: item.body,
+				image: item.image
+			}));
+			return { count: newsToPublish.length, announcment: newsToPublish };
+		}
+		else return { count: -1, announcment: [] }
+	} catch (error) {
+		console.log(error);
+		return { count: -1, announcment: [] }
+	}
+};
+
+interface fetchAnnouncmentTitleResponse {
+  newsCollection: {
+    items:announcmentTitleInfo[]
+  }
+}
+
+interface announcmentTitleInfo {
+    title: string
+}
+
+export interface fetchAnnouncmentTitlePackage {
+  count:number,
+  announcment:announcmentTitleInfo[]
+}
+
+export const getAnnouncmentTitle = async ({desiredId = undefined}: {desiredId:string | undefined}): Promise<fetchAnnouncmentTitlePackage> => {
+	const query = `query newsCollectionQuery {
+    newsCollection (where: id:${desiredId}) {
+      items {
+        title
+      }
+    }
+  }`
+
+	try {
+		const response = await fetch(BASE_URL, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${process.env.CONTENTFUL_ACCESS_TOKEN}`,
+			},
+			body: JSON.stringify({ query: query }),
+		});
+		if (response.ok) {
+			const body = (await response.json()) as {
+				data: fetchAnnouncmentTitleResponse;
+			};
+			const announcmentTitleDataToSend: announcmentTitleInfo[] = body.data.newsCollection.items.map((item) => ({
+				title: item.title,
+			}));
+			return { count: announcmentTitleDataToSend.length, announcment: announcmentTitleDataToSend };
+		}
+		else return { count: -1, announcment: [] }
+	} catch (error) {
+		console.log(error);
+		return { count: -1, announcment: [] }
+	}
+};
+
+export interface newsPackage {
+    count: number,
+    news: NewsCardData[]
+}
+
+export const getNewsCardsData = async ({offset=0,limit=0,desiredId=undefined,category=undefined}:newsProps): Promise<newsPackage> => {
   const query = `query newsCollectionQuery {
     newsCollection (order:date_DESC ${offset>0 ? `skip:${offset} ` : ""} ${limit>0 ? `limit:${limit}` : ''} ${desiredId || category ? `where: {${desiredId ? `id:${desiredId}`:''} ${category ? `category:"${category}"`:''}}` : ''}) {
       items {
@@ -46,7 +170,7 @@ export const getNews = async ({offset=0,limit=0,desiredId=undefined,category=und
         title,
         date,
         category,
-        body,
+        summary,
         image {
           url
           title
@@ -68,13 +192,13 @@ export const getNews = async ({offset=0,limit=0,desiredId=undefined,category=und
         const body = (await response.json()) as {
         data: NewstCollectionResponse;
         };
-        const newsToPublish: News[] = body.data.newsCollection.items.map((item) => ({
+        const newsToPublish: NewsCardData[] = body.data.newsCollection.items.map((item) => ({
           sys: {id: item.sys.id},
           id: item.id,
           title: item.title,
           date: `${item.date.split('T')[0].split('-')[2]}.${item.date.split('T')[0].split('-')[1]}.${item.date.split('T')[0].split('-')[0]}.`,
           category:item.category,
-          body: item.body,
+          summary: item.summary,
           image: item.image
         }));
         return {count: newsToPublish.length, news: newsToPublish};

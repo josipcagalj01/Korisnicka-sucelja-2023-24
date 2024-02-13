@@ -32,5 +32,4 @@ export async function  POST(req: Request) {
     }catch(error) {
         return NextResponse.json( {message: "Dogodila se greška!"}, {status: 500})
     }
-    
 }

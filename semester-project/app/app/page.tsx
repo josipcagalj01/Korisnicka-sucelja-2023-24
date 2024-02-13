@@ -32,7 +32,7 @@ export default function Home() {
 				<div className="HomePageAnnouncmentsBanner">
 					<h2>Najnovije obavijesti</h2>
 					<Suspense fallback={<Loading message='Učitavanje obavijesti' />}>
-						<News limit={4} offset={0} desiredId={undefined} />
+						<News limit={6} offset={0} className='mobile-no-summary'/>
 					</Suspense>
 					<BorderedLink href='/obavijesti?_page=1&_limit=10' className='marginLeftAuto displayBlock'>Sve obavijesti</BorderedLink>
 				</div>
@@ -43,13 +43,13 @@ export default function Home() {
 							<div className='imageContainer'>
 							<Image src={bilazgrada.src} fill={true} sizes='300px' quality={100}  style={{ objectFit: 'cover' }} alt='uvjetikoristenja' />
 							</div>
-							<Link href='/o-sustavu'> <h3>Uvjeti korištenja</h3> </Link>
+							<BorderedLink href='/o-sustavu'>Uvjeti korištenja</BorderedLink>
 						</div>
 						<div className='imageAndLinkContainer'>
 							<div className='imageContainer'>
 								<Image src={cloudservices.src} fill={true} sizes='300px' style={{ objectFit: 'cover' }} alt='uvjetikoristenja' />
 							</div>
-							<Link href='#'> <h3>Katalog usluga</h3> </Link>
+							<BorderedLink href='/katalog-usluga'>Katalog usluga</BorderedLink>
 						</div>
 					</div>
 				</div>
@@ -58,5 +58,3 @@ export default function Home() {
 		</>
 	);
 }
-
-/*body className={inter.className}*/

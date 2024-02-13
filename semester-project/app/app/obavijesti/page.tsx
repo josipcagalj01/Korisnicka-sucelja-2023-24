@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 //import { Inter } from 'next/font/google'
 //const inter = Inter({ subsets: ['latin'] })
-import { getSession } from '../../lib/getSession'
+import {Error404} from '../components/error/errorXYZ'
 import './[announcmentId]/newsPageStyle.css'
 import News from '../components/News/news'
 import { getTotalNewsCount } from '../../lib/contentfulClient'
@@ -23,6 +23,7 @@ async function Announcments({ searchParams }: { searchParams: Record<string, str
 	const category=_category?.toString()
 	const totalAnnouncments = await getTotalNewsCount({category})
 	const totalPages = Math.ceil(totalAnnouncments / pageSize);
+	if(page>totalPages || Number.isNaN(page) || Number.isNaN(pageSize)) return (<Error404/>)
 	return (
 		<>
 			<main>
@@ -33,7 +34,7 @@ async function Announcments({ searchParams }: { searchParams: Record<string, str
 					))}
 				</div>
 				<Suspense fallback={<Loading message='Učitavanje obavijesti ...' />}>
-					<News offset={pageSize * (page - 1)} limit={pageSize} desiredId={undefined} category={_category?.toString()}/>
+					<News offset={pageSize * (page - 1)} limit={pageSize} desiredId={undefined} category={_category?.toString()} className='mobile-no-thumbnail'/>
 				</Suspense>
 				{_limit && _page && (
 					<div className="flex gap-4 pagesNavigation">

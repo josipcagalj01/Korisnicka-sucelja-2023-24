@@ -1,0 +1,63 @@
+.accountPageMain {
+    display:flex;
+    align-items: center;
+}
+
+.accountPageContent {
+    max-width: calc(100% - 40px);
+    margin:auto;
+}
+
+.accountPageContent h1 {
+    margin-bottom: 30px;
+    width:fit-content;
+}
+
+.accountSettingsMenu {
+    display:flex;
+    column-gap:20px;
+    width:fit-content;
+    margin: auto;
+}
+
+.accountSettingsMenu > div {
+    padding:10px;
+    background-color: #eeeeee;
+}
+
+.accountSettingsMenu > div img {
+    margin:auto;
+    opacity: 0.6;
+}
+
+.accountSettingsMenu > div .borderedLink {
+    width:100%;
+}
+
+@media (hover:hover) {
+    .accountSettingsMenu button h3:hover {
+        text-decoration: underline;
+    }
+}
+
+@media screen and (max-width:434px) {
+    .accountPageMain {
+        display: initial;
+    }
+
+    .accountSettingsMenu {
+        flex-direction: column;
+        row-gap:20px;
+    }
+
+    .accountSettingsMenu > div {
+        display:flex;
+        column-gap:20px;
+        align-items: center;
+    }
+
+    .accountSettingsMenu > div img {
+        height: 50px;
+        width:50px;
+    }
+}

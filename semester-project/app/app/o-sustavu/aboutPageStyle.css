@@ -15,8 +15,19 @@
 }
 
 .aboutPageMain ul {
-    list-style:square;
     padding: revert;
+}
+
+.aboutPageMain li {
+    position:relative;
+}
+
+.aboutPageMain ul li::before {
+    position:absolute;
+    left:-20px;
+    vertical-align: middle;
+    content: "\25a0";
+    color:rgba(0,0,0,0.6);
 }
 
 .aboutPageMain * {
@@ -30,6 +41,11 @@
 	background-position: 0px 50px;
 	background-position-y: 50%;
 	height: 60vh;
+}
+
+.text {
+    max-width: 80ch;
+    margin:auto;
 }
 
 @media screen and (max-height:880px) {
