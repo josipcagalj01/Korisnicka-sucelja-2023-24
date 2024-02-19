@@ -22,7 +22,7 @@ header nav {
     margin-left:auto;
 }
 
-header img {
+.headerLogo {
     max-height: 60px;
     width:auto;
 }
@@ -39,7 +39,7 @@ header img {
     column-gap: 20px;
 }
 
-.menuItems, .MenuIcon {
+.menuItems {
     color: white;
 }
 
@@ -53,17 +53,17 @@ header img {
     }
 }
 
-
 .current a {
     text-decoration: underline;
 }
 
 .MenuIcon {
     height:100%;
-    font-size: 45px;
     display:none;
-    width:100%;
-    text-align: center;
+}
+
+.MenuIcon img {
+    filter:invert(1)
 }
 
 li.mobile b {
@@ -111,7 +111,7 @@ li.mobile b {
 }
 
 .DropdownMenu > li {
-    margin:15px;
+    margin:14px;
 }
 
 .DropdownMenu > li * {
@@ -129,7 +129,7 @@ li.mobile b {
     .desktop {
         display:none;
     }
-    header img {
+    .headerLogo {
         margin-left:20px;
     }
 
@@ -160,7 +160,7 @@ li.mobile b {
         height: 66px;
     }
 
-    header img {
+    .headerLogo {
         max-height: 50px;
     }
 }

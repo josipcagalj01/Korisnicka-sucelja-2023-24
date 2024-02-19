@@ -31,7 +31,7 @@ const ChangeUsernameForm = () => {
 	const [serverMessage, setServerMessage] = useState('')
 	const [attemptOccurred, setAttemptOccurred] = useState(false)
 	const [loading, isLoading] = useState(false)
-	const { register, handleSubmit, reset, formState: { errors } } = useForm<z.infer<typeof formSchema>>({ resolver: zodResolver(formSchema), defaultValues: { username: session2.data?.user.username, password: ''} })
+	const { register, handleSubmit, reset, formState: { errors } } = useForm<z.infer<typeof formSchema>>({ resolver: zodResolver(formSchema), defaultValues: { username: '', password: ''} })
 
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -81,8 +81,7 @@ const ChangeUsernameForm = () => {
                     </div>
                     <div className='otherFormOptions'>
                         <p>Tražite nešto drugo?</p>
-                        <Link href='/moj-racun/promjena-lozinke'>Promjeni lozinku</Link>
-                        <Link href='/moj-racun/promjena-e-poste'>Promjeni adresu e-pošte</Link>
+                        <Link href='/moj-racun'>Natrag na postavke računa</Link>
                     </div>
 					
 				</form>

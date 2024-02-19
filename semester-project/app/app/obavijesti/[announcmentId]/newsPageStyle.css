@@ -88,9 +88,10 @@
 }
 
 .announcmentContainer ul > li::before {
+  font-size:15px;
   position:absolute;
   left:-20px;
-  top:3px;
+  top:4px;
   content: "\25a0";
   color:rgba(0,0,0,0.6);
 }
@@ -120,7 +121,7 @@
     counter-increment: item;
     position:absolute;
     left:-20px;
-    top:4px;
+    top:3px;
 }
 
 .announcmentContainer a {

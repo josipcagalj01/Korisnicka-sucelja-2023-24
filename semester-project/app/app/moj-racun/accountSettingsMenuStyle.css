@@ -4,7 +4,6 @@
 }
 
 .accountPageContent {
-    max-width: calc(100% - 40px);
     margin:auto;
 }
 
@@ -15,22 +14,27 @@
 
 .accountSettingsMenu {
     display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap:20px;
     column-gap:20px;
     width:fit-content;
     margin: auto;
 }
 
-.accountSettingsMenu > div {
+.accountSettingsMenu > li {
     padding:10px;
     background-color: #eeeeee;
 }
 
-.accountSettingsMenu > div img {
+.accountSettingsMenu > li img {
+    height:200px;
+    width:auto;
     margin:auto;
     opacity: 0.6;
 }
 
-.accountSettingsMenu > div .borderedLink {
+.accountSettingsMenu > li .borderedLink {
     width:100%;
 }
 
@@ -40,7 +44,7 @@
     }
 }
 
-@media screen and (max-width:434px) {
+@media screen and (max-width:560px) {
     .accountPageMain {
         display: initial;
     }
@@ -50,13 +54,13 @@
         row-gap:20px;
     }
 
-    .accountSettingsMenu > div {
+    .accountSettingsMenu > li {
         display:flex;
         column-gap:20px;
         align-items: center;
     }
 
-    .accountSettingsMenu > div img {
+    .accountSettingsMenu > li img {
         height: 50px;
         width:50px;
     }

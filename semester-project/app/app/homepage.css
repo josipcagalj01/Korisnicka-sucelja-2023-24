@@ -91,8 +91,14 @@ h2 {
 }
 
 .imageAndLinkContainer {
-	background-color: #eceaea;
+	background-color: var(--grey-card-background);
 	padding:7px;
+}
+
+@media (hover:hover) {
+	.imageAndLinkContainer a:hover {
+		text-decoration: underline;
+	}
 }
 
 @media screen and (max-width:434px) {
@@ -101,7 +107,6 @@ h2 {
 		row-gap:20px;
 	}
 }
-
 
 @media screen and (max-width:1100px) {
 	.imageAndLinkContainer {

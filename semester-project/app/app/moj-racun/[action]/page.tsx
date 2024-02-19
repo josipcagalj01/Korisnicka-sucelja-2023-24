@@ -7,10 +7,11 @@ interface params {
     action:string
 }
 
-var actions = [
-    {parameter:'promjena-lozinke', text:'Promjena lozinke', formName:'changePasswordForm'},
-    {parameter:'promjena-korisnickog-imena', text:'Promjena korisničkog imena', formName:'changeUsernameForm'},
-    {parameter: 'promjena-e-poste', text:'Promjena adrese e-pošte', formName:'changeEmailForm'}
+export var actions = [
+    {parameter:'promjena-lozinke', text:'Promjeni lozinku', formName:'changePasswordForm', actionThumbnail:'/password.png'},
+    {parameter: 'promjena-e-poste', text:'Promjeni adresu e-pošte', formName:'changeEmailForm', actionThumbnail:'/big_mail_image.png'},
+    {parameter:'promjena-korisnickog-imena', text:'Promjeni korisničko ime', formName:'changeUsernameForm', actionThumbnail:'/pngwing.com.png'},
+    {parameter: 'brisanje-korisnickog-racuna', text:' Brisanje korisničkog računa', formName:'deleteAccountForm', actionThumbnail:'/trashcan.png'}
 ]
 
 export const generateMetadata = async ({ params }: {params: params}) : Promise<Metadata> => {

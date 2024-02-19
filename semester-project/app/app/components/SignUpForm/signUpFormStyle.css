@@ -43,12 +43,17 @@ input {
     border-radius: 3px;
 }
 
-.formErrorMessage, .formOkMessage {
+.formErrorMessage, .formOkMessage, .warningMessage {
     width: fit-content;
     max-width: 95%;
     margin-left: auto;
     margin-right:auto;
     text-align: center;
+}
+
+.warningMessage b {
+    display:inline;
+    color:red;
 }
 
 .formErrorMessage {
@@ -110,7 +115,7 @@ input {
         color: #ffcc00;
     }
     .resetButton:hover {
-        color: #ffcc00;
+        color: darkred;
         background-color: coral;
     }
 

@@ -18,11 +18,10 @@ interface serverResponse {
 }
 
 const formSchema = z.object({
-	email: z.string().min(1, 'Potrebno je upisati novu adresu e-pošte.').email('Neispravno upisana adresa-e pošte'),
 	password: z.string().min(1, 'Potrebno je unijeti lozinku')
 })
 
-const ChangeEmailForm = () => {
+const DeleteAccountForm = () => {
 
 	const session2=useSession()
 	const path = usePathname()
@@ -31,19 +30,18 @@ const ChangeEmailForm = () => {
 	const [serverMessage, setServerMessage] = useState('')
 	const [attemptOccurred, setAttemptOccurred] = useState(false)
 	const [loading, isLoading] = useState(false)
-	const { register, handleSubmit, reset, formState: { errors } } = useForm<z.infer<typeof formSchema>>({ resolver: zodResolver(formSchema), defaultValues: { email:'', password: ''} })
+	const { register, handleSubmit, reset, formState: { errors } } = useForm<z.infer<typeof formSchema>>({ resolver: zodResolver(formSchema), defaultValues: {password: ''} })
 
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		isLoading(true)
-		const response = await fetch('/api/changeemail', {
+		const response = await fetch('/api/deleteaccount', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
 				id: session2.data?.user.id,
-				email: values.email.toLowerCase(),
 				password: values.password
 			})
 		})
@@ -55,7 +53,7 @@ const ChangeEmailForm = () => {
 			signOut({ callbackUrl: '/prijava' })
 			setAttemptOccurred(true)
 		} else {
-			console.error('Nije moguće promijeniti adresu e-pošte')
+			console.error('Nije moguće ukloniti korisnički račun')
 			setAttemptFailed(true)
 			setAttemptOccurred(true)
 		}
@@ -65,19 +63,19 @@ const ChangeEmailForm = () => {
 		<>{session2.data ?
 			<div className='formContainer'>
 				<form onSubmit={handleSubmit(onSubmit)} className='signUpForm'>
-					<h3>Promjena adrese e-pošte</h3>
+					<h3>Promjena korisničkog imena</h3>
 					{loading && <Loading message='Sustav obrađuje Vaš zahtjev. Molim pričekajte ...' />}
 					{!attemptFailed && attemptOccurred && <Loading message={`${serverMessage} Pričekajte da Vas preusmjerimo na stranicu za prijavu`} color='green' bold={true} />}
 					{attemptFailed && <b className='formErrorMessage'>{serverMessage}</b>}
-					<label htmlFor='email'>Nova adresa e-pošte</label>
-					<input type='text' {...register('email')} />
-					{errors.email && <b className='formErrorMessage'>{errors.email.message}</b>}
 					<label htmlFor='password'>Lozinka</label>
 					<input type='password' {...register('password')} />
 					{errors.password && <b className='formErrorMessage'>{errors.password.message}</b>}
+                    <p className='warningMessage'>
+                        Odabirom gumba „Izbriši račun“ <b>NEPOVRATNO</b> ćete izbrisati svoj korisnički račun. Da biste nakon toga ponovo koristili sustav, morat ćete izraditi novi račun, tj. ponovo se registrirati.
+                    </p>
                     <div className='buttonContainer'>
-                        <button type='submit' onClick={() => { attemptFailed && setAttemptFailed(false); attemptOccurred && setAttemptOccurred(false) }} className='formSubmitButton'>Promijeni</button>
-                        <button type='reset' onClick={()=>reset()} className='resetButton'>Odustani</button>
+                        <button type='submit' onClick={() => { attemptFailed && setAttemptFailed(false); attemptOccurred && setAttemptOccurred(false) }} className='formSubmitButton'>Izbriši račun</button>
+                        <button type='reset' onClick={()=>{reset(); window.location.href='/moj-racun'}} className='resetButton'>Odustani</button>
                     </div>
                     <div className='otherFormOptions'>
                         <p>Tražite nešto drugo?</p>
@@ -90,4 +88,4 @@ const ChangeEmailForm = () => {
 		</>
 	);
 }
-export default ChangeEmailForm;
+export default DeleteAccountForm; 

@@ -85,8 +85,7 @@ const ChangePassordForm = () => {
                     </div>
                     <div className='otherFormOptions'>
                         <p>Tražite nešto drugo?</p>
-                        <Link href='/moj-racun/promjena-korisnickog-imena'>Promjeni korisničko ime</Link>
-                        <Link href='/moj-racun/promjena-e-poste'>Promjeni adresu e-pošte</Link>
+                        <Link href='/moj-racun'>Natrag na postavke računa</Link>
                     </div>
 				</form>
 			</div> :

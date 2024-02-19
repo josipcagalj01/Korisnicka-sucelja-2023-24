@@ -17,6 +17,18 @@ var pages = {
 	"Obavijesti": "/obavijesti?_page=1&_limit=10",
 };
 
+function CreateListOfLinks({className, currentPath}:{className:string, currentPath:string}) {
+	return(
+		<>
+			{Object.entries(pages).map(([name, path]) => (
+				<li key={name} className={`${className} ${(path===currentPath || currentPath.split('/')[1]!='' && path.includes(currentPath.split('/')[1])) ? 'current' : ''}`}>
+					<Link href={path}>{name}</Link>
+				</li>
+			))}
+		</>
+	)
+}
+
 var loggedUserActions = {
 	'Postavke računa': '/moj-racun'
 }
@@ -42,24 +54,20 @@ const Header = () => {
 				<div className='headerMain'>
 					<ClickAwayListener onClickAway={handleClickAway}>
 						<div className='menuIconContainer mobile'>
-							<button onClick={() => setMenuIconClickedState(!menuIconClicked)} type='submit' className='MenuIcon mobile'>{!menuIconClicked ? '≡' : '×'}</button>
+							<button onClick={() => setMenuIconClickedState(!menuIconClicked)} type='submit' className='MenuIcon mobile'>
+								<Image src={!menuIconClicked ? '/menuicon.png' : '/x-icon.png'} width={60} height={60} alt='icon' className='menuIcon'/>
+							</button>
 							{menuIconClicked &&
 								<ul className="flex gap-8 DropdownMenu DropdownMenuLeft" onClick={()=>handleClickAway()}>
-									{Object.entries(pages).map(([name, path]) => (
-										<li key={name} className={`dropDownItem ${path.split('?')[0] === currentPath ? 'current' : ''}`}>
-											<Link href={path}>{name}</Link>
-										</li>))}
+									<CreateListOfLinks className='dropDownItem' currentPath={currentPath}/>
 								</ul>
 							}
 						</div>
 					</ClickAwayListener>
-					<Link href='/'><Image src={logo.src} alt="Logo" className="mr-2" width={56} height={60} /></Link>
+					<Link href='/'><Image src={logo.src} alt="Logo" className="mr-2 headerLogo" width={56} height={60} /></Link>
 					<nav className="flex space-x-16 mx-2">
 						<ul className="flex gap-8 menuItems">
-							{Object.entries(pages).map(([name, path]) => (
-								<li key={name} className={`desktop ${path.split('?')[0] === currentPath ? 'current' : ''}`}>
-									<Link href={path}>{name}</Link>
-								</li>))}
+							<CreateListOfLinks className='desktop' currentPath={currentPath}/>
 							{session?.status === 'loading' && <li><Image src={spinner.src} width={50} height={50} alt='ucitavanje' /> </li>}
 							{session?.status === 'authenticated' &&
 								<>
