@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 //const inter = Inter({ subsets: ['latin'] })
 import { Suspense } from 'react';
 import Loading from '../components/Loading/loading'
-import ErrorInfo from '../components/errorinfo/errorinfo'
+import ErrorInfo from '../components/actionResultInfo/actionResultInfo'
 import {getAboutPageContent} from '../../lib/contentfulClient'
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import './aboutPageStyle.css'
