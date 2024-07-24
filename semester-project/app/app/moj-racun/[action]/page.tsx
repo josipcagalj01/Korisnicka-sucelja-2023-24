@@ -8,10 +8,10 @@ interface params {
 }
 
 export var actions = [
-    {parameter:'promjena-lozinke', text:'Promjeni lozinku', formName:'changePasswordForm', actionThumbnail:'/password.png'},
-    {parameter: 'promjena-e-poste', text:'Promjeni adresu e-pošte', formName:'changeEmailForm', actionThumbnail:'/big_mail_image.png'},
-    {parameter:'promjena-korisnickog-imena', text:'Promjeni korisničko ime', formName:'changeUsernameForm', actionThumbnail:'/pngwing.com.png'},
-    {parameter: 'brisanje-korisnickog-racuna', text:' Brisanje korisničkog računa', formName:'deleteAccountForm', actionThumbnail:'/trashcan.png'}
+    {text:'Promjeni lozinku', formName:'changePasswordForm', actionThumbnail:'/password.png'},
+    {text:'Promjeni adresu e-pošte', formName:'changeEmailForm', actionThumbnail:'/big_mail_image.png'},
+    {text:'Promjeni korisničko ime', formName:'changeUsernameForm', actionThumbnail:'/pngwing.com.png'},
+    {text:' Brisanje korisničkog računa', formName:'deleteAccountForm', actionThumbnail:'/trashcan.png'}
 ]
 
 export const generateMetadata = async ({ params }: {params: params}) : Promise<Metadata> => {
@@ -19,7 +19,7 @@ export const generateMetadata = async ({ params }: {params: params}) : Promise<M
     let title='Greška'
     actions.map(
         (item)=>{
-            if(params.action===item.parameter) {
+            if(params.action===item.text.toLowerCase().replaceAll(' ','-').replaceAll('č','c').replaceAll('š','s')) {
                 title=item.text
                 return
             }
@@ -32,11 +32,11 @@ export default function SwitchAction({params}:{params:params}) {
     let ComponentToRender:any = Error404
     actions.map(
         (item)=> {
-            if(item.parameter===params.action) {
+            if(item.text.toLowerCase().replaceAll(' ','-').replaceAll('č','c').replaceAll('š','s')===params.action) {
                 ComponentToRender=dynamic(()=>import(`../../components/${item.formName}`), {ssr:false, loading: ()=><Loading message="Učitavanje"/>})
                 return
             }
         }
     )
-    return (<ComponentToRender/>)
+    return (<main className="formMain"><ComponentToRender/></main>)
 }
