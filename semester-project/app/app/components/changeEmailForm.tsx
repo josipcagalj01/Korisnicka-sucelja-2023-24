@@ -6,10 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import './SignUpForm/signUpFormStyle.css'
 import { useState} from "react";
 import Loading from './Loading/loading'
-import { signOut } from 'next-auth/react'
-import { useSession } from 'next-auth/react';
-import { usePathname } from 'next/navigation';
-import {Error401} from './error/errorXYZ';
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link';
 
 interface serverResponse {
@@ -24,10 +21,9 @@ const formSchema = z.object({
 
 const ChangeEmailForm = () => {
 
-	const session2=useSession()
-	const path = usePathname()
+	const session=useSession()
 
-	const [attemptFailed, setAttemptFailed] = useState(false)
+	const [success, setSuccess] = useState(false)
 	const [serverMessage, setServerMessage] = useState('')
 	const [attemptOccurred, setAttemptOccurred] = useState(false)
 	const [loading, isLoading] = useState(false)
@@ -42,7 +38,7 @@ const ChangeEmailForm = () => {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				id: session2.data?.user.id,
+				id: session.data?.user.id,
 				email: values.email.toLowerCase(),
 				password: values.password
 			})
@@ -52,42 +48,38 @@ const ChangeEmailForm = () => {
 		isLoading(false)
 		setServerMessage(message.message)
 		if (response.ok) {
-			signOut({ callbackUrl: '/prijava' })
 			setAttemptOccurred(true)
+			setSuccess(true)
+			reset()
+			signOut({ callbackUrl: '/prijava' })
 		} else {
 			console.error('Nije moguće promijeniti adresu e-pošte')
-			setAttemptFailed(true)
 			setAttemptOccurred(true)
 		}
 	}
-	if(session2.status==='loading') return <Loading message='Učitavanje...'/>
-	return (
-		<>{session2.data ?
-			<div className='formContainer'>
-				<form onSubmit={handleSubmit(onSubmit)} className='signUpForm'>
-					<h3>Promjena adrese e-pošte</h3>
-					{loading && <Loading message='Sustav obrađuje Vaš zahtjev. Molim pričekajte ...' />}
-					{!attemptFailed && attemptOccurred && <Loading message={`${serverMessage} Pričekajte da Vas preusmjerimo na stranicu za prijavu`} color='green' bold={true} />}
-					{attemptFailed && <b className='formErrorMessage'>{serverMessage}</b>}
-					<label htmlFor='email'>Nova adresa e-pošte</label>
-					<input type='text' {...register('email')} />
-					{errors.email && <b className='formErrorMessage'>{errors.email.message}</b>}
-					<label htmlFor='password'>Lozinka</label>
-					<input type='password' {...register('password')} />
-					{errors.password && <b className='formErrorMessage'>{errors.password.message}</b>}
-                    <div className='buttonContainer'>
-                        <button type='submit' onClick={() => { attemptFailed && setAttemptFailed(false); attemptOccurred && setAttemptOccurred(false) }} className='formSubmitButton'>Promijeni</button>
-                        <button type='reset' onClick={()=>reset()} className='resetButton'>Odustani</button>
-                    </div>
-                    <div className='otherFormOptions'>
-                        <p>Tražite nešto drugo?</p>
-                        <Link href='/moj-racun'>Natrag na postavke računa</Link>
-                    </div>
-					
-				</form>
-			</div> :
-			<Error401 callbackUrl={path}/>}
-		</>
+	if(loading) return <Loading message='Sustav obrađuje Vaš zahtjev. Molim pričekajte ...'/>
+	else if(success) (<Loading message={`${serverMessage} Pričekajte da Vas preusmjerimo na stranicu za prijavu`} color='green' bold={true} />)
+	else return (
+		<div className='formContainer'>
+			<form onSubmit={handleSubmit(onSubmit)} className='signUpForm'>
+				<h3>Promjena adrese e-pošte</h3>
+				{!success && <b className='formErrorMessage'>{serverMessage}</b>}
+				<label htmlFor='email'>Nova adresa e-pošte</label>
+				<input type='text' {...register('email')} />
+				{errors.email && <b className='formErrorMessage'>{errors.email.message}</b>}
+				<label htmlFor='password'>Lozinka</label>
+				<input type='password' {...register('password')} />
+				{errors.password && <b className='formErrorMessage'>{errors.password.message}</b>}
+				<div className='buttonContainer'>
+					<button type='submit' onClick={() => { attemptOccurred && setAttemptOccurred(false)}} className='formSubmitButton'>Promijeni</button>
+					<button type='reset' onClick={() => reset()} className='resetButton'>Odustani</button>
+				</div>
+				<div className='otherFormOptions'>
+					<p>Tražite nešto drugo?</p>
+					<Link href='/moj-racun'>Natrag na postavke računa</Link>
+				</div>
+			</form>
+		</div>
 	);
 }
 export default ChangeEmailForm;
