@@ -5,7 +5,7 @@ const nextConfig = {
             'lh3.googleusercontent.com',
             'zelenoimodro.hr',
             'www.kastela.hr',
-            'images.ctfassets.net'
+            'images.ctfassets.net',
         ]
     }
 }
