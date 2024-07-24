@@ -51,7 +51,7 @@ const SignInForm = ({callbackUrl}:{callbackUrl?:string}) => {
 		<div className='formContainer'>
 			<form onSubmit={handleSubmit(onSubmit)} className='w-full signInForm'>
 				<h3>Prijava</h3>
-				{!loginSuccess && <b className='formErrorMessage'>{errorMessage}</b>}
+				{!loginSuccess && loginAttemptOccurred && <b className='formErrorMessage'>{errorMessage}</b>}
 				<label htmlFor='username'>Korisničko ime ili adresa e-pošte</label>
 				<input type='text' {...register('username')} />
 				{errors.username && <b className='formErrorMessage'>{errors.username.message}</b>}
