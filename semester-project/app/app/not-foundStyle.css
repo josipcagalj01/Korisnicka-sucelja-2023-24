@@ -1,4 +1,6 @@
 .responsiveContainer {
+    position:sticky;
+    top:100%;
     width:100%;
 }
 
@@ -20,9 +22,4 @@
 .errorInfo h1, .errorInfo p {
     text-align: center;
     max-width:80ch;
-}
-
-.errorMain {
-    display:flex;
-    align-items:center;
 }

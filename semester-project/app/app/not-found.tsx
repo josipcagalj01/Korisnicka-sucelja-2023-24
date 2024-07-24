@@ -1,7 +1,5 @@
-import {getSession} from '../lib/getSession'
-import BorderedLink from './components/BorderedLink/button'
+import { Error404 } from './components/error/errorXYZ'
 import type {Metadata} from 'next'
-import './not-foundStyle.css'
 
 export const metadata: Metadata = {
 	title: 'Stranicu nije moguće pronaći',
@@ -11,15 +9,7 @@ export const metadata: Metadata = {
 export default async function NotFound() {
 	return (
 		<main className='errorMain'>
-			<div className='responsiveContainer'>
-			<div className='notFoundMessage'>
-				<h1 className='errorCode'>404</h1>
-				<h1>Greška</h1>
-				<p>Stranicu koju ste namjeravali posjetiti nije moguće pronaći. Možda je uklonjena ili premještena.</p>
-				<BorderedLink href='/' className='A'>Povratak na naslovnicu</BorderedLink>
-			</div>
-		</div>
+			<Error404 />
 		</main>
-		
 	)
 }
