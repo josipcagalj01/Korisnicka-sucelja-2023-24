@@ -40,7 +40,7 @@ export function Error404() {
 				<h1 className='errorCode'>404</h1>
 				<h1>Greška</h1>
 				<p>Stranicu koju ste namjeravali posjetiti nije moguće pronaći. Možda je uklonjena ili premještena.</p>
-				<BorderedLink href='/' className='A'>Povratak na početnu stranicu</BorderedLink>
+				<BorderedLink href='/' className='A'>Povratak na naslovnicu</BorderedLink>
 			</div>
 		</div>
 	)
