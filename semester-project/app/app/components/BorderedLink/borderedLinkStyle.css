@@ -17,7 +17,7 @@
 }
 
 @media (hover:hover) {
-	.borderedLink:hover {
+	.borderedLink:hover, .borderedButton:hover {
     	background-color: lightgray;
 		color:black;
 	}
