@@ -4,14 +4,13 @@ import AccountSettingsMenu from '../components/accountSettingsMenu';
 import './accountSettingsMenuStyle.css'
 
 export const metadata: Metadata = {
-	title: 'Moj račun',
-	description: 'Promjena postavki korisničkog računa',
+	title: 'Moja stranica',
+	description: 'Strania s osnovnim korisničkim akcijama',
 }
 
-function ManageMyAccount() {
-
+async function ManageMyAccount() {
 	return (
-    <main className='accountPageMain'>
+    <main className='accountPageMain formMain'>
 			<AccountSettingsWrapper>
         <AccountSettingsMenu/>
       </AccountSettingsWrapper>

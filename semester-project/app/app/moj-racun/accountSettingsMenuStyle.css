@@ -1,14 +1,13 @@
-.accountPageMain {
-    display:flex;
-    align-items: center;
+.accountPageMain h1 {
+    margin-bottom:20px;
 }
 
 .accountPageContent {
     margin:auto;
 }
 
-.accountPageContent h1 {
-    margin-bottom: 30px;
+.accountPageContent h2 {
+    margin-bottom: 20px;
     width:fit-content;
 }
 
@@ -45,10 +44,6 @@
 }
 
 @media screen and (max-width:560px) {
-    .accountPageMain {
-        display: initial;
-    }
-
     .accountSettingsMenu {
         flex-direction: column;
         row-gap:20px;
