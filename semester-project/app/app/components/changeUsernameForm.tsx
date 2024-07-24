@@ -1,15 +1,11 @@
 'use client'
 import * as z from 'zod'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
 import './SignUpForm/signUpFormStyle.css'
-import { useState} from "react";
 import Loading from './Loading/loading'
-import { signOut } from 'next-auth/react'
-import { useSession } from 'next-auth/react';
-import { usePathname } from 'next/navigation';
-import {Error401} from './error/errorXYZ';
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link';
 
 interface serverResponse {
@@ -24,10 +20,9 @@ const formSchema = z.object({
 
 const ChangeUsernameForm = () => {
 
-	const session2=useSession()
-	const path = usePathname()
+	const session=useSession()
 
-	const [attemptFailed, setAttemptFailed] = useState(false)
+	const [success, setSuccess] = useState(false)
 	const [serverMessage, setServerMessage] = useState('')
 	const [attemptOccurred, setAttemptOccurred] = useState(false)
 	const [loading, isLoading] = useState(false)
@@ -42,52 +37,47 @@ const ChangeUsernameForm = () => {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				id: session2.data?.user.id,
+				id: session.data?.user.id,
 				username: values.username.toLowerCase(),
 				password: values.password
 			})
 		})
-		reset()
 		const message: serverResponse = (await response.json())
 		isLoading(false)
 		setServerMessage(message.message)
 		if (response.ok) {
-			signOut({ callbackUrl: '/prijava' })
+			setSuccess(true)
 			setAttemptOccurred(true)
+			reset()
+			signOut({ callbackUrl: '/prijava' })
 		} else {
 			console.error('Nije moguće promijeniti koorisničko ime')
-			setAttemptFailed(true)
 			setAttemptOccurred(true)
 		}
 	}
-	if(session2.status==='loading') return <Loading message='Učitavanje...'/>
-	return (
-		<>{session2.data ?
+	if(loading) return <Loading message='Sustav obrađuje Vaš zahtjev. Molim pričekajte ...' />
+	else if(success) <Loading message={`${serverMessage} Pričekajte da Vas preusmjerimo na stranicu za prijavu`} color='green' bold={true} />
+	else return (
 			<div className='formContainer'>
 				<form onSubmit={handleSubmit(onSubmit)} className='signUpForm'>
 					<h3>Promjena korisničkog imena</h3>
-					{loading && <Loading message='Sustav obrađuje Vaš zahtjev. Molim pričekajte ...' />}
-					{!attemptFailed && attemptOccurred && <Loading message={`${serverMessage} Pričekajte da Vas preusmjerimo na stranicu za prijavu`} color='green' bold={true} />}
-					{attemptFailed && <b className='formErrorMessage'>{serverMessage}</b>}
+					{!success && attemptOccurred && <b className='formErrorMessage'>{serverMessage}</b>}
 					<label htmlFor='username'>Novo korisničko ime</label>
 					<input type='text' {...register('username')} />
 					{errors.username && <b className='formErrorMessage'>{errors.username.message}</b>}
 					<label htmlFor='password'>Lozinka</label>
 					<input type='password' {...register('password')} />
 					{errors.password && <b className='formErrorMessage'>{errors.password.message}</b>}
-                    <div className='buttonContainer'>
-                        <button type='submit' onClick={() => { attemptFailed && setAttemptFailed(false); attemptOccurred && setAttemptOccurred(false) }} className='formSubmitButton'>Promijeni</button>
-                        <button type='reset' onClick={()=>reset()} className='resetButton'>Odustani</button>
-                    </div>
-                    <div className='otherFormOptions'>
-                        <p>Tražite nešto drugo?</p>
-                        <Link href='/moj-racun'>Natrag na postavke računa</Link>
-                    </div>
-					
+					<div className='buttonContainer'>
+						<button type='submit' onClick={() => {attemptOccurred && setAttemptOccurred(false) }} className='formSubmitButton'>Promijeni</button>
+						<button type='reset' onClick={()=>reset()} className='resetButton'>Odustani</button>
+					</div>
+					<div className='otherFormOptions'>
+						<p>Tražite nešto drugo?</p>
+						<Link href='/moj-racun'>Natrag na postavke računa</Link>
+					</div>
 				</form>
-			</div> :
-			<Error401 callbackUrl={path}/>}
-		</>
+			</div>
 	);
 }
 export default ChangeUsernameForm; 
