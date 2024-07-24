@@ -1,3 +1,12 @@
+.formMain {
+    min-height:calc(45vh - 74px);
+}
+
+.formMain > div {
+    position:sticky;
+    top:100%;
+}
+
 form {
     margin: 20px;
 }
@@ -14,13 +23,10 @@ form * {
     width:calc(100% - 40px);
     margin-left:auto;
     margin-right:auto;
-    margin-top: 40px;
-    margin-bottom: 40px;
     border: 1px solid gray;
     border-radius: 3px;
     background-color: #eeeeee;
     max-width:350px;
-    align-self: center;
 }
 
 @media screen and (max-width: 320px) {
@@ -33,7 +39,7 @@ label {
     margin-bottom: 5px;
 }
 
-input, .formErrorMessage {
+.formContainer input, .formErrorMessage {
     margin-bottom: 10px;
 }
 
@@ -43,7 +49,7 @@ input {
     border-radius: 3px;
 }
 
-.formErrorMessage, .formOkMessage, .warningMessage {
+.formContainer .formErrorMessage, .formContainer .formOkMessage, .formContainer .warningMessage {
     width: fit-content;
     max-width: 95%;
     margin-left: auto;
@@ -51,7 +57,7 @@ input {
     text-align: center;
 }
 
-.warningMessage b {
+.formContainer .warningMessage b {
     display:inline;
     color:red;
 }
@@ -66,12 +72,6 @@ input {
 
 .formSubmitButton, input, .resetButton {
     width: 100%;
-}
-
-.resetButton {
-    background-color:lightcoral;
-    color:white;
-    border: 1px solid gray;
 }
 
 .otherFormOptions a {
@@ -98,6 +98,11 @@ input {
     width:100%;
 }
 
+.resetButton {
+    background-color:lightcoral;
+    color:white;
+    border: 1px solid gray;
+}
 .formSubmitButton {
     border: 1px solid lightblue;
     background-color: #6480ca;
@@ -130,6 +135,12 @@ input {
 
 .registrationLinkContainer, .loginLinkContainer {
     margin: 20px;
+}
+
+@media screen and (max-width:480px) {
+    .formMain .loadingSpinnerContainer {
+        top:0;
+    }
 }
 
 @media screen and (max-width:376px) {
