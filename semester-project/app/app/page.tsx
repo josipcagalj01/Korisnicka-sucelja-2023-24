@@ -40,15 +40,15 @@ export default function Home() {
 					<h2>Opće informacije</h2>
 					<div className='generalInfoContainer'>
 						<div className='imageAndLinkContainer'>
-							<div className='imageContainer'>
-							<Image src={bilazgrada.src} fill={true} sizes='300px' quality={100}  style={{ objectFit: 'cover' }} alt='uvjetikoristenja' />
-							</div>
+							<figure className='imageContainer'>
+								<Image src={bilazgrada.src} fill={true} sizes='300px' quality={100}  style={{ objectFit: 'cover' }} alt='uvjetikoristenja' />
+							</figure>
 							<Link href='/o-sustavu'><h3>Uvjeti korištenja</h3></Link>
 						</div>
 						<div className='imageAndLinkContainer'>
-							<div className='imageContainer'>
+							<figure className='imageContainer'>
 								<Image src={cloudservices.src} fill={true} sizes='300px' style={{ objectFit: 'cover' }} alt='uvjetikoristenja' />
-							</div>
+							</figure>
 							<Link href='/o-sustavu/katalog-usluga'><h3>Katalog usluga</h3></Link>
 						</div>
 					</div>

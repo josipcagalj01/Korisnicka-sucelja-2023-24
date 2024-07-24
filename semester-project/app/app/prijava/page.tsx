@@ -18,9 +18,9 @@ async function LoginPage({ searchParams }: { searchParams: Record<string, string
 	const session = await getSession()
 	if (session) redirect('/')
 	return (
-		<>
+		<main className='formMain'>
 			<SignInForm callbackUrl={callbackUrl?.toString()}/>
-		</>
+		</main>
 	);
 }
 

@@ -15,9 +15,9 @@ async function SignUpPage() {
 	const session = await getSession()
 	if (session) redirect('/')
 	return (
-		<>
+		<main className='formMain'>
 			<SignUpForm />
-		</>
+		</main>
 	);
 }
 
