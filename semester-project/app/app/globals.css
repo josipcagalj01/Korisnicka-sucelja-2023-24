@@ -18,33 +18,21 @@
   }
 }
 
-@font-face {
-  font-family: 'Lucida Grande';
-  src: url('../public/fonts/LucidaGrande.ttf') format('truetype');
-  font-weight: normal;
-}
-
-@font-face {
-  font-family: 'Georgia';
-  src: url('../public/fonts/georgia.ttf') format('truetype');
-  font-weight: normal;
-}
-
 main {
+  position:relative;
   width: calc(100% - 40px);
   max-width: var(--max-main-width);
   margin: 40px auto 40px auto;
-  flex:1;
+}
+
+.displayNone {
+  display:none;
 }
 
 body {
-  font-family: 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  font-size:12pt;
+  font: 15px / 22px "Lucida Sans Unicode", "Lucida Grande", Geneva, Verdana, sans-serif;
   min-height: 100vh;
   position: relative;
-  display:flex;
-  flex-direction: column;
-  justify-content: space-between;
   /*color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -54,30 +42,27 @@ body {
     rgb(var(--background-start-rgb));*/
 }
 
+._80ch {
+  max-width:80ch;
+}
+
 h1, h2, h3, h4 {
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: "Georgia", Times New Roman, Times, serif;
   line-height: normal;
 }
 
 h1 {
-  font-size:28pt;
+  font-size:26pt;
 }
 
 h2 {
-  font-size: 22pt;
+  font-size: 20pt;
 }
 
 h3 {
-  font-size: 18pt;
+  font-size: 16pt;
 }
 
 h4 {
   font-size:14pt;
-}
-
-@media screen and (max-width:480px) {
-  body {
-    justify-content: flex-start;
-  }
-  
 }
