@@ -56,28 +56,28 @@ const ChangeUsernameForm = () => {
 		}
 	}
 	if(loading) return <Loading message='Sustav obrađuje Vaš zahtjev. Molim pričekajte ...' />
-	else if(success) <Loading message={`${serverMessage} Pričekajte da Vas preusmjerimo na stranicu za prijavu`} color='green' bold={true} />
+	else if(success) return <Loading message={`${serverMessage} Pričekajte da Vas preusmjerimo na stranicu za prijavu`} color='green' bold={true} />
 	else return (
-			<div className='formContainer'>
-				<form onSubmit={handleSubmit(onSubmit)} className='signUpForm'>
-					<h3>Promjena korisničkog imena</h3>
-					{!success && attemptOccurred && <b className='formErrorMessage'>{serverMessage}</b>}
-					<label htmlFor='username'>Novo korisničko ime</label>
-					<input type='text' {...register('username')} />
-					{errors.username && <b className='formErrorMessage'>{errors.username.message}</b>}
-					<label htmlFor='password'>Lozinka</label>
-					<input type='password' {...register('password')} />
-					{errors.password && <b className='formErrorMessage'>{errors.password.message}</b>}
-					<div className='buttonContainer'>
-						<button type='submit' onClick={() => {attemptOccurred && setAttemptOccurred(false) }} className='formSubmitButton'>Promijeni</button>
-						<button type='reset' onClick={()=>reset()} className='resetButton'>Odustani</button>
-					</div>
-					<div className='otherFormOptions'>
-						<p>Tražite nešto drugo?</p>
-						<Link href='/moj-racun'>Natrag na postavke računa</Link>
-					</div>
-				</form>
-			</div>
+		<div className='formContainer'>
+			<form onSubmit={handleSubmit(onSubmit)} className='signUpForm'>
+				<h3>Promjena korisničkog imena</h3>
+				{!success && attemptOccurred && <b className='formErrorMessage'>{serverMessage}</b>}
+				<label htmlFor='username'>Novo korisničko ime</label>
+				<input type='text' {...register('username')} />
+				{errors.username && <b className='formErrorMessage'>{errors.username.message}</b>}
+				<label htmlFor='password'>Lozinka</label>
+				<input type='password' {...register('password')} />
+				{errors.password && <b className='formErrorMessage'>{errors.password.message}</b>}
+				<div className='buttonContainer'>
+					<button type='submit' onClick={() => { attemptOccurred && setAttemptOccurred(false) }} className='formSubmitButton'>Promijeni</button>
+					<button type='reset' onClick={() => reset()} className='resetButton'>Odustani</button>
+				</div>
+				<div className='otherFormOptions'>
+					<p>Tražite nešto drugo?</p>
+					<Link href='/moj-racun'>Natrag na postavke računa</Link>
+				</div>
+			</form>
+		</div>
 	);
 }
 export default ChangeUsernameForm; 

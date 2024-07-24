@@ -56,9 +56,10 @@ const DeleteAccountForm = () => {
 			setAttemptOccurred(true)
 		}
 	}
+
 	if(loading) return <Loading message='Sustav obrađuje Vaš zahtjev. Molim pričekajte ...' />
-	else if(success) <Loading message={`${serverMessage} Pričekajte da Vas preusmjerimo na stranicu za prijavu`} color='green' bold={true} />
-	return (
+	else if(success) return <Loading message={`${serverMessage} Pričekajte da Vas preusmjerimo na stranicu za prijavu`} color='green' bold={true} />
+	else return (
 		<div className='formContainer'>
 			<form onSubmit={handleSubmit(onSubmit)} className='signUpForm'>
 				<h3>Brisanje korisničkog računa</h3>
