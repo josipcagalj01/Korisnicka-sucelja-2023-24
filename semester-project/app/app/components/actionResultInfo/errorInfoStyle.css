@@ -1,0 +1,11 @@
+.actionResultInfoContainer, .actionResultInfoImage, .actionResultInfoMessage {
+    margin: auto;
+}
+
+.actionResultInfoContainer, .actionResultInfoMessage {
+    width:fit-content;
+}
+
+.actionResultInfoMessage {
+    margin-top:20px;
+}
