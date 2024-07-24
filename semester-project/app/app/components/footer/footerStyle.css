@@ -1,92 +1,99 @@
 footer {
-  background-color: #eeeeee;
-  width:100%;
+	position: sticky;
+	top: 100vh;
+	background-color: #eeeeee;
+	width: 100%;
 }
 
-.footerMain, .CopyrightAndManofacturerInfo {
-  width:calc(100vw - 40px);
-  max-width: var(--max-main-width);
-  margin:auto;
+.footerMain,
+.CopyrightAndManofacturerInfo {
+	width: calc(100vw - 40px);
+	max-width: var(--max-main-width);
+	margin: auto;
 }
 
-footer a:hover, footer button:hover {
-  text-decoration: underline;
+footer a:hover,
+footer button:hover {
+	text-decoration: underline;
 }
 
 .briefInfo {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 100%;
-    padding-top: 25px;
-    padding-bottom: 25px;
-  }
-  .briefinfo div {
-    width: fit-content;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 100%;
+	padding-top: 25px;
+	padding-bottom: 25px;
+}
+
+.briefinfo div {
+	width: fit-content;
 }
 
 footer h2 {
-  margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
-.briefinfo div ul {
-    display: flex;
-    flex-direction: column;
+.footer-ul {
+	display: flex;
+	flex-direction: column;
+	width: max-content;
 }
 
-.briefInfo li:not(:last-child) { 
-  margin-bottom: 3px;  
+.briefInfo li:not(:last-child) {
+	margin-bottom: 3px;
 }
 
 .CopyrightAndManofacturerInfoContainer {
-  background-color: #212427;
-  width:100%;
-  
+	background-color: #101720;
+	width: 100%;
+
 }
 
 .CopyrightAndManofacturerInfo {
-  display: flex;
-  align-items: center;
-  height: 45px;
-    
-  }
-  
+	display: flex;
+	align-items: center;
+	height: 45px;
+
+}
+
 .CopyrightAndManofacturerInfo p {
 
-    color: white;
-    font-size:11pt;
+	color: white;
+	font-size: 11pt;
 }
-  
+
 .logo {
-    align-self: center;
-    background-color: white;
-} 
+	align-self: center;
+	background-color: white;
+}
 
 .IconAndTextContainer {
-  display: flex;
-  column-gap: 10px;
-  align-items: center;
+	display: flex;
+	column-gap: 10px;
+	align-items: center;
 }
 
 .footerIcon {
-  opacity: 0.6;
+	opacity: 0.6;
 }
 
 @media screen and (max-width: 434px) {
-  .briefInfo {
-    flex-direction: column;
-    row-gap: 20px;
-  }
-  .logo {
-    align-self: flex-start;
-  }
+	.briefInfo {
+		flex-direction: column;
+		row-gap: 20px;
+	}
+
+	.logo {
+		align-self: flex-start;
+	}
 }
 
 @media screen and (min-width: 435px) and (max-width: 670px) {
-    .briefInfo {
-      display:grid;
-      grid-template-columns: auto auto;
-      justify-content: space-around;
-      row-gap: 20px;
-    }
-  }
+	.briefInfo {
+		display: grid;
+		grid-template-columns: auto auto;
+		justify-content: space-around;
+		row-gap: 20px;
+	}
+}
