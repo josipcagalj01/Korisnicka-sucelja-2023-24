@@ -1,6 +1,8 @@
 .loadingMessage {
     width: fit-content;
+    max-width:80ch;
     text-align: center;
+    margin-top:10px;
     margin-bottom: 10px;
 }
 
