@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default async function NotFound() {
 	return (
-		<main className='errorMain'>
+		<main>
 			<Error404 />
 		</main>
 	)
