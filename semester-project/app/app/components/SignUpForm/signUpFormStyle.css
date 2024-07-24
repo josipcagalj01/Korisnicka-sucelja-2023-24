@@ -1,7 +1,3 @@
-.formMain {
-    min-height:calc(45vh - 74px);
-}
-
 .formMain > div {
     position:sticky;
     top:100%;
