@@ -5,32 +5,44 @@ import Link from 'next/link'
 import * as React from 'react';
 import './headerStyle.css';
 import logo from 'public/logo.png'
-import Logout from '../Logout/logout'
+import Logout from '../log-in-or-out/logout'
 import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react';
 import spinner from 'public/spinner.gif'
 import Image from 'next/image';
 
-var pages = {
-	Početna: "/",
-	"O sustavu": "/o-sustavu",
-	"Obavijesti": "/obavijesti?_page=1&_limit=10",
-};
-
-function CreateListOfLinks({className, currentPath}:{className:string, currentPath:string}) {
-	return(
-		<>
-			{Object.entries(pages).map(([name, path]) => (
-				<li key={name} className={`${className} ${(path===currentPath || currentPath.split('/')[1]!='' && path.includes(currentPath.split('/')[1])) ? 'current' : ''}`}>
-					<Link href={path}>{name}</Link>
-				</li>
-			))}
-		</>
-	)
+interface pages {
+	name: string,
+	path:string,
+	loginRequired:boolean
 }
 
+var pages:pages[]= [
+	{
+		name:'Početna',
+		path: '/',
+		loginRequired: false
+	},
+	{
+		name: 'O sustavu',
+		path:'/o-sustavu',
+		loginRequired:false
+	},
+	{
+		name:'Obavijesti',
+		path: '/obavijesti?_page=1&_limit=10',
+		loginRequired: false
+	},
+	{
+		name:'Usluge',
+		path:'/usluge?_page=1&_limit=10',
+		loginRequired:false
+	}
+]
+
+
 var loggedUserActions = {
-	'Postavke računa': '/moj-racun'
+	'Moja stranica': '/moj-racun'
 }
 
 const Header = () => {
@@ -48,6 +60,20 @@ const Header = () => {
 	}
 
 	const currentPath = usePathname()
+
+	function CreateListOfLinks({className}:{className:string}) {
+		return(
+			<>
+				{pages.map((page) => (
+					((page.loginRequired && session.data) || !page.loginRequired) &&
+						<li key={page.name} className={`${className} ${(page.path===currentPath || currentPath.split('/')[1]!='' && page.path.includes(currentPath.split('/')[1])) ? 'current' : ''}`}>
+							<Link href={page.path}>{page.name}</Link>
+						</li>
+				))}
+			</>
+		)
+	}
+
 	return (
 		<>
 			<header>
@@ -59,7 +85,7 @@ const Header = () => {
 							</button>
 							{menuIconClicked &&
 								<ul className="flex gap-8 DropdownMenu DropdownMenuLeft" onClick={()=>handleClickAway()}>
-									<CreateListOfLinks className='dropDownItem' currentPath={currentPath}/>
+									<CreateListOfLinks className='dropDownItem'/>
 								</ul>
 							}
 						</div>
@@ -67,7 +93,7 @@ const Header = () => {
 					<Link href='/'><Image src={logo.src} alt="Logo" className="mr-2 headerLogo" width={56} height={60} /></Link>
 					<nav className="flex space-x-16 mx-2">
 						<ul className="flex gap-8 menuItems">
-							<CreateListOfLinks className='desktop' currentPath={currentPath}/>
+							<CreateListOfLinks className='desktop'/>
 							{session?.status === 'loading' && <li><Image src={spinner.src} width={50} height={50} alt='ucitavanje' /> </li>}
 							{session?.status === 'authenticated' &&
 								<>
@@ -76,7 +102,7 @@ const Header = () => {
 											<div>
 												<button type='submit' onClick={() => setUserNameClicked(!userNameClicked)} className='userNameButton'>
 													<b className='desktop'>{session.data?.user.name} {session.data?.user.surname}</b>
-													<b className='mobile'>{session.data?.user.name[0]} {session.data?.user.surname[0]}</b>
+													<p className='mobile'>{session.data?.user.name[0]} {session.data?.user.surname[0]}</p>
 												</button>
 												{userNameClicked &&
 													<ul className='DropdownMenu DropdownMenuRight' onClick={()=>handleClickAway2()}>
