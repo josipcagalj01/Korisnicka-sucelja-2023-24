@@ -9,10 +9,10 @@ interface params {
 }
 
 export var actions = [
-	{ text: 'Promjeni lozinku', formName: 'changePasswordForm', actionThumbnail: '/password.png' },
-	{ text: 'Promjeni adresu e-pošte', formName: 'changeEmailForm', actionThumbnail: '/big_mail_image.png' },
-	{ text: 'Promjeni korisničko ime', formName: 'changeUsernameForm', actionThumbnail: '/pngwing.com.png' },
-	{ text: ' Brisanje korisničkog računa', formName: 'deleteAccountForm', actionThumbnail: '/trashcan.png' }
+	{ text: 'Promjeni lozinku', formName: 'changePasswordForm', thumbnail: '/account-managment/password.png' },
+	{ text: 'Promjeni adresu e-pošte', formName: 'changeEmailForm', thumbnail: '/account-managment/mail.png' },
+	{ text: 'Promjeni korisničko ime', formName: 'changeUsernameForm', thumbnail: '/account-managment/user.png' },
+	{ text: 'Ukloni korisnički račun', formName: 'deleteAccountForm', thumbnail: '/account-managment/delete.png' }
 ]
 
 export const generateMetadata = async ({ params }: { params: params }): Promise<Metadata> => {

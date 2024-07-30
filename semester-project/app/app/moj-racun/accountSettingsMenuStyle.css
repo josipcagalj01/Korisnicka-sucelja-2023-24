@@ -2,6 +2,11 @@
     margin-bottom:20px;
 }
 
+.accountPageMain .loadingSpinnerContainer {
+    position:sticky;
+    top:100%;
+}
+
 .accountPageContent {
     margin:auto;
 }
@@ -27,13 +32,21 @@
 }
 
 .accountSettingsMenu > li img {
-    height:200px;
+    height:100px;
     width:auto;
     margin:auto;
     opacity: 0.6;
 }
 
+.accountSettingsMenu > li > figure {
+    margin:auto;
+    height:100px;
+    width:100px;
+    position:relative;
+}
+
 .accountSettingsMenu > li .borderedLink {
+    margin-top: 10px;
     width:100%;
 }
 
@@ -55,7 +68,7 @@
         align-items: center;
     }
 
-    .accountSettingsMenu > li img {
+    .accountSettingsMenu > li > figure {
         height: 50px;
         width:50px;
     }
