@@ -24,7 +24,7 @@ export default function Home() {
 					<div className='textContainer'>
 						<h1 className='HomePageLargeTitle'>e-Kaštela</h1>
 						<p className='HomePageDescriptions'>Usluge lokalne samouprave za XXI. stoljeće</p>
-						<BorderedLink href='/prijava'>Započnite s korištenjem</BorderedLink>
+						<BorderedLink href='/usluge?_page=1&_limit=10'>Započnite s korištenjem</BorderedLink>
 					</div>
 				</div>
 			</div>
