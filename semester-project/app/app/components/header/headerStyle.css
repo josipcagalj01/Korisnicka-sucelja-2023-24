@@ -43,6 +43,14 @@ header nav {
     color: white;
 }
 
+.menuItems > li:last-child {
+    min-width: 56px;   
+}
+
+.menuItems > li:last-child img {
+    margin:auto;
+}
+
 .dropDownItem {
     font-size:14pt;
     margin:0px 10px 0px 10px;
