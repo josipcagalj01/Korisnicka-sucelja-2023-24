@@ -1,0 +1,29 @@
+.responsiveContainer {
+    position:sticky;
+    top:100%;
+    width:100%;
+}
+
+.errorInfo {
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    row-gap:20px;
+}
+
+.errorCode {
+    font-size:60pt;
+}
+
+.errorInfo * {
+    width:fit-content;
+}
+
+.errorInfo h1, .errorInfo p {
+    text-align: center;
+    max-width:80ch;
+}
+
+.logOutButton {
+    padding: 7px;
+}

@@ -1,4 +1,4 @@
-.borderedLink {
+.borderedLink, .borderedButton {
 	display:block;
 	border: 1px solid grey;
 	width: fit-content;
@@ -18,7 +18,7 @@
 
 @media (hover:hover) {
 	.borderedLink:hover, .borderedButton:hover {
-    	background-color: lightgray;
+    background-color: lightgray;
 		color:black;
 	}
 }
