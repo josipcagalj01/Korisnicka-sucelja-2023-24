@@ -7,7 +7,9 @@ export const metadata: Metadata = {
 }
 
 export default async function NotFound() {
+	return (
 		<main>
 			<Error404 />
 		</main>
+	)
 }
