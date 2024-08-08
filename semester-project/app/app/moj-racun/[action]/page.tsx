@@ -11,9 +11,9 @@ interface params {
 export var accountSettings = {
 	description: 'Postavke korisničkog računa',
 	actions: [
-		{ text: 'Promjeni lozinku', formName: 'changePasswordForm', thumbnail: '/account-managment/password.png', basePath:'/moj-racun' },
-		{ text: 'Promjeni adresu e-pošte', formName: 'changeEmailForm', thumbnail: '/account-managment/mail.png', basePath:'/moj-racun' },
-		{ text: 'Promjeni korisničko ime', formName: 'changeUsernameForm', thumbnail: '/account-managment/user.png', basePath:'/moj-racun' },
+		{ text: 'Promijeni lozinku', formName: 'changePasswordForm', thumbnail: '/account-managment/password.png', basePath:'/moj-racun' },
+		{ text: 'Promijeni adresu e-pošte', formName: 'changeEmailForm', thumbnail: '/account-managment/mail.png', basePath:'/moj-racun' },
+		{ text: 'Promijeni korisničko ime', formName: 'changeUsernameForm', thumbnail: '/account-managment/user.png', basePath:'/moj-racun' },
 		{ text: 'Ukloni korisnički račun', formName: 'deleteAccountForm', thumbnail: '/account-managment/delete.png', basePath:'/moj-racun' }
 	]
 }
@@ -43,7 +43,7 @@ export default function SwitchAction({ params }: { params: params }) {
 
 function DynamicRender({ params }: { params: params }) {
 	let ComponentToRender: any = Error404
-	const {formName} = accountSettings.actions.find((action)=>action.text.toLowerCase().replaceAll(' ', '-').replaceAll('č', 'c').replaceAll('š', 's') === params.action) || {}
-	if(formName) ComponentToRender = dynamic(() => import(`../../components/${formName}`), { ssr: false, loading: () => <Loading message="Učitavanje" /> })
+	const knownAction = accountSettings.actions.some((action)=>action.text.toLowerCase().replaceAll(' ', '-').replaceAll('č', 'c').replaceAll('š', 's') === params.action)
+	if(knownAction) ComponentToRender = dynamic(() => import(`../../components/${params.action}`), { ssr: false, loading: () => <Loading message="Učitavanje" /> })
 	return (<ComponentToRender />)
 }
