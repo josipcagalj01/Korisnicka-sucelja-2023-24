@@ -1,0 +1,17 @@
+.unavalible, .unavalible a {
+	margin:auto;
+}
+
+.unavalible h2, .unavalible p {
+	text-align: center;
+}
+
+.unavalible :nth-child(2) {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.rateLimitInfo {
+	display:block;
+	margin: 10px auto 10px auto;
+}
