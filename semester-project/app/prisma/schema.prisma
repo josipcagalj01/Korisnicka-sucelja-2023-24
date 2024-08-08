@@ -11,14 +11,66 @@ datasource db {
   directUrl = env("DATABASE_URL_NO_POOLING")
 }
 
-model User {
-  id  Int @id @default(autoincrement())
-  pin String @unique
-  name String
-  surname String
-  address String
-  category Int
-  email String  @unique
-  username  String  @unique
-  password  String
+model user {
+ 	id  Int  @id @default(autoincrement())
+ 	pin String @unique
+ 	name String
+ 	surname String
+	street String
+	house_number String
+ 	place String
+	town String
+ 	birth_date DateTime @db.Date
+ 	role_id Int @db.SmallInt
+	role role @relation(fields: [role_id], references: [id])
+	department_id Int? @db.SmallInt
+	department department? @relation(fields: [department_id], references: [id])
+  forms form[]
+	submissions submission[]
+ 	email String  @unique
+ 	username  String  @unique
+ 	password  String
+}
+
+model department {
+	id Int @db.SmallInt @id @default(autoincrement())
+	name String @unique
+	users user[]
+	forms form[]
+}
+
+model role {
+	id Int @db.SmallInt @id @default(autoincrement())
+	name String
+	users user[]
+}
+
+model category {
+	id Int @db.SmallInt @id @default(autoincrement())
+	name String @unique
+	forms form[]
+}
+
+model form {
+	id Int  @id @default(autoincrement())
+	author_id Int 
+	author user @relation(fields: [author_id], references: [id])
+	department_id Int @db.SmallInt
+	department  department @relation(fields: [department_id], references: [id])
+	submissions submission[]
+	rate_limit Int? @db.SmallInt
+	avalible_from DateTime? @db.Timestamptz @default(now()) 
+	avalible_until DateTime? @db.Timestamptz
+	title String @unique
+	category_id Int @db.SmallInt
+	category category @relation(fields: [category_id], references: [id])
+	fields Json
+}
+
+model submission {
+	id Int  @id @default(autoincrement())
+	user_id Int
+	user user @relation(fields: [user_id], references: [id])
+	form_id Int
+	form form @relation(fields: [form_id], references: [id])
 }

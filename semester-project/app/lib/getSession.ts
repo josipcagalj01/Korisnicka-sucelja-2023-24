@@ -7,8 +7,12 @@ interface User {
 	pin: string,
 	name: string,
 	surname: string,
-	address: string,
-	category: number,
+	street: string,
+  house_number: string,
+  place: string,
+  town: string
+	department_id?: number,
+	role_id:number,
 	email: string,
 	username: string
 }

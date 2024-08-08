@@ -1,20 +1,21 @@
 import type { Metadata } from 'next'
-import AccountSettingsWrapper from '../components/accountSettingsWrapper';
-import AccountSettingsMenu from '../components/accountSettingsMenu';
-
-import './accountSettingsMenuStyle.css'
+import AccountSettingsWrapper from '../components/wrappers';
+import SettingsMenu from '../components/SettingsMenu';
+import EmployeeActions from '../components/employeeActions';
+import './settingsMenuStyle.css'
+import { accountSettings } from './[action]/page';
 
 export const metadata: Metadata = {
 	title: 'Moja stranica',
-	description: 'Strania s osnovnim korisničkim akcijama',
+	description: 'Izbornici postavki i radnji',
 }
 
 async function ManageMyAccount() {
 	return (
     <main className='accountPageMain'>
 			<AccountSettingsWrapper>
-
-        <AccountSettingsMenu/>
+        <EmployeeActions/>
+        <SettingsMenu menu={accountSettings}/>
       </AccountSettingsWrapper>
     </main>
   )

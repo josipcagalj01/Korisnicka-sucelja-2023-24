@@ -6,8 +6,12 @@ declare module "next-auth" {
         pin: string,
         name: string,
         surname: string,
-        address: string,
-        category: number,
+        street: string,
+        house_number: string,
+        place: string,
+        town: string,
+        role_id:number,
+        department_id?: number,
         email: string,
         username: string
     }

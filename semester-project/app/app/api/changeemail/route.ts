@@ -2,6 +2,7 @@ import { db } from '../../../lib/db'
 import { NextResponse } from 'next/server'
 import { compare } from 'bcrypt'
 import * as z from 'zod'
+import { getSession } from '../../../lib/getSession'
 
 const userSchema = z.object({
 	id: z.number(),
@@ -28,9 +29,12 @@ export async function POST(req: Request) {
 			else return NextResponse.json({ user: rest, message: 'Već postoji korisnik s tom adresom e-pošte.' }, { status: 409 })
 		}
 		
-		const passwordMatch = await compare(password, user.password)
-		if (!passwordMatch) return NextResponse.json({ message: 'Unesena lozinka nije ispravna' }, { status: 401 })
-
+		const session = await getSession()
+		if(session?.user.role_id!=0) {
+			const passwordMatch = await compare(password, user.password)
+			if (!passwordMatch ) return NextResponse.json({ message: 'Unesena lozinka nije ispravna' }, { status: 401 })
+		}
+	
 		const updatedUser = await db.user.update({ where: { id: id }, data: { email: email } })
 
 		const { password: newUserPassword, ...rest } = updatedUser
