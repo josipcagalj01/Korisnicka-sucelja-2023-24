@@ -10,9 +10,12 @@ form * {
         display: block;
     }
 
-.formContainer {
+.formMain > .loadingSpinnerContainer, .formContainer {
     position:sticky;
     top:100%;
+}
+
+.formContainer {
     width:100%;
     margin-left:auto;
     margin-right:auto;
