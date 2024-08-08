@@ -1,5 +1,5 @@
 form {
-    margin: 20px;
+    margin: 18px;
 }
 
 form h3 {
@@ -13,19 +13,13 @@ form * {
 .formContainer {
     position:sticky;
     top:100%;
-    width:calc(100% - 40px);
+    width:100%;
     margin-left:auto;
     margin-right:auto;
     border: 1px solid gray;
     border-radius: 3px;
     background-color: #eeeeee;
     max-width:350px;
-}
-
-@media screen and (max-width: 320px) {
-    .formContainer {
-        width:90%;
-    }
 }
 
 label {
@@ -40,6 +34,23 @@ input {
     padding: 3px;
     border: 1px solid darkgray;
     border-radius: 3px;
+}
+
+.inlineInputs {
+    display:flex;
+    column-gap:10px;
+}
+
+.inlineInputs > div {
+    width:calc(50% - 5px);
+}
+
+#street {
+    width: calc(100% - 85px);
+}
+
+#house-number > input, #house-number > label, #house-number {
+    width: 75px;
 }
 
 .formContainer .formErrorMessage, .formContainer .formOkMessage, .formContainer .warningMessage {
@@ -130,7 +141,14 @@ input {
     margin: 20px;
 }
 
-@media screen and (max-width:480px) {
+@media screen and (max-width:360px) {
+    .inlineInputs {
+        flex-direction: column;
+    }
+    #street, .inlineInputs > div, #house-number {
+        width:100%;
+    }
+
     .formMain .loadingSpinnerContainer {
         top:0;
     }
