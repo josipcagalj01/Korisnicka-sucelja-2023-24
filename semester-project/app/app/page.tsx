@@ -20,6 +20,7 @@ export default function Home() {
 	return (
 		<>
 			<div className="flex justify-center landingBanner">
+				<Image src='/pozadina.jpg' alt='pozadina' fill={true} loading='lazy' style={{ objectFit: 'cover', zIndex:-1 }} />
 				<div className='textContainerContainer'>
 					<div className='textContainer'>
 						<h1 className='HomePageLargeTitle'>e-Kaštela</h1>
