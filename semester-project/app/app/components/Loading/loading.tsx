@@ -1,20 +1,18 @@
-import Image from 'next/image';
-import spinner from 'public/spinner.gif'
+import Loader from '../loader/loader';
 import './loadingStyle.css'
 
 type loadingProps = {
 	message: string;
 	bold?:boolean;
 	color?:string;
-	height?:number,
 	width?:number
 }
 
-function Loading({message, bold, color, height=100, width=100}:loadingProps) {
+function Loading({message, bold, color, width=100}:loadingProps) {
 	const style = {'color': color || '', 'fontWeight': bold ? 'bold' : 'normal'}
     return (
 		<div className='loadingSpinnerContainer' style={{margin:'auto'}}>
-			<Image src={spinner.src} alt='ucitavanje' width={width} height={height} style={{margin:'auto'}}/>
+			<Loader size={width}/>
 			<p style={style} className='loadingMessage'>{message}</p>
 		</div>
 	)
