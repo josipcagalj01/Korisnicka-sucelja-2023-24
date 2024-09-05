@@ -2,10 +2,7 @@
     margin-bottom:20px;
 }
 
-.accountPageMain .loadingSpinnerContainer {
-    position:sticky;
-    top:100%;
-}
+
 
 .accountPageContent {
     margin:auto;
@@ -27,6 +24,11 @@
 }
 
 .accountSettingsMenu > li {
+    height: 168px;
+    aspect-ratio: 1.35;
+    display:flex;
+    flex-direction:column;
+    row-gap:10px;
     padding:10px;
     background-color: #eeeeee;
 }
@@ -46,7 +48,7 @@
 }
 
 .accountSettingsMenu > li .borderedLink {
-    margin-top: 10px;
+    text-align: center;
     width:100%;
 }
 
@@ -63,9 +65,15 @@
     }
 
     .accountSettingsMenu > li {
-        display:flex;
+        height:auto;
+        aspect-ratio: auto;
+        flex-direction: row;
         column-gap:20px;
         align-items: center;
+    }
+
+    .accountSettingsMenu > li > .borderedLink {
+        text-align: left;
     }
 
     .accountSettingsMenu > li > figure {
