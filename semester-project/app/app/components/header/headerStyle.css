@@ -27,6 +27,27 @@ header nav {
     width:auto;
 }
 
+.hamburger {
+    width: 36px;
+    height: 3px;
+    
+    background-color: white;
+    margin: 10px 0;
+    transition: .2s;
+}
+
+.invissible {
+    visibility: hidden;
+}
+
+.x.first {
+    transform: translateY(13px) rotate(-45deg);
+}
+
+.x.third {
+    transform: translateY(-13px) rotate(45deg);
+}
+
 .menuItems {
     position:relative;
     height: 76px;

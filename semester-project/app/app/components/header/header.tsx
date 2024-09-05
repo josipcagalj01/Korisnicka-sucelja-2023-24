@@ -7,7 +7,7 @@ import './headerStyle.css';
 import Logout from '../log-in-or-out/logout'
 import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react';
-import spinner from 'public/spinner.gif'
+import Loader from '../loader/loader';
 import Image from 'next/image';
 
 interface pages {
@@ -79,7 +79,9 @@ const Header = () => {
 				<ClickAwayListener onClickAway={handleClickAway}>
 					<div className='menuIconContainer mobile'>
 						<button onClick={() => setMenuIconClickedState(!menuIconClicked)} type='submit' className='MenuIcon mobile'>
-							<Image src={!menuIconClicked ? '/menuicon.png' : '/x-icon.png'} width={60} height={60} alt='icon' className='menuIcon' />
+							<div className={`menuIcon mobile hamburger first ${menuIconClicked ? 'x' : ''}`}></div>
+							<div className={`menuIcon mobile hamburger ${menuIconClicked ? 'invissible' : ''}`} ></div>
+							<div className={`menuIcon mobile hamburger third ${menuIconClicked ? 'x' : ''}`}></div>	
 						</button>
 						{menuIconClicked &&
 							<ul className="flex gap-8 DropdownMenu DropdownMenuLeft" onClick={() => handleClickAway()}>
@@ -92,7 +94,7 @@ const Header = () => {
 				<nav className="flex space-x-16 mx-2">
 					<ul className="flex gap-8 menuItems">
 						<CreateListOfLinks className='desktop' markCurrent={true} />
-						{session?.status === 'loading' && <li><Image src={spinner.src} width={18} height={18} alt='ucitavanje' /> </li>}
+						{session?.status === 'loading' && <li> <Loader size={18} background='dark'/> </li>}
 						{session?.status === 'authenticated' &&
 							<li>
 								<ClickAwayListener onClickAway={handleClickAway2}>
