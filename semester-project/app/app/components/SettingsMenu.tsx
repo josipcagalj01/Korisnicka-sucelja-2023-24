@@ -7,7 +7,6 @@ export default function SettingsMenu({menu}:{menu:Settings}) {
 	return (
 		<div className='accountPageContent'>
 			<h2>{menu.description}</h2>
-			
 			<ul className='accountSettingsMenu'>
 				{menu.actions.map((action => (
 					<li key={action.text}>
