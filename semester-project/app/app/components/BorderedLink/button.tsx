@@ -15,6 +15,6 @@ export default function BorderedLink({ href, children, className = '' }: linkPro
 	)
 }
 
-export function BorderedButton({ onClick, children }: { onClick: any, children: React.ReactNode }) {
+export function BorderedButton({ onClick, children }: { onClick?: any, children: React.ReactNode }) {
 	return (<button className='borderedLink' onClick={onClick}><p className='linkText'>{children}</p></button>)
 }
