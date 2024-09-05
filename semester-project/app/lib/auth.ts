@@ -43,13 +43,13 @@ export const authOptions: NextAuthOptions = {
 			async authorize(credentials) {
 				if (!credentials?.username || !credentials.password) return null
 
-				let existingUser: User[] = await db.$queryRaw`SELECT id, pin, name, surname, street, house_number, town, place, department_id, role_id, username, password, email FROM public.user WHERE username=${credentials.username} OR email=${credentials.username};`
-				if (!existingUser.length) return null
+				let [existingUser, ...rest1] = await db.user.findMany({where: {OR: [{username:credentials.username}, {email: credentials.username}]}})
+				if (!existingUser) return null
 
-				const passwordMatch = await compare(credentials.password, existingUser[0].password)
+				const passwordMatch = await compare(credentials.password, existingUser.password)
 				
 				if (!passwordMatch) return null
-				const {password, ...rest} = existingUser[0]
+				const {password, ...rest} = existingUser
 				return { ...rest }
 			}
 		})
