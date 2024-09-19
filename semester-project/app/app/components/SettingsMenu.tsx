@@ -13,7 +13,7 @@ export default function SettingsMenu({menu}:{menu:Settings}) {
 						<figure>
 							<Image src={action.thumbnail} fill={true} sizes="100px" style={{ objectFit: 'contain' }} alt={action.text} />
 						</figure>
-						<BorderedLink href={action.basePath + '/' + action.text.toLowerCase().replaceAll(' ', '-').replaceAll('č', 'c').replaceAll('š', 's')}>{action.text}</BorderedLink>
+						<BorderedLink href={action.basePath + (!action.basePathOnly ? ('/' + action.text.toLowerCase().replaceAll(' ', '-').replaceAll('č', 'c').replaceAll('š', 's')): '')}>{action.text}</BorderedLink>
 					</li>
 				)))}
 			</ul>

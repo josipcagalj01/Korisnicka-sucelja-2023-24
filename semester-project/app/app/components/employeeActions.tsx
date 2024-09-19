@@ -10,15 +10,16 @@ interface Action {
 	text: string,
 	thumbnail:string,
 	formName?:string
-	basePath: string
+	basePath: string,
+	basePathOnly?: boolean
 }
 
 const employeeActions : Settings = {
 	description: 'Što želite učiniti?',
 	actions: [
-		{text: 'Dodaj novi obrazac', thumbnail: '/employee-actions/add-form.png', formName:'configureForm', basePath: '/obrazac'},
-		{text: 'Pregledaj pristigle prijave', thumbnail: '/employee-actions/check-submissions.png', basePath: '/pristigle-prijave'},
-		{text: 'Napiši novu objavu', thumbnail:'/employee-actions/write-article.png', basePath: '/objava'}
+		{text: 'Pregled obrazaca', thumbnail: '/employee-actions/add-form.png', formName:'configureForm', basePath: '/obrasci?_page=1&_limit=15', basePathOnly: true},
+		{text: 'Pregled prijava', thumbnail: '/employee-actions/check-submissions.png', basePath: '/prijave?_page=1&_limit=15', basePathOnly: true},
+		{text: 'Pregled objava', thumbnail:'/employee-actions/write-article.png', basePath: '/objave?_page=1&_limit=15', basePathOnly: true}
 	]
 }
 
