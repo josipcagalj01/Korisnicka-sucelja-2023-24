@@ -3,9 +3,9 @@ import * as z from 'zod'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
-import './SignUpForm/signUpFormStyle.css'
+import '../SignUpForm/signUpFormStyle.css'
 import { useState } from "react";
-import Loading from './Loading/loading'
+import Loading from '../Loading/loading'
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link';
 
@@ -20,6 +20,15 @@ const formSchema = z.object({
 	confirmPassword: z.string().min(1, 'Potrebno je ponovno unijeti novu lozinku')
 })
 	.refine((data) => data.password === data.confirmPassword, { path: ['confirmPassword'], message: 'Ponovo unesena nova lozinka nije unesenoj u polje iznad.' })
+
+export function OtherFormOptions() {
+	return (
+		<div className='otherFormOptions'>
+			<p>Tražite nešto drugo?</p>
+			<Link href='/moj-racun'><b>Natrag na postavke računa</b></Link>
+		</div>
+	)
+}
 
 const ChangePassordForm = () => {
 	
@@ -68,19 +77,16 @@ const ChangePassordForm = () => {
 				<input type='password' {...register('oldPassword')} />
 				{errors.oldPassword && <b className='formErrorMessage'>{errors.oldPassword.message}</b>}
 				<label htmlFor='password'>Nova lozinka</label>
-				<input type='password' {...register('password')} />
+				<input type='password' {...register('password')} autoComplete='new-password'/>
 				{errors.password && <b className='formErrorMessage'>{errors.password.message}</b>}
 				<label htmlFor='confirmPassword'>Ponovo unesite novu lozinku</label>
-				<input type='password' {...register('confirmPassword')} />
+				<input type='password' {...register('confirmPassword')} autoComplete='new-password'/>
 				{errors.confirmPassword && <b className='formErrorMessage'>{errors.confirmPassword.message}</b>}
 				<div className='buttonContainer'>
 					<button type='submit' onClick={() => { attemptOccurred && setAttemptOccurred(false) }} className='formSubmitButton'>Promijeni</button>
 					<button type='reset' onClick={() => reset()} className='resetButton'>Odustani</button>
 				</div>
-				<div className='otherFormOptions'>
-					<p>Tražite nešto drugo?</p>
-					<Link href='/moj-racun'>Natrag na postavke računa</Link>
-				</div>
+				<OtherFormOptions />
 			</form>
 		</div>
 	);

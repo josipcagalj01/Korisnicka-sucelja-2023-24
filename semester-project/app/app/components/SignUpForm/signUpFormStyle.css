@@ -1,168 +1,156 @@
-form {
-    margin: 18px;
+.formContainer form {
+	margin: 18px;
 }
 
-form h3 {
-    margin-bottom:10px;
+.formContainer form h3 {
+	margin-bottom:10px;
 }
-
-form * {
-        display: block;
-    }
 
 .formMain > .formContainer {
-    position:sticky;
-    top:100%;
+	position:sticky;
+	top:100%;
 }
 
 .formContainer {
-    width:100%;
-    margin-left:auto;
-    margin-right:auto;
-    border: 1px solid gray;
-    border-radius: 3px;
-    background-color: #eeeeee;
-    max-width:350px;
+	width:100%;
+	margin-left:auto;
+	margin-right:auto;
+	border: 1px solid gray;
+	border-radius: 3px;
+	background-color: #eeeeee;
+	max-width:350px;
 }
 
-label {
-    margin-bottom: 5px;
-    margin-top: 3px;
+.formContainer label {
+	display: block;
+	margin-bottom: 5px;
+	margin-top: 3px;
 }
 
 .formContainer input, .formErrorMessage {
-    margin-bottom: 7px;
+	margin-bottom: 7px;
 }
 
 input {
-    padding: 3px;
-    border: 1px solid darkgray;
-    border-radius: 3px;
+	padding: 3px;
+	border: 1px solid darkgray;
+	border-radius: 3px;
 }
 
 .formContainer input[type='date'] {
 	background-color: white;
 }
 
-.inlineInputs {
-    display:flex;
-    column-gap:10px;
-}
-
-.inlineInputs > div {
-    width:calc(50% - 5px);
+.formContainer .inlineInputs {
+	display:flex;
+	column-gap:10px;
 }
 
 #street {
-    width: calc(100% - 85px);
+	flex: 1;
 }
 
 #house-number > input, #house-number > label, #house-number {
-    width: 75px;
+	width: 9ch;
 }
 
 .formContainer .formErrorMessage, .formContainer .formOkMessage, .formContainer .warningMessage {
-    width: fit-content;
-    max-width: 95%;
-    margin-left: auto;
-    margin-right:auto;
-    text-align: center;
+	display: block;
+	width: fit-content;
+	max-width: 95%;
+	margin-left: auto;
+	margin-right:auto;
+	text-align: center;
 }
 
 .formContainer .warningMessage b {
-    display:inline;
-    color:red;
+	color:red;
 }
 
 .formErrorMessage {
-    font-size: 14px;
-    color: red;
+	font-size: 14px;
+	color: red;
 }
 
 .formOkMessage {
-    color: green;
+	color: green;
 }
 
 .formSubmitButton, input, .resetButton {
-    width: 100%;
-}
-
-.otherFormOptions a {
-    font-weight: bold;
+	width: 100%;
 }
 
 .buttonContainer, .otherFormOptions, .registrationLinkContainer, .loginLinkContainer {
-    display:flex;
+	display:flex;
 }
 
 .buttonContainer {
-    justify-content: center;
-    column-gap:10px;
+	justify-content: center;
+	column-gap:10px;
 }
 
 .otherFormOptions, .registrationLinkContainer, .loginLinkContainer {
-    margin-top: 20px;
-    flex-direction:column;
-    align-items: center;
-    row-gap:7px;
+	margin-top: 20px;
+	flex-direction:column;
+	align-items: center;
+	row-gap:7px;
 }
 
 .otherFormOptions {
-    width:100%;
+	width:100%;
 }
 
 .resetButton {
-    background-color:lightcoral;
-    color:white;
-    border: 1px solid gray;
+	background-color:lightcoral;
+	color:white;
+	border: 1px solid gray;
 }
 .formSubmitButton {
-    border: 1px solid lightblue;
-    background-color: #6480ca;
-    color: white;
+	border: 1px solid lightblue;
+	background-color: #6480ca;
+	color: white;
 }
 
 .formSubmitButton, .resetButton {
-    margin-top: 10px;
-    height: 45px;
+	margin-top: 10px;
+	height: 45px;
 }
 
 @media (hover:hover) {
-    .formSubmitButton:hover, .formSubmitButton:hover {
-        background-color: #5a78c7;
-        color: #ffcc00;
-    }
-    .resetButton:hover {
-        color: darkred;
-        background-color: coral;
-    }
+	.formSubmitButton:hover, .formSubmitButton:hover {
+		background-color: #5a78c7;
+		color: #ffcc00;
+	}
+	.resetButton:hover {
+		color: darkred;
+		background-color: coral;
+	}
 
-    .otherFormOptions a:hover {
-        text-decoration: underline;
-    }
+	.otherFormOptions a:hover {
+		text-decoration: underline;
+	}
 
-    .registrationLinkContainer a:hover, .loginLinkContainer a:hover {
-        text-decoration: underline;
-    }
+	.registrationLinkContainer a:hover, .loginLinkContainer a:hover {
+		text-decoration: underline;
+	}
 }
 
 .registrationLinkContainer, .loginLinkContainer {
-    margin: 20px;
+	margin: 20px;
 }
 
 @media screen and (max-width:360px) {
-    .inlineInputs {
-        flex-direction: column;
-    }
-    #street, .inlineInputs > div, #house-number {
-        width:100%;
-    }
-
+	.inlineInputs {
+		flex-direction: column;
+	}
+	#street, .inlineInputs > div, #house-number {
+		width:100%;
+	}
 }
 
 @media screen and (max-width:376px) {
-    .loginLinkContainer, .registrationLinkContainer, .buttonContainer {
-        flex-direction:column;
-        row-gap: 10px;
-    }
+	.loginLinkContainer, .registrationLinkContainer, .buttonContainer {
+		flex-direction:column;
+		row-gap: 10px;
+	}
 }

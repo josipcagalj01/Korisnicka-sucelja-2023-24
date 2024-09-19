@@ -1,13 +1,12 @@
 'use client'
 import * as z from 'zod'
-import React from 'react'
+import React, {useState} from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
-import './SignUpForm/signUpFormStyle.css'
-import { useState} from "react";
-import Loading from './Loading/loading'
+import '../SignUpForm/signUpFormStyle.css'
+import Loading from '../Loading/loading'
 import { signOut, useSession } from 'next-auth/react';
-import Link from 'next/link';
+import { OtherFormOptions } from './promijeni-lozinku';
 
 interface serverResponse {
 	user: any,
@@ -21,7 +20,6 @@ const formSchema = z.object({
 const DeleteAccountForm = () => {
 
 	const session=useSession()
-
 
 	const [success, setSuccess] = useState(false)
 	const [serverMessage, setServerMessage] = useState('')
@@ -74,10 +72,7 @@ const DeleteAccountForm = () => {
 					<button type='submit' onClick={() => { attemptOccurred && setAttemptOccurred(false) }} className='formSubmitButton'>Izbriši račun</button>
 					<button type='reset' onClick={() => { reset(); window.location.href = '/moj-racun' }} className='resetButton'>Odustani</button>
 				</div>
-				<div className='otherFormOptions'>
-					<p>Tražite nešto drugo?</p>
-					<Link href='/moj-racun'>Natrag na postavke računa</Link>
-				</div>
+				<OtherFormOptions />
 			</form>
 		</div>
 	);
