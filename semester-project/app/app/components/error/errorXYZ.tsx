@@ -1,10 +1,9 @@
 import BorderedLink from "../BorderedLink/button";
 import './not-foundStyle.css'
-import { Session } from "../../../lib/getSession";
 import LogInOrOut from "../log-in-or-out/logout";
 import { usePathname } from "next/navigation";
 
-export function Error401({callbackUrl, message, session}:{callbackUrl?:string, message?:string, session?:Session}) {
+export function Error401({callbackUrl, message}:{callbackUrl?:string, message?:string}) {
 	const errorMessage = message || 'Vaša sesija je istekla ili je prekinuta. Da biste vidjeli sadržaj stranice ponovo se prijavite.'
 	return (
 		<div className='responsiveContainer'>
@@ -18,14 +17,14 @@ export function Error401({callbackUrl, message, session}:{callbackUrl?:string, m
 	)
 }
 
-export function Error403() {
-	const path = usePathname()
+export function Error403({message}: {message?:string}) {
+	const path = typeof(window) !== 'undefined' ? usePathname() : ''
 	return (
 		<div className='responsiveContainer'>
 			<div className='errorInfo'>
 				<h1 className='errorCode'>403</h1>
 				<h1>Greška</h1>
-				<p>Pristup ovoj stranici omogućen je samo autoriziranim korisnicima. Da biste vidjeli njen sadržaj, prijavite se korisničkim računom povezanim s primjerenom razinom prava.</p>
+				<p>{message || 'Pristup ovoj stranici omogućen je samo autoriziranim korisnicima. Da biste vidjeli njen sadržaj, prijavite se korisničkim računom povezanim s primjerenom razinom prava.'}</p>
 				<LogInOrOut className="logOutButton borderedButton" callbackUrl={path}/>
 				<BorderedLink href='/'>Povratak na početnu stranicu</BorderedLink>
 			</div>
