@@ -10,7 +10,7 @@ form * {
         display: block;
     }
 
-.formMain > .loadingSpinnerContainer, .formContainer {
+.formMain > .formContainer {
     position:sticky;
     top:100%;
 }
@@ -27,16 +27,21 @@ form * {
 
 label {
     margin-bottom: 5px;
+    margin-top: 3px;
 }
 
 .formContainer input, .formErrorMessage {
-    margin-bottom: 10px;
+    margin-bottom: 7px;
 }
 
 input {
     padding: 3px;
     border: 1px solid darkgray;
     border-radius: 3px;
+}
+
+.formContainer input[type='date'] {
+	background-color: white;
 }
 
 .inlineInputs {
@@ -70,6 +75,7 @@ input {
 }
 
 .formErrorMessage {
+    font-size: 14px;
     color: red;
 }
 
@@ -152,9 +158,6 @@ input {
         width:100%;
     }
 
-    .formMain .loadingSpinnerContainer {
-        top:0;
-    }
 }
 
 @media screen and (max-width:376px) {
