@@ -25,7 +25,7 @@ export function Error403({message}: {message?:string}) {
 				<h1 className='errorCode'>403</h1>
 				<h1>Greška</h1>
 				<p>{message || 'Pristup ovoj stranici omogućen je samo autoriziranim korisnicima. Da biste vidjeli njen sadržaj, prijavite se korisničkim računom povezanim s primjerenom razinom prava.'}</p>
-				<LogInOrOut className="logOutButton borderedButton" callbackUrl={path}/>
+				<LogInOrOut className="logOutButton borderedButton" callbackUrl={path} spinnerSize={38}/>
 				<BorderedLink href='/'>Povratak na početnu stranicu</BorderedLink>
 			</div>
 		</div>
