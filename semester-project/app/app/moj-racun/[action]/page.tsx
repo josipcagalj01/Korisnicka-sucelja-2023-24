@@ -44,6 +44,6 @@ export default function SwitchAction({ params }: { params: params }) {
 function DynamicRender({ params }: { params: params }) {
 	let ComponentToRender: any = Error404
 	const knownAction = accountSettings.actions.some((action)=>action.text.toLowerCase().replaceAll(' ', '-').replaceAll('č', 'c').replaceAll('š', 's') === params.action)
-	if(knownAction) ComponentToRender = dynamic(() => import(`../../components/${params.action}`), { ssr: false, loading: () => <Loading message="Učitavanje" /> })
+	if(knownAction) ComponentToRender = dynamic(() => import(`../../components/manage-my-account/${params.action}`), { ssr: false, loading: () => <Loading message="Učitavanje" /> })
 	return (<ComponentToRender />)
 }
