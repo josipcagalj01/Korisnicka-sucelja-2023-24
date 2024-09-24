@@ -65,7 +65,7 @@ header nav {
 }
 
 .menuItems > li:last-child {
-    min-width: 56px;   
+    min-width: 7ch;   
 }
 
 .menuItems > li:last-child img {
