@@ -20,7 +20,7 @@
 
 main {
   min-height: calc(45vh - 74px);
-  position:relative;
+
   width: calc(100% - 40px);
   max-width: var(--max-main-width);
   margin: 40px auto 40px auto;
@@ -66,4 +66,8 @@ h3 {
 
 h4 {
   font-size:14pt;
+}
+
+figure {
+  position:relative;
 }
