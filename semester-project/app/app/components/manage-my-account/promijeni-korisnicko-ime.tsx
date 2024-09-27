@@ -28,7 +28,6 @@ const ChangeUsernameForm = () => {
 	const [loading, isLoading] = useState(false)
 	const { register, handleSubmit, reset, formState: { errors } } = useForm<z.infer<typeof formSchema>>({ resolver: zodResolver(formSchema), defaultValues: { username: '', password: ''} })
 
-
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		isLoading(true)
 		const response = await fetch('/api/changeusername', {
