@@ -18,7 +18,7 @@ export function Error401({callbackUrl, message}:{callbackUrl?:string, message?:s
 }
 
 export function Error403({message}: {message?:string}) {
-	const path = typeof(window) !== 'undefined' ? usePathname() : ''
+	const path = usePathname()
 	return (
 		<div className='responsiveContainer'>
 			<div className='errorInfo'>
