@@ -94,7 +94,7 @@ const Header = () => {
 				<nav className="flex space-x-16 mx-2">
 					<ul className="flex gap-8 menuItems">
 						<CreateListOfLinks className='desktop' markCurrent={true} />
-						{session?.status === 'loading' && <li> <Loader size={18} background='dark'/> </li>}
+						{session?.status === 'loading' && <li className='_7ch'> <Loader size={18} background='dark'/> </li>}
 						{session?.status === 'authenticated' &&
 							<li>
 								<ClickAwayListener onClickAway={handleClickAway2}>
