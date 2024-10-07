@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 		}
 
 		const userWithDesiredEmail = await db.user.findUnique({ where: { email: email } })
-		console.log(userWithDesiredEmail)
+		
 		if (userWithDesiredEmail) {
 			const { password: newUserPassword, ...rest } = user
 			if (userWithDesiredEmail.id === user.id) return NextResponse.json({ user: rest, message: 'Unesena adresa e-pošte se ne razlikuje od prethodne.' }, { status: 201 })
