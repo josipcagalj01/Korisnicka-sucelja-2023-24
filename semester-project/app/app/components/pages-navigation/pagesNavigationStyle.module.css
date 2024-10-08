@@ -7,7 +7,7 @@
 	width: 100%;
 }
 
-.pagesNavigation a.disabled {
+.pagesNavigation a.disabled, .pagesNavigation button:disabled {
 pointer-events: none;
 opacity:0.5;
 cursor: not-allowed;
@@ -28,13 +28,13 @@ cursor: not-allowed;
 @media screen and (max-width: 600px) {
 
 	.pagesNavigation .desktop {
-			display:none;
+		display:none;
 	}
 
 }
 
 @media screen and (min-width: 600px) {
 	.pagesNavigation .mobile {
-			display:none;
-}
+		display:none;
+	}
 }
