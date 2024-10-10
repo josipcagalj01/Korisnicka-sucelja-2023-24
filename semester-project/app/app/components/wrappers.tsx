@@ -37,3 +37,16 @@ export function EmployeesOnly({children}: {children: React.ReactNode}) {
 	else if(session.data.user.role_id===1) return <Error403/>
 	else return <>{children}</>
 }
+
+export function ParticularDepartmentOnly({id, children}: {id: number, children?: React.ReactNode}) {
+	const session = useSession()
+	const path = usePathname()
+	if (session.status === 'loading') return (<Loading message="Učitavanje" />)
+	else if(!session.data) return <Error401 callbackUrl={path}/>
+	else if(session.data.user.role_id===1) return <Error403/>
+	else if(session.data.user.role_id && session.data.user.role_id!==2) {
+		if(session.data.user.department_id!==id) return <Error403/>
+		else return <>{children}</>
+	}
+	else return <>{children}</>
+}
