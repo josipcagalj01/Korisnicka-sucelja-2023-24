@@ -8,7 +8,7 @@ import { getTotalNewsCount } from '../../lib/contentfulClient'
 import { Suspense } from 'react';
 import Loading from '../components/Loading/loading'
 import BorderedLink from '../components/BorderedLink/button'
-import PagesNavigation from '../components/PagesNavigation'
+import PagesNavigation from '../components/pages-navigation/PagesNavigation'
 
 export const metadata: Metadata = {
 	title: 'Obavijesti',
