@@ -1,5 +1,4 @@
 import './globals.css'
-import favicon from './favicon.ico'
 import type { Metadata } from 'next'
 import AuthProvider from './context/AuthProvider'
 import Footer from './components/footer/footer'
