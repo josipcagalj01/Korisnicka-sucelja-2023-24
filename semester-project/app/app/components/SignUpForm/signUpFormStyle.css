@@ -76,7 +76,7 @@ input {
 	color: green;
 }
 
-.formSubmitButton, input, .resetButton {
+.formContainer .formSubmitButton, .formContainer input, .formContainer .resetButton {
 	width: 100%;
 }
 
