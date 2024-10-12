@@ -19,15 +19,14 @@ export async function POST(req:Request) {
 					department: {connect: {id: department_id} },
 					author: { connect: { id: session?.user.id} },
 					category: { connect: { id: category_id} },
-					thumbnail_setting: thumbnail_setting === 'new' ? 'default' : thumbnail,
-					thumbnail_id: thumbnail_setting !== 'existing' ? null : thumbnail_id,
+					thumbnail_setting: thumbnail_setting === 'new' ? 'default' : thumbnail_setting,
 					...rest
 					
 				}
 				if(avalible_from) data.avalible_from = new Date(avalible_from).getTime() < Date.now() ? new Date(Date.now()).setSeconds(0) : new Date(avalible_from)
 				if (avalible_until) data.avalible_until = new Date(avalible_until)
 				if(rest.rate_limit_set) data.rate_limit = Number.parseInt(rate_limit)
-					if(thumbnail_id) data.thumbnail_id = thumbnail_id
+				if(thumbnail_setting === 'existing') data.thumbnail = {connect: {id: thumbnail_id}}
 
 				const {id} = await	db.form.create({data: data})
 				formId = id

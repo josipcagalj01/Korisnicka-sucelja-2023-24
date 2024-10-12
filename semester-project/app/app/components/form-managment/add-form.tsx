@@ -144,12 +144,6 @@ export default function ConfigureForm({props}: {props?:{existingSubmissions?: bo
 			})
 		})
 
-		const response1 = await upload(values.thumbnail.name, values.thumbnail, {
-			access: 'public',
-			handleUploadUrl: '/api/upload-thumbnail',
-		});
-		console.log(response1)
-
 		const response = await fetch('/api/dodaj-obrazac', {
 			method: 'POST',
 			headers : {'content-type': 'application/json'},
@@ -179,12 +173,13 @@ export default function ConfigureForm({props}: {props?:{existingSubmissions?: bo
 				}
 			}
 			reset()
-			isLoading(false)
+			
 		}
 		else {
 			console.error('Nije moguće dodati novi obrazac.')
 			setAttemptFailed(true)
 		}
+		isLoading(false)
 	}
 	if(!attemptOccurred && loading) return <Loading message='Inicijalizacija u tijeku...' />
 	else if(loading) return <Loading message='Vaš zahtjev se obrađuje. Molim pričekajte...' />
