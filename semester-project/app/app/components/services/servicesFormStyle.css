@@ -1,0 +1,480 @@
+.serviceTitle {
+	margin-bottom: 35px;
+}
+
+main > .afterServiceRequestInfo {
+	margin-top:30px;
+	position: sticky;
+	top: 100%;
+}
+
+.afterServiceRequestInfo .borderedLink {
+	margin:15px auto auto auto;
+}
+
+.afterServiceRequestInfo .borderedButton {
+	margin: auto;
+}
+
+div.serviceFormContainer {
+	max-width: 100%;;
+	width: fit-content;
+	margin: 20px auto auto auto;
+	border: 1px solid gray;
+	border-radius: 3px;
+	background-color: #eeeeee;
+}
+
+.serviceFormContainer .serviceForm {
+	width: 80ch;
+	max-width: calc(100% - 40px);
+	margin: 20px;
+}
+
+.serviceForm label {
+	display: block;
+	width: fit-content;
+	margin-bottom: 8px;
+	font-weight: bold;
+}
+
+.serviceForm {
+	margin: 20px auto auto auto;
+}
+
+.serviceForm > section {
+	border: 1px solid gray;
+	border-radius: 3px;
+	background-color: #eeeeee;
+	width: calc(80ch + 40px);
+	max-width: 100%;
+	padding:15px;
+	margin-bottom: 25px;
+}
+
+.serviceForm > section .titleAndShowHideMenu {
+	display: flex;
+	column-gap: 10px;
+}
+
+.serviceForm > section > h2 {
+	word-break: break-all;
+}
+
+.formSectionContent {
+	margin-top:20px;
+}
+
+.labelAndInputContainer {
+	width:100%;
+	margin: 10px auto 17px auto;
+}
+
+.labelAndInputContainer:last-child {
+	margin-bottom: auto;
+}
+
+.checkboxContainer {
+	margin:auto;
+	width:fit-content;
+	flex-direction: column;
+	row-gap:3px;
+	max-width: 100%;
+}
+
+.labelAndInputContainer div {
+	max-width: 100%;
+	display: flex;
+	column-gap: 20px;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.labelAndInputContainer input[type="radio"] {
+	width: fit-content;
+}
+
+.labelAndInputContainer span, div.radioInput {
+	display: flex;
+	align-items: center;
+	column-gap: 10px;
+}
+
+.labelAndInputContainer span p {
+	word-wrap: break-word;
+}
+
+.serviceForm section {
+	position:relative;	
+}
+
+.conditionalDependencyMenu {
+	margin-top: 7px;
+}
+
+.conditionalDependencyMenu > div {
+	display: grid;
+	grid-template-columns: 1fr;
+	align-items: baseline;
+}
+
+.conditionalDependencyMenu > div > label {
+	align-self: flex-start;
+}
+
+.conditionalDependencyMenu .checkboxContainer {
+	margin: unset;
+}
+
+.conditionalDependencyMenu > * , .labelsContainer label  {
+	flex: 1;
+}
+
+.serviceForm section .labelAndInputContainer:first-child {
+	margin-top:auto;
+}
+
+.unnested {
+	margin-bottom:15px;
+	background-color: white;
+	
+}
+
+.unnested, .fieldProperties, .option, .option .labelAndInputContainer {
+	border: 1px solid darkgrey;
+	border-radius: 3px;
+}
+
+.unnested .fieldSectionHeader, .nested .optionSectionHeaader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.field {
+	background-color: lightgrey;
+}
+
+.field:first-of-type {
+	margin-top:20px;
+}
+
+.field > * {
+	margin: 5px;
+}
+
+.fieldProperties {
+	padding: 7px;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	background-color: white;
+}
+
+.fieldNav {
+	display: flex;
+	column-gap: 6px;
+	align-items: center;
+}
+
+button.arrow {
+	padding: 4px;
+	border: 1px solid black;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.titleAndShowHideMenu button.arrow {
+	height: 30px;
+	width: 30px;
+	padding-left: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.titleAndShowHideMenu button.arrow.opened {
+	rotate: 90deg;
+	transition: .2s;
+}
+
+.titleAndShowHideMenu button.arrow.closed {
+	rotate: 0deg;
+	transition: .2s;
+}
+
+.fieldNav button.arrow {
+	position:relative;
+	height:22px;
+	width:22px;
+}
+
+button[type="button"].arrow:hover {
+	background-color: white;
+}
+
+.fieldNav button.down img {
+	rotate: 180deg;
+}
+
+.deletefield {
+	margin-top:10px;
+	width:fit-content;
+}
+
+.option {
+	background-color: #eeeeee;
+}
+
+.option > * {
+	margin: 3px;
+}
+
+.option .labelAndInputContainer {
+	width: calc(100% - 6px);
+	padding: 5px;
+	margin-bottom: 3px;
+	background-color:white;
+}
+
+.option .labelAndInputContainer label {
+	margin-bottom: 7px;
+}
+
+.nested {
+	width:calc(100% - 30px);
+	margin: 10px auto auto auto;
+}
+
+
+
+.nested > section {
+	/*padding: 7px 7px 7px 0px;
+	border: 1px solid darkgray;
+	border-radius: 3px;*/
+	margin-top: 10px;
+	margin-bottom:10px;
+}
+
+.serviceForm input[type='text'], .serviceForm select {
+	text-wrap: wrap;
+}
+
+.serviceForm input[type='text'], .serviceForm input[type='number'], .serviceForm input[type='date'], .serviceForm select, .serviceForm input[type='datetime-local'], .uploadedFilesList, .fakeInput, .fakeSelect, .thumbnailMenuFrame {
+	border: 1px solid darkgray;
+	border-radius: 3px;
+	width: 100%;
+}
+
+.serviceForm input[type='text'], .serviceForm input[type='number'], .serviceForm input[type='date'], .serviceForm select, .serviceForm input[type='datetime-local'], .fakeInput, .fakeSelect {
+	padding: 3px;
+}
+
+.uploadedFilesList {
+	min-height: 115px;
+	background-color: white;
+	flex-wrap: wrap;
+}
+
+.serviceForm input[type='text'], .serviceForm input[type='file'], .serviceForm input[type='date'], .serviceForm select, .serviceForm input[type='datetime-local'] {
+	display: block;
+}
+
+.serviceForm input[type='date'], .fakeInput {
+	background-color: white;
+}
+
+.serviceForm input[type='file'] {
+	margin:auto;
+	padding: 6px;
+	border: none;
+	width: 145px;
+}
+
+.uploadedFileCard {
+	position: relative;
+	margin: 10px;
+}
+
+.uploadedFileCard a {
+	display: flex;
+	width: fit-content;
+	flex-direction: column;
+	align-items: center;
+}
+
+.uploadedFileCard figure {
+	height:64px;
+	position:relative;
+	margin-bottom:5px;
+	width:64px;
+}
+
+.deleteicon {
+	z-index:5;
+	position:absolute;
+	top:-7px;
+	right:-7px;
+}
+
+input[type="radio"], input[type='checkbox'] {
+	accent-color: grey;
+}
+
+input[type="radio"], input[type='checkbox'], .labelAndInputContainer select, .deleteicon {
+	cursor:pointer;
+}
+
+.serviceForm select, .fakeSelect {
+	padding-right: 28px;
+	background-color: white;
+	appearance: none;
+	background-image:
+		linear-gradient(45deg, transparent 50%, #224789 50%),
+		linear-gradient(135deg, #224789 50%, transparent 50%),
+		linear-gradient(to right, darkgray, darkgray);
+	background-position:
+		calc(100% - 13px) calc(50%),
+		calc(100% - 8px) calc(50%),
+		calc(100% - 25px) 100%;
+	background-size:
+		5px 5px,
+		5px 5px,
+ 		1px 100%;
+	background-repeat: no-repeat;
+}
+
+.serviceForm select:focus, .fakeSelect:focus {
+	appearance: none;
+	background-image:
+		linear-gradient(45deg, #224789 50%, transparent 50%),
+		linear-gradient(135deg, transparent 50%, #224789 50%),
+		linear-gradient(to right, darkgray, darkgray);
+	background-position:
+		calc(100% - 8px) calc(50%),
+		calc(100% - 13px) calc(50%),
+		calc(100% - 25px) 100%;
+	background-size:
+		5px 5px,
+		5px 5px,
+		1px 100%;
+	background-repeat: no-repeat;
+		outline:0;
+}
+
+.pointer-events-none {
+	pointer-events: none;
+}
+
+.pointer-events-none .deleteicon, .pointer-events-none .nested > button[type="button"] {
+	display: none;
+}
+
+input[type='file']:disabled, .disabled, button:disabled {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+input[type="file"]::file-selector-button {
+	border: 1px solid grey;
+	width: fit-content;
+	background-color: white;
+	opacity: 1;
+	color: black;
+	padding: 5px;
+	margin-right: 10px;
+}
+
+input[type="file"]::file-selector-button:hover {
+	cursor: pointer;
+	background-color: lightgray;
+	color: black;
+}
+
+.formErrorMessage, .formOkMessage, .warningMessage {
+	display: block;
+	width: fit-content;
+	max-width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+.formErrorMessage {
+	color: red;
+}
+
+.warningMessage {
+	margin-top:8px;
+	font-size:10pt;
+	color:orange;
+}
+
+.buttonContainer {
+	display: flex;
+	justify-content: center;
+	column-gap: 10px;
+}
+
+.afterServiceRequestInfo .buttonContainer {
+	margin-top: 30px;
+	flex-wrap: wrap;
+	row-gap: 10px;
+}
+
+@media (hover:hover) {
+
+	.buttonContainer button[type="submit"]:hover {
+		background-color: #5a78c7;
+		color: #ffcc00;
+	}
+
+	.serviceForm .buttonContainer button[type='button']:hover {
+		color: darkred;
+		background-color: coral;
+	}
+}
+
+@media screen and (max-width:480px) {
+	main .afterServiceRequestInfo {
+		top: 0;
+	}
+
+	.serviceFormContainer input[type='date'] {
+		height: 30px;
+		padding-top:6px;
+	}
+
+	.conditionalDependencyMenu {
+		flex-direction: column;
+		row-gap: 20px;
+	}
+}
+
+@media screen and (max-width: calc(80ch - 1px)) {
+
+
+	/*.serviceForm {
+		width: calc(100% - 40px);
+	}*/
+}
+
+.buttonContainer button[type="submit"], .serviceForm .buttonContainer button[type="button"] {
+	margin-top: 10px;
+	width: 100%;
+	height: 45px;
+}
+
+.addField {
+	margin:20px 0px auto auto;
+}
+
+.serviceForm .buttonContainer button[type="button"] {
+	background-color: lightcoral;
+	color: white;
+	border: 1px solid gray;
+}
+
+.buttonContainer button[type="submit"] {
+	border: 1px solid lightblue;
+	background-color: #6480ca;
+	color: white;
+}
