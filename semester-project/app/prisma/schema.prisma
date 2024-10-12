@@ -58,6 +58,9 @@ model form {
 	department_id Int @db.SmallInt
 	department  department @relation(fields: [department_id], references: [id])
 	submissions submission[]
+	start_time_limited Boolean
+	end_time_limited Boolean
+	rate_limit_set Boolean
 	rate_limit Int? @db.SmallInt
 	avalible_from DateTime? @db.Timestamptz @default(now()) 
 	avalible_until DateTime? @db.Timestamptz
@@ -65,6 +68,10 @@ model form {
 	category_id Int @db.SmallInt
 	category category @relation(fields: [category_id], references: [id])
 	fields Json
+	sketch Boolean
+	thumbnail_setting String
+	thumbnail form_thumbnail? @relation(fields: [thumbnail_id], references: [id])
+	thumbnail_id Int? @db.SmallInt 
 }
 
 model submission {
@@ -73,4 +80,12 @@ model submission {
 	user user @relation(fields: [user_id], references: [id])
 	form_id Int
 	form form @relation(fields: [form_id], references: [id])
+	data Json
+	time DateTime @db.Timestamptz
+}
+
+model form_thumbnail {
+	id Int @db.SmallInt @id @default(autoincrement())
+	name String @unique
+	forms form[]
 }
