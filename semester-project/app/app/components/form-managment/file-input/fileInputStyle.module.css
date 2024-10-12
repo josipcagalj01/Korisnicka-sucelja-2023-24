@@ -1,0 +1,29 @@
+.uploadedFilesList {
+	display:flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 176px;
+	flex-wrap: wrap;
+	margin-bottom:10px;
+}
+
+.uploadedFileCard {
+	position: relative;
+	margin: 10px;
+	padding: 7px;
+	background-color: lightgrey;
+}
+
+.uploadedFilesList > p {
+	color: gray;
+	margin: 7px;
+	text-align: center;
+}
+
+.uploadedFilesList .imageAttachment {
+	position:relative;
+	margin-bottom:7px;
+	width:200px;
+	aspect-ratio: 1.77;
+	height:auto;
+}
