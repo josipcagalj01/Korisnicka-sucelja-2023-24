@@ -1,0 +1,19 @@
+#deleteicon {
+	cursor: pointer;
+	display:block;
+	aspect-ratio: 1;
+}
+
+#deleteicon > div {
+	background-color: red;
+	height: 3px;
+
+}
+
+#deleteicon > #first {
+	transform: translateY(1px) rotate(-45deg);
+}
+
+#deleteicon > #second {
+	transform: translateY(-2px) rotate(45deg);
+}
