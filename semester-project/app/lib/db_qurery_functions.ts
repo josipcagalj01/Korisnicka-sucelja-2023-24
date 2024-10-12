@@ -126,7 +126,7 @@ export async function getFormsForEmployees({ offset, limit, desiredId, category 
 	if(limit) query.take = limit
 	
 	query.orderBy = [{avalible_from: 'desc'}, {title:'asc'}]
-	query.select = {id:true, title:true, category: true, avalible_from:true, thumbnail: {select: {name: true}}}
+	query.select = {id:true, title:true, category: true, avalible_from:true, thumbnail_id: true}
 	
 	let where : {[key:string]: any} = {
 
