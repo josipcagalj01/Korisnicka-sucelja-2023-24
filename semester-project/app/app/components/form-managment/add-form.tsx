@@ -163,7 +163,7 @@ export default function ConfigureForm({props}: {props?:{existingSubmissions?: bo
 		if (response.ok) {
 			if(thumbnail) {
 				try {
-					await upload(values.thumbnail.name, values.thumbnail, {
+					await upload('form-thumbnails/' + values.thumbnail.name, values.thumbnail, {
 						access: 'public',
 						handleUploadUrl: '/api/upload-thumbnail/' + newFormId,
 					});
