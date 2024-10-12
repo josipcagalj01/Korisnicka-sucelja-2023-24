@@ -15,7 +15,8 @@ export default async function FormsList({ limit, offset, desiredId, category, cl
 			<>
 				<div className='AnnouncmentsContainer'>
 					{forms.map((form) => {
-						const thumbnailUrl = form.thumbnail?.name ? `/api/datoteka/public/thumbnails/${form.thumbnail?.name}` : '/bilazgrada.jpg'
+						//const thumbnailUrl = form.thumbnail_id? `/api/datoteka/public/thumbnails/${form.thumbnail?.name}` : '/bilazgrada.jpg'
+						const thumbnailUrl = form.thumbnail_id ? `/api/datoteka/obrasci/${form.id}` : '/bilazgrada.jpg'
 						return (
 							<article className={`announcment ${className ? className : ''}`} key={form.id}>
 								<figure className='announcmentImageContainer'>
@@ -44,8 +45,8 @@ export async function FormsList2({ limit, offset, desiredId, category, className
 			<>
 				<div className='AnnouncmentsContainer'>
 					{forms.map((form) => {
-						const thumbnailUrl = form.thumbnail?.name ? `/api/datoteka/public/thumbnails/${form.thumbnail.name}` : '/bilazgrada.jpg'
-						//const thumbnailUrl = form.thumbnail_name ? `/api/datoteka/obrasci/${form.id}` : '/bilazgrada.jpg'
+						//const thumbnailUrl = form.thumbnail?.name ? `/api/datoteka/public/thumbnails/${form.thumbnail.name}` : '/bilazgrada.jpg'
+						const thumbnailUrl = form.thumbnail_id ? `/api/datoteka/obrasci/${form.id}` : '/bilazgrada.jpg'
 						return (
 							<article className={`announcment ${className ? className : ''}`} key={form.id}>
 								<figure className='announcmentImageContainer'>

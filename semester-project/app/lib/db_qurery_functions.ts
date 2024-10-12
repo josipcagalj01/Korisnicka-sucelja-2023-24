@@ -77,7 +77,7 @@ interface formsCardData {
 	category: Category,
 	avalible_from: Date,
 	avalible_until: Date,
-	thumbnail: {name: string} | null
+	thumbnail_id: number | null
 }
 
 interface formsPackage {
@@ -92,7 +92,7 @@ export async function getForms({ offset, limit, desiredId, category }: newsProps
 	if(limit) query.take = limit
 	
 	query.orderBy = [{avalible_from: 'desc'}, {title:'asc'}]
-	query.select = {id:true, title:true, category: true, avalible_from:true, thumbnail: {select: {name: true}}}
+	query.select = {id:true, title:true, category: true, avalible_from:true, thumbnail_id: true}
 	
 	let where : {[key:string]: any} = {
 		avalible_from: {lte: new Date(Date.now())},
