@@ -21,8 +21,23 @@ cursor: not-allowed;
 	width:45px;
 	height: 45px;
 	text-align: center;
-	font-size:20pt;
-	line-height: 25px;
+}
+
+.pagesNavigation .mobile img {
+	display: inline-block;
+	margin:auto;
+}
+
+.pagesNavigation a.mobile img {
+	margin-top: 5px;
+}
+
+.back img {
+	rotate: 180deg;
+}
+
+a.back img {
+	margin-bottom: 5px;
 }
 
 @media screen and (max-width: 600px) {
