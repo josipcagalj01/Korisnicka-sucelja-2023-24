@@ -34,7 +34,7 @@ export function EmployeesOnly({children}: {children: React.ReactNode}) {
 	const session = useSession()
 	if (session.status === 'loading') return (<Loading message="Učitavanje" />)
 	else if(!session.data) return <Error401/>
-	else if(session.data.user.role_id===1) return <Error403/>
+	else if(session.data.user.role_id===2) return <Error403/>
 	else return <>{children}</>
 }
 
@@ -48,5 +48,13 @@ export function ParticularDepartmentOnly({id, children}: {id: number, children?:
 		if(session.data.user.department_id!==id) return <Error403/>
 		else return <>{children}</>
 	}
+	else return <>{children}</>
+}
+
+export function AdminOnly({children}: {children: React.ReactNode}) {
+	const session = useSession()
+	if (session.status === 'loading') return (<Loading message="Učitavanje" />)
+	else if(!session.data) return <Error401/>
+	else if(session.data.user.role_id!==1) return <Error403/>
 	else return <>{children}</>
 }
