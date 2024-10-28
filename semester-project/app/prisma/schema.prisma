@@ -82,10 +82,19 @@ model submission {
 	form form @relation(fields: [form_id], references: [id])
 	data Json
 	time DateTime @db.Timestamptz
+	attachments submission_attachment[]
 }
 
 model form_thumbnail {
 	id Int @db.SmallInt @id @default(autoincrement())
 	name String @unique
 	forms form[]
+}
+
+model submission_attachment {
+	id Int  @id @default(autoincrement())
+	submission_id Int
+	submission submission @relation(fields: [submission_id], references: [id])
+	name String
+	field_index Int @db.SmallInt
 }
