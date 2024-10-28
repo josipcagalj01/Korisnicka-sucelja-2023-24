@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import * as z from 'zod'
 
 const inputSchema = z.object({
-	tableName: z.enum(['category', 'department'], {
+	tableName: z.enum(['category', 'department', 'role'], {
 		errorMap: (issue, _ctx) => {
 			switch (issue.code) {
 				case 'invalid_type':
@@ -30,6 +30,9 @@ export async function POST(req:Request) {
 				case 'department':
 					const response2 = await db.department.findMany({orderBy:[{name:'asc'}]})
 					return NextResponse.json({message:'Ok', array:response2}, {status:200})
+				case 'role':
+					const response3 = await db.role.findMany({orderBy:[{name:'asc'}]})
+					return NextResponse.json({message:'Ok', array:response3}, {status:200})
 				default:
 					return NextResponse.json({message:'Odabrana je nedopuštena tablica.', array:[]}, {status:401}) 
 			} 
