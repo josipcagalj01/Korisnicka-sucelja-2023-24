@@ -48,7 +48,7 @@ div.serviceFormContainer {
 	background-color: #eeeeee;
 	width: calc(80ch + 40px);
 	max-width: 100%;
-	padding:15px;
+	padding:7px;
 	margin-bottom: 25px;
 }
 
@@ -62,12 +62,36 @@ div.serviceFormContainer {
 }
 
 .formSectionContent {
-	margin-top:20px;
+	margin-top: 10px;
+	background-color: white;
+	padding: 12px 7px 12px 7px;
+}
+
+.formSectionContent:first-child {
+	margin-top: auto;
+}
+
+.formSectionContent > .warningMessage {
+	margin-bottom: 15px;
 }
 
 .labelAndInputContainer {
 	width:100%;
 	margin: 10px auto 17px auto;
+}
+
+.serviceForm .inlineInputs {
+	display: flex;
+	column-gap: 10px;
+}
+
+.serviceForm .inlineInputs .labelAndInputContainer:last-child {
+	margin-bottom: 17px;
+}
+
+.serviceForm .inlineInputs > div {
+	margin-top:0;
+	flex: 1;
 }
 
 .labelAndInputContainer:last-child {
@@ -86,6 +110,7 @@ div.serviceFormContainer {
 	max-width: 100%;
 	display: flex;
 	column-gap: 20px;
+	row-gap: 7px;
 	flex-wrap: wrap;
 	justify-content: center;
 }
@@ -94,7 +119,7 @@ div.serviceFormContainer {
 	width: fit-content;
 }
 
-.labelAndInputContainer span, div.radioInput {
+.labelAndInputContainer span, .radioInput {
 	display: flex;
 	align-items: center;
 	column-gap: 10px;
@@ -135,12 +160,14 @@ div.serviceFormContainer {
 }
 
 .unnested {
-	margin-bottom:15px;
 	background-color: white;
-	
 }
 
-.unnested, .fieldProperties, .option, .option .labelAndInputContainer {
+.unnested:not(:last-of-type) {
+	margin-bottom:15px;
+}
+
+.unnested, .fieldProperties, .option, .option .labelAndInputContainer, .formSectionContent {
 	border: 1px solid darkgrey;
 	border-radius: 3px;
 }
@@ -153,10 +180,6 @@ div.serviceFormContainer {
 
 .field {
 	background-color: lightgrey;
-}
-
-.field:first-of-type {
-	margin-top:20px;
 }
 
 .field > * {
@@ -278,7 +301,7 @@ button[type="button"].arrow:hover {
 	display: block;
 }
 
-.serviceForm input[type='date'], .fakeInput {
+.serviceForm input[type='date'], .fakeInput, .serviceForm input[type='datetime-local'] {
 	background-color: white;
 }
 
@@ -328,16 +351,17 @@ input[type="radio"], input[type='checkbox'], .labelAndInputContainer select, .de
 	background-color: white;
 	appearance: none;
 	background-image:
-		linear-gradient(45deg, transparent 50%, #224789 50%),
-		linear-gradient(135deg, #224789 50%, transparent 50%),
+		/*linear-gradient(45deg, transparent 50%, #224789 50%),
+		linear-gradient(135deg, #224789 50%, transparent 50%),*/
+		url('../../../public/arrows/select-arrow-2.png'),
 		linear-gradient(to right, darkgray, darkgray);
 	background-position:
-		calc(100% - 13px) calc(50%),
-		calc(100% - 8px) calc(50%),
+		calc(100% - 7px) calc(50%),
+		/*calc(100% - 8px) calc(50%),*/
 		calc(100% - 25px) 100%;
 	background-size:
-		5px 5px,
-		5px 5px,
+		11px 6px,
+		/*5px 5px,*/
  		1px 100%;
 	background-repeat: no-repeat;
 }
@@ -345,16 +369,17 @@ input[type="radio"], input[type='checkbox'], .labelAndInputContainer select, .de
 .serviceForm select:focus, .fakeSelect:focus {
 	appearance: none;
 	background-image:
-		linear-gradient(45deg, #224789 50%, transparent 50%),
-		linear-gradient(135deg, transparent 50%, #224789 50%),
+		/*linear-gradient(45deg, #224789 50%, transparent 50%),
+		linear-gradient(135deg, transparent 50%, #224789 50%),*/
+		url('../../../public/arrows/select-arrow.png'),
 		linear-gradient(to right, darkgray, darkgray);
 	background-position:
-		calc(100% - 8px) calc(50%),
-		calc(100% - 13px) calc(50%),
+		calc(100% - 7px) calc(50%),
+		/*calc(100% - 13px) calc(50%),*/
 		calc(100% - 25px) 100%;
 	background-size:
-		5px 5px,
-		5px 5px,
+		11px 6px,
+		/*5px 5px,*/
 		1px 100%;
 	background-repeat: no-repeat;
 		outline:0;
@@ -446,6 +471,14 @@ input[type="file"]::file-selector-button:hover {
 	.conditionalDependencyMenu {
 		flex-direction: column;
 		row-gap: 20px;
+	}
+	
+	.serviceForm .inlineInputs {
+		flex-direction: column;
+	}
+	
+	#street, .serviceForm .inlineInputs > div, #house-number {
+		width:100%;
 	}
 }
 
