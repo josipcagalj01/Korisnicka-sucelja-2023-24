@@ -25,16 +25,18 @@ const employeeActions : Settings = {
 
 const adminActions : Settings ={
 	description: 'Upravljanje sustavom',
-	actions: []
+	actions: [
+		{text: 'Upravljanje korisnicima', thumbnail: '/account-managment/manage-accounts.png', basePath: '/upravljanje-sustavom/upravljanje-korisnicima?_page=1&_limit=24', basePathOnly: true}
+	]
 }
 
 export default async function EmployeeActions() {
 	const session = await getSession()
 	
-	if(session?.user.role_id!=1) return (
+	if(session?.user.role_id!==2) return (
 		<>
 			<SettingsMenu  menu={employeeActions} />
-			{!session?.user.role_id && <SettingsMenu menu={adminActions}/>}
+			{session?.user.role_id===1 && <SettingsMenu menu={adminActions}/>}
 		</>
 	)
 	else return <></>
