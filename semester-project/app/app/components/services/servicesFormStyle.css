@@ -281,7 +281,7 @@ button[type="button"].arrow:hover {
 	text-wrap: wrap;
 }
 
-.serviceForm input[type='text'], .serviceForm input[type='number'], .serviceForm input[type='date'], .serviceForm select, .serviceForm input[type='datetime-local'], .uploadedFilesList, .fakeInput, .fakeSelect, .thumbnailMenuFrame {
+.serviceForm input[type='text'], .serviceForm input[type='number'], .serviceForm input[type='date'], .serviceForm input[type='password'], .serviceForm select, .serviceForm input[type='datetime-local'], .uploadedFilesList, .fakeInput, .fakeSelect, .thumbnailMenuFrame {
 	border: 1px solid darkgray;
 	border-radius: 3px;
 	width: 100%;
