@@ -3,7 +3,7 @@ import * as z from 'zod'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
-import '../user-accounts-managment/signUpFormStyle.css'
+import '../SignUpForm/signUpFormStyle.css'
 import { useState} from "react";
 import Loading from '../Loading/loading'
 import BorderedLink from '../BorderedLink/button';
