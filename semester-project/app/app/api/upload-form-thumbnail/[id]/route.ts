@@ -48,7 +48,7 @@ export async function POST(request: Request, {params}: {params: Params}): Promis
 							// Run any logic after the file upload completed
 							// const { userId } = JSON.parse(tokenPayload);
 							// await db.update({ avatar: blob.url, userId });
-							const new_thumbnail = await db.form_thumbnail.create({data: {name: blob.pathname.split('/').slice(-1)[0]}})
+							const new_thumbnail = await db.form_thumbnail.create({data: {name: blob.url.split('/').slice(-1)[0]}})
 							await db.form.update({
 								data: {
 									thumbnail: {
