@@ -1,0 +1,96 @@
+.addUserLink {
+    margin-top: 40px;
+    margin-bottom: 3em;
+    margin-left:auto;
+}
+
+.figure, .figure2 {
+    position: relative;
+}
+
+.figure2 {
+    background-image: url('../../public/account-managment/delete.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height:30px;
+    width: 30px;
+    vertical-align: middle;
+}
+
+.figure2:hover {
+    background-image: url('../../public/account-managment/delete2.png');
+}
+
+.figure {
+    height:50px;
+    min-width:50px;
+    max-width: 50px;
+}
+
+.usersList {
+    width:100%;
+    margin: 40px auto auto auto;
+}
+
+.userInfo {
+    width:100%;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    column-gap: 2.5em;
+}
+
+.userInfo {
+    border-top: 1px solid darkgray;
+}
+
+.userInfo:last-child {
+    border-bottom: 1px solid darkgray;
+}
+
+.userInfo:nth-child(odd) {
+    background-color: var(--grey-card-background)
+}
+
+.userInfo > .userDescription {
+    width:100%;
+    display: flex;
+    column-gap: 1.5em;
+    row-gap: 7px;
+}
+
+.userInfo > .userDescription > a {
+    flex: 1;
+}
+
+.userInfo #pin {
+    width: 11ch;
+}
+
+.userInfo #role {
+    width: 13ch;
+}
+
+@media screen and (max-width: 480px) {
+    .userInfo {
+        column-gap: 1.5em;
+    }
+
+    .userInfo > .userDescription a {
+        width:fit-content;
+    }
+
+    .userInfo .userDescription {
+        flex-wrap: wrap;
+    }
+}
+
+@media screen and (hover:hover) {
+    .userInfo:hover {
+        background-color: lightskyblue;
+    }
+
+    .userInfo > .userDescription a:hover {
+        text-decoration: underline;
+    }
+}

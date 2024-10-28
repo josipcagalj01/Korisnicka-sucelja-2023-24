@@ -1,36 +1,19 @@
 'use client'
 import Link from 'next/link'
 import * as z from 'zod'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation'
 import './signUpFormStyle.css'
 import Loading from '../Loading/loading'
 import { useSession } from 'next-auth/react'
+import { formSchema, emptyForm } from '../../../lib/manage-users/addUserLib'
 
 interface serverResponse {
 	user: any,
 	message: string
 }
-
-const formSchema = z.object({
-	pin: z.string().min(1, 'Potrebno je unijeti OIB').regex(/^\d+$/, 'OIB mora sadržavati samo znamenke').min(11, 'OIB sadrži točno 11 znamenaka!').max(12, 'OIB sadrži točno 11 znamenaka!'),
-	name: z.string().min(1, 'Potrebno je upisati ime').max(100),
-	surname: z.string().min(1, 'Potrebno je upisati prezime').max(100),
-	birth_date: z.string().min(1, 'Potrebno je unijeti datum rođenja'),
-	street: z.string().min(1, 'Potrebno je upisati ulicu').max(100),
-	house_number: z.string().min(1, 'Potrebno je upisati kućni broj').regex(/^\d+[A-Za-z]?$/, 'Unesen je neispravan oblik kućnog broja').max(100),
-	place: z.string().min(1, 'Potrebno je upisati mjesto prebivališta').max(100),
-	town: z.string().min(1, 'Potrebno je upisati naziv općine/grada').max(100),
-	username: z.string().min(1, 'Potrebno je upisati korisničko ime').max(100),
-	email: z.string().min(1, 'Potrebno je upisati adresu e-pošte').email('Neispravno upisana adresa-e pošte'),
-	password: z.string().min(1, 'Potrebno je unijeti lozinku').min(7, 'Lozinka mora imati barem 8 znakova'),
-	confirmPassword: z.string().min(1, 'Potrebno je ponovno unijeti lozinku')
-})
-.refine((data) => data.password === data.confirmPassword, { path: ['confirmPassword'], message: 'Lozinka nije točna' })
-
-const emptyForm : z.infer<typeof formSchema> = { pin: '', name: '', surname: '', birth_date: '', street: '', house_number:'', place: '', town: '', username: '', email: '', password: '', confirmPassword: '' }
 
 const SignUpForm = () => {
 	const session = useSession()
@@ -41,11 +24,15 @@ const SignUpForm = () => {
 	const [signUpAttemptOccurred, setSignUpAttemptOccurred] = useState(false)
 	const [loading, isLoading] = useState(false)
 	const router = useRouter()
-	const { register, handleSubmit, reset, formState: {errors}} = useForm<z.infer<typeof formSchema>>({ resolver: zodResolver(formSchema), defaultValues:  emptyForm})
+	const { register, handleSubmit, reset, formState: {errors}, setValue} = useForm<z.infer<typeof formSchema>>({ resolver: zodResolver(formSchema), defaultValues:  emptyForm})
 
+	useEffect(()=>{
+		setValue('role_id', 2)
+		setValue('department_id', null)
+	}, [])
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		isLoading(true)
-		const {house_number, confirmPassword, ...rest} = values
+		const {house_number, ...rest} = values
 		const response = await fetch('/api/user', {
 			method: 'POST',
 			headers: {
