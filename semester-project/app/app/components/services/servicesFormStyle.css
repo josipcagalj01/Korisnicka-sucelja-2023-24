@@ -490,7 +490,7 @@ input[type="file"]::file-selector-button:hover {
 	}*/
 }
 
-.buttonContainer button[type="submit"], .serviceForm .buttonContainer button[type="button"] {
+.serviceForm .buttonContainer button[type="submit"], .serviceForm .buttonContainer button[type="button"] {
 	margin-top: 10px;
 	width: 100%;
 	height: 45px;
