@@ -60,7 +60,7 @@ export default function UpdateUser({user, roles, departments}: {user: User, role
 		<div className='afterServiceRequestInfo'>
 			<ActionResultInfo ok={success} message={serverMessage} />
 			<div>
-				<BorderedLink href='/upravljanje-sustavom/upravljanjje-korisnicima?_page=1&_limit=24'>Povratak na popis korisnika</BorderedLink>
+				<BorderedLink href='/upravljanje-sustavom/upravljanje-korisnicima?_page=1&_limit=24'>Povratak na popis korisnika</BorderedLink>
 				<BorderedLink href='/moja-stranica'>Povratak osobnu stranicu</BorderedLink>
 				{!success &&
 					<BorderedButton onClick={() => { setAttemptOccurred(!attemptOccurred); setSuccess(false)}}>
