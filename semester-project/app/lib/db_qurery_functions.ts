@@ -3,7 +3,6 @@ import { newsProps } from "../app/components/News/news";
 import { Field, Form } from "./configureFormLib";
 import { getSession } from "./getSession";
 import type * as Prisma from '@prisma/client'
-import jwt from 'jsonwebtoken'
 
 export interface Category {
 	id: number,
@@ -34,7 +33,7 @@ export async function getFormsCountForEmployees (props?: {condition:any}):Promis
 		const {user} = await getSession() || {user: null}
 			
 		let where: any = {...props?.condition}
-		if(user?.role_id && user.role_id!==2) where.department = {id: user.department_id || 0}
+		if(user?.role_id!==1 && user?.role_id!==3) where.department = {id: user?.department_id || 0}
 
 		const response = await db.form.count({where: where})
 		return response===undefined ? -2 : response
@@ -50,7 +49,7 @@ export async function getSubmissionsCountForEmployees (props?: {condition:any}):
 		const {user} = await getSession() || {user: null}
 			
 		let where: any = {...props?.condition}
-		if(user?.role_id && user.role_id!==2) where.user.department = {id: user.department_id || 0}
+		if(user?.role_id!==1 && user?.role_id!==3) where.user.department = {id: user?.department_id || 0}
 
 		const response = await db.submission.count({where: where})
 		return response===undefined ? -2 : response
@@ -68,6 +67,26 @@ export async function getCategories():Promise<categoryList> {
 	}catch(error){
 		console.error(error)
 		return {success:false}
+	}
+}
+
+export async function getDepartments():Promise<{id: number, name: string}[] | null> {
+	try {
+		const response = await db.department.findMany()
+		return response
+	}catch(error){
+		console.error(error)
+		return null
+	}
+}
+
+export async function getRoles():Promise<{id: number, name: string}[] | null> {
+	try {
+		const response = await db.role.findMany()
+		return response
+	}catch(error){
+		console.error(error)
+		return null
 	}
 }
 
@@ -118,6 +137,36 @@ export async function getForms({ offset, limit, desiredId, category }: newsProps
 	}
 }
 
+export interface TemplateMenuOption {
+	id: number,
+	title: string,
+	category: {
+		name: string
+	},
+	department_id: number,
+	avalible_from: Date | null
+}
+
+export async function getForms2() : Promise<TemplateMenuOption[] | null> {
+	try {
+		const response = await db.form.findMany({select: {
+			id: true,
+			title: true,
+			category: {
+				select: {
+					name: true
+				}
+			},
+			department_id: true,
+			avalible_from: true,
+		}})
+		return response
+	} catch(error) {
+		console.error(error)
+		return null
+	}
+}
+
 export async function getFormsForEmployees({ offset, limit, desiredId, category }: newsProps) : Promise<formsPackage> {
 	const {user} = await getSession() || {user: null}
 	let query : any = {}
@@ -128,15 +177,9 @@ export async function getFormsForEmployees({ offset, limit, desiredId, category 
 	query.orderBy = [{avalible_from: 'desc'}, {title:'asc'}]
 	query.select = {id:true, title:true, category: true, avalible_from:true, thumbnail_id: true}
 	
-	let where : {[key:string]: any} = {
+	let where : {[key:string]: any} = {}
 
-		OR: [
-			{avalible_until: null},
-			{avalible_until:{gte: new Date(Date.now())}}
-		]
-	}
-
-	if(user?.role_id && user.role_id!==2) where.department = {id: user.department_id || 0}
+	if(user?.role_id!==1 && user?.role_id!==3) where.department = {id: user?.department_id || 0}
 
 	try {
 		if(desiredId || category) {
@@ -153,13 +196,17 @@ export async function getFormsForEmployees({ offset, limit, desiredId, category 
 	}
 }
 
-interface FormConfiguration {
+export interface FormConfiguration {
+	id: number,
 	category : {
 		id:number,
 		name:string
 	},
 	rate_limit: number | null,
-	department_id: number,
+	department: {
+		id: number,
+		name: string
+	},
 	avalible_from: Date | null,
 	avalible_until : Date | null,
 	title: string,
@@ -170,7 +217,7 @@ interface FormConfiguration {
 export async function getFormConfiguration(id: number) : Promise<FormConfiguration | null> {
 	try {
 		const response = await db.form.findUnique({
-			select:{category:{select:{id:true, name:true}}, fields:true, avalible_from:true, avalible_until:true, title:true, department_id:true, rate_limit:true, sketch:true},
+			select:{category:{select:{id:true, name:true}}, fields:true, avalible_from:true, avalible_until:true, title:true, department: {select: {id: true, name: true}}, rate_limit:true, sketch:true},
 			where:{id:id, sketch:false}
 		})
 		if(response) return response as FormConfiguration
@@ -187,7 +234,7 @@ export async function getFormConfigurationForEmployee(id: number) : Promise<form
 	try {
 		let where : any = {id:id}
 		const {user} = await getSession() || {user:null}
-		if(user?.role_id && user.role_id!==2) where.department = {id: user.department_id}
+		if(user?.role_id!==1 && user?.role_id!==3) where.department = {id: user?.department_id}
 		const response = await db.form.findUnique({where: where })
 		
 		if(response) {
@@ -199,14 +246,16 @@ export async function getFormConfigurationForEmployee(id: number) : Promise<form
 				}
 			})
 			recordsExist = count ? true : false
-			const startDate = new Date((avalible_from?.getTime() || 0) - (avalible_from?.getTimezoneOffset() || 0)*60*1000)
-			const endDate : Date | null = avalible_until ? new Date((avalible_until.getTime() || 0) - (avalible_until.getTimezoneOffset() || 0)*60*1000) : null
 			return ({
 				recordsExist: recordsExist,
 				form:{
-					avalible_from: startDate.toISOString().split('.')[0] || '',
-					avalible_until: endDate?.toISOString().split('.')[0] || '',
-					fields: fields as Field[], rate_limit: rate_limit?.toString() || '', ...rest}})
+					avalible_from: avalible_from ?  `${avalible_from.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'}).split(/\.\s*/).toReversed().slice(1).join('-')}T${avalible_from.toLocaleTimeString('hr-HR', {timeZone: 'Europe/Zagreb'}).slice(0,5)}` : '',
+					avalible_until: avalible_until ? `${avalible_until.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'}).split(/\.\s*/).toReversed().slice(1).join('-')}T${avalible_until.toLocaleTimeString('hr-HR', {timeZone: 'Europe/Zagreb'}).slice(0,5)}` : '',
+					fields: fields as Field[],
+					rate_limit: rate_limit?.toString() || '',
+					...rest
+				}
+			})
 		}
 		else return null
 	} catch(error) {
@@ -215,7 +264,30 @@ export async function getFormConfigurationForEmployee(id: number) : Promise<form
 	}
 }
 
-type formConfiguration3 = Omit<FormConfiguration, 'sketch' | 'rate_limit' | 'department_id' | 'avalible_until'> & {id: number}
+export async function getFormTemplate(id: number) {
+	try {
+		const response = await db.form.findUnique({
+			where: {id: id},
+		})
+		if(!response) return null
+		else {
+			const {id, avalible_from, avalible_until, fields, rate_limit, author_id, ...rest} = response
+			return ({
+				avalible_from: avalible_from ?  `${avalible_from.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'}).split(/\.\s*/).toReversed().slice(1).join('-')}T${avalible_from.toLocaleTimeString('hr-HR', {timeZone: 'Europe/Zagreb'}).slice(0,5)}` : '',
+				avalible_until: avalible_until ? `${avalible_until.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'}).split(/\.\s*/).toReversed().slice(1).join('-')}T${avalible_until.toLocaleTimeString('hr-HR', {timeZone: 'Europe/Zagreb'}).slice(0,5)}` : '',
+				fields: fields as Field[],
+				rate_limit: rate_limit?.toString() || '',
+				...rest
+			})
+
+		}
+	} catch(error) {
+		console.error
+		return null
+	}
+}
+
+type formConfiguration3 = Omit<FormConfiguration, 'sketch' | 'rate_limit' | 'department' | 'avalible_until'>
 
 export async function getFormConfiguration3(id: number) : Promise<formConfiguration3 | null> {
 	try {
@@ -349,7 +421,20 @@ export async function getSubmission(id: number) : Promise<submissionData | null>
 			},
 			where: where
 		})
-		if(response) return response
+		if(response) {
+			const {data, ...rest} = response
+			let dataToReturn : any = {...data as any}
+			if((rest.form.fields as Field[] | null)?.some(({inputType})=>inputType==='file')) {
+				const attachments = await db.submission_attachment.findMany({where: {submission: {id: id}}, select: {id: true, name: true, field_index: true}})
+				attachments.forEach(({id, name, field_index})=>{
+					if(!dataToReturn[`a${field_index}`]) dataToReturn[`a${field_index}`] = []
+					const splitted = name.split('-')
+					const extension = name.slice(name.lastIndexOf('.'), name.length)
+					dataToReturn[`a${field_index}`].push({id: id, name: splitted.slice(0, splitted.length-1).join('-') + extension || ''})
+				})
+			}
+			return {data:dataToReturn, ...rest}
+		}
 		else return null
 	}catch(error) {
 		console.error(error)
