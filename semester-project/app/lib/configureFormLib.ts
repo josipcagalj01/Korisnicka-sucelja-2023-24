@@ -129,8 +129,9 @@ export function validateDependencyValues({label, values} : {label:string, values
 
 export function validateFileTypes2(props: validateFileTypesProps):boolean {
 	if(props.inputType==='file') {
-		if(props.fileTypes.some((fileType)=>!fileTypes.map((type)=>type.extension).includes(fileType))) return false
-		else return true
+		return props.fileTypes.every((fileType)=>fileTypes.map(({type})=>type).includes(fileType))
+		/*if(props.fileTypes.some((fileType)=>!fileTypes.map(({type})=>type).includes(fileType))) return false
+		else return true*/
 	}
 	else return true
 }
@@ -224,7 +225,7 @@ export const required = z.object({
 export const fieldSchema = z.object({
 	label:z.string().min(1, 'Potrebno je unijeti naziv polja.'),
 	inputType: z.string().min(1, 'Odaberite vrstu unosa za ovo polje.'),
-	multiple: z.string(),
+	multiple: z.boolean().optional(),
 	fileTypes: z.array(z.string()),
 	required: required,
 	requireIfRendered: z.boolean().optional(),
@@ -237,7 +238,7 @@ export const fieldSchema = z.object({
 .refine((data)=>validateFileTypes2(data), {path: ['fileTypes'], message: 'Naveden je nedopušteni tip datoteke.'})
 .refine((data)=>validateOptions(data.inputType, data.options), {path:['options'], message:'Unesite moguće odabire.'})
 .refine((data)=>validateUniquenessOfOptions(data.inputType, data.options), {path: ['options'], message: 'Svi ponuđeni odabiri unutar jednog polja moraju biti jedinstveni.'})
-.refine((data)=>validateFileCount(data.inputType, data.multiple), {path: ['multiple'], message:'Unesite koliko je datoteka moguće priložiti.'})
+.refine(({inputType, multiple})=>inputType === 'file' ? (multiple !== undefined && multiple !== null) : true, {path: ['multiple'], message:'Unesite koliko je datoteka moguće priložiti.'})
 .refine((data): boolean=>{
 	if(data.required.isRequired==='conditional') {
 		if(!data.requireIfRendered) {
@@ -299,13 +300,13 @@ export const formSchema = z.object({
 	}
 	else return true
 }, {path: ['thumbnail_id'], message: 'Odaberite naslovnu sliku'})
-/*.refine(({thumbnail_setting, thumbnail_id})=>{
+.refine(({thumbnail_setting, thumbnail})=>{
 	if(thumbnail_setting==='new') {
-		if(thumbnail_id) return true
+		if(thumbnail) return true
 		else return false
 	}
 	else return true
-}, {path: ['thumbnail_id'], message: 'Odaberite naslovnu sliku'})*/
+}, {path: ['thumbnail'], message: 'Odaberite naslovnu sliku'})
 
 export type Dependency = z.infer<typeof dependencySchema>
 export type Field = z.infer<typeof fieldSchema>
@@ -316,6 +317,12 @@ export type RenderSetings = z.infer<typeof render>
 
 export const optionDeleteWarning = 'Da biste uklonili ili mijenjali ovaj odabir, uklonite kvačice ispred istog kod određivanja ovisnosti.'
 export const fieldDeleteWarning = 'Da biste uklonili ili mijenjali ovo polje, prethodno uklonite ovisnosti povezane s njime.'
+
+export const emptyForm : Form = {title: '', category_id: 0, department_id: 0, start_time_limited: false, avalible_from: '', end_time_limited: false, avalible_until: '', rate_limit:'', fields: [], rate_limit_set: true, sketch: false, thumbnail_setting: 'default', thumbnail_id:0, thumbnail: undefined}
+export const RequirementConfig : RequirementSettings = {isRequired: '', statisfyAll: false, dependencies: []}
+export const RenderConfig : RenderSetings = {statisfyAll: false, dependencies: [], conditional: false}
+export const emptyField = {label:'', inputType:'', fileTypes:[], required:RequirementConfig, render:RenderConfig,  options:[], /*renderIfRequired:'', requireIfRendered: ''*/}
+export const emptyDependency : Dependency = {label:'', values:[]}
 
 export function canFieldBeDeleted(fields:Field[], targetedFieldIndex:number) : boolean {
 	const targetedField = fields[targetedFieldIndex]
@@ -329,4 +336,8 @@ export function canFieldBeDeleted(fields:Field[], targetedFieldIndex:number) : b
 
 export function changesExist(initial: Form, modified: Form) : boolean {
 	return !(Object.entries(initial).every(([key, value])=> JSON.stringify(value)===JSON.stringify(modified[key as keyof typeof modified])))
+}
+
+export function FieldsEqual(first: Field, second: Field) : boolean {
+	return Object.entries(first).every(([key, value])=> JSON.stringify(value)===JSON.stringify(second[key as keyof typeof second]))
 }
