@@ -2,8 +2,16 @@
 	background-color: white;
 }
 
-.navigation {
+.thumbnailMenu .navigation {
 	margin-top: unset;
+}
+
+.thumbnailMenu .navigation:first-child {
+	margin-bottom: 1em;
+}
+
+.thumbnailMenu .navigation:last-child {
+	margin-top: 1em;
 }
 
 .thumbnailMenu {

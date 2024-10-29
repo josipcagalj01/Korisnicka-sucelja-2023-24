@@ -2,14 +2,46 @@
 import Image from "next/image"
 import { Form } from "../../../../lib/configureFormLib"
 import { Control } from "react-hook-form"
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { BorderedButton } from "../../BorderedLink/button"
 import styles from '../../pages-navigation/pagesNavigationStyle.module.css'
 import styles2 from './thumbnail-menuStyle.module.css'
 import { RadioNumberInput } from "../special-inputs"
+import { ManageFormsContext } from "../../../context/manage-forms-context"
 
-export default function ThumbnailMenu({control, thumbnails, current}: {control: Control<Form>, thumbnails?: {id: number, name: string}[], current: number}) {
+export function Navigation({page, totalPages, setPage, className=''}: {page:number, totalPages: number, setPage:React.Dispatch<React.SetStateAction<number>>, className?:string}) {
+	return (
+		<div className={styles.pagesNavigation + ' ' + className + ' ' + styles2.navigation}>
+			<BorderedButton onClick={()=>setPage(1)} disabled={page===1} className={styles.desktop}>
+				Prva
+			</BorderedButton>
+			<BorderedButton onClick={()=>setPage(1)} disabled={page===1} className={styles.mobile + ' ' + styles.back}>
+				<Image alt='show-hide-arrow-double.png' src='/arrows/show-hide-arrow-double.png' height={13} width={13}/>
+			</BorderedButton>
+			<BorderedButton onClick={()=>setPage(page-1)} disabled={page===1} className={styles.desktop}>Prethodna</BorderedButton>
+			<BorderedButton onClick={()=>setPage(page-1)} disabled={page===1} className={styles.mobile + ' ' + styles.back}>
+				<Image alt='show-hide-arrow.png' src='/arrows/show-hide-arrow.png' height={14} width={8}/>
+			</BorderedButton>
+			<p>Stranica <br className={styles.mobile}/> {page} od {totalPages}</p>
+			<BorderedButton onClick={()=>setPage(page+1)} disabled={page===totalPages} className={styles.desktop}>
+				Sljedeća
+			</BorderedButton>
+			<BorderedButton onClick={()=>setPage(page+1)} disabled={page===totalPages} className={styles.mobile}>
+				<Image alt='show-hide-arrow.png' src='/arrows/show-hide-arrow.png' height={14} width={8}/>
+			</BorderedButton>
+			<BorderedButton onClick={()=>setPage(totalPages)} disabled={page===totalPages} className={styles.desktop}>
+				Posljednja
+			</BorderedButton>
+			<BorderedButton onClick={()=>setPage(totalPages)} disabled={page===totalPages} className={styles.mobile}>
+				<Image alt='show-hide-arrow-double.png' src='/arrows/show-hide-arrow-double.png' height={13} width={13}/>
+			</BorderedButton>
+		</div>
+	)
+}
+
+	export default function ThumbnailMenu({control, current}: {control: Control<Form>, current: number}) {
 	const [page, setPage] = useState(1)
+	const {thumbnails} = useContext(ManageFormsContext) || {thumbnails: []}
 	let totalPages = 1
 	if(thumbnails?.length) {
 		totalPages = Math.ceil(thumbnails.length / 12)
@@ -24,26 +56,10 @@ export default function ThumbnailMenu({control, thumbnails, current}: {control: 
 	let endPosition = offset + 12
 	if(endPosition > (thumbnails?.length || 0)) endPosition = thumbnails?.length || 0
 
-	function Navigation() {
-		return (
-			<div className={styles.pagesNavigation + ' ' + styles2.navigation}>
-				<BorderedButton onClick={()=>setPage(1)} disabled={page===1} className={styles.desktop}>Prva</BorderedButton>
-				<BorderedButton onClick={()=>setPage(1)} disabled={page===1} className={styles.mobile}>{`«`}</BorderedButton>
-				<BorderedButton onClick={()=>setPage(page-1)} disabled={page===1} className={styles.desktop}>Prethodna</BorderedButton>
-				<BorderedButton onClick={()=>setPage(page-1)} disabled={page===1} className={styles.mobile}>{`‹`}</BorderedButton>
-				<p>Stranica <br className={styles.mobile}/> {page} od {totalPages}</p>
-				<BorderedButton onClick={()=>setPage(page+1)} disabled={page===totalPages} className={styles.desktop}>Sljedeća</BorderedButton>
-				<BorderedButton onClick={()=>setPage(page+1)} disabled={page===totalPages} className={styles.mobile}>{`›`}</BorderedButton>
-				<BorderedButton onClick={()=>setPage(totalPages)} disabled={page===totalPages} className={styles.desktop}>Posljednja</BorderedButton>
-				<BorderedButton onClick={()=>setPage(totalPages)} disabled={page===totalPages} className={styles.mobile}>{`»`}</BorderedButton>
-			</div>
-		)
-	}
-
 	return (
 		<div className={styles2.thumbnailMenuFrame + " thumbnailMenuFrame"}>
 			<div className={styles2.thumbnailMenu + ' thumbnailMenu'}>
-				{thumbnails?.length && <Navigation/>}
+				{thumbnails?.length && <Navigation page={page} totalPages={totalPages} setPage={setPage}/>}
 				{reordered.slice(offset, endPosition).map(({id, name}) => {
 					const extension: string = name.split('.').slice(-1)[0]
 					let nameToDisplay = name.slice(0, name.length - extension.length - 1)
@@ -61,7 +77,7 @@ export default function ThumbnailMenu({control, thumbnails, current}: {control: 
 						</div>
 					)}
 				)}
-				{thumbnails?.length && <Navigation/>}
+				{thumbnails?.length && <Navigation page={page} totalPages={totalPages} setPage={setPage}/>}
 			</div>
 		</div>
 	)
