@@ -3,23 +3,26 @@ import { Control, FieldErrors, useFieldArray, useForm, UseFormRegister, UseFormS
 import '../services/servicesFormStyle.css'
 import BorderedLink, { BorderedButton } from "../BorderedLink/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Loading from "../Loading/loading";
 import ActionResultInfo from "../actionResultInfo/actionResultInfo";
 import { useSession } from "next-auth/react";
-import {getDepartments, canFieldBeDeleted} from '../../../lib/configureFormLib'
+import {canFieldBeDeleted} from '../../../lib/configureFormLib'
 import DeleteIcon from "../delete-icon/delete-icon";
 import {
 	fileTypes, inputTypes,
 	formSchema,
-	Form, Field, Dependency, RenderSetings, RequirementSettings
+	Form, Field,
+	emptyForm, emptyDependency, emptyField
 } from '../../../lib/configureFormLib'
 import ThumbnailMenu from "./thumbnail-menu/thumbnail-menu";
 import FileInput from "./file-input/file-input";
-import { type PutBlobResult } from '@vercel/blob';
 import { upload } from '@vercel/blob/client';
 import Image from "next/image";
 import { MyBooleanInput } from "./special-inputs";
+import TemplateMenu from "./template-menu/template-menu";
+import { ManageFormsContext } from "../../context/manage-forms-context";
+
 
 interface nestedFieldProps {
 	index:number,
@@ -57,22 +60,14 @@ export function shouldMoveField(direction: 1 | -1, index: number, fields: Field[
 }
 
 export function moveField(direction: 1 | -1, index: number, fields: Field[], setValue: UseFormSetValue<Form>) {
-	console.log('a')
-	//if(shouldMoveField(direction, index,fields)) {
+	if(shouldMoveField(direction, index,fields)) {
 		let temp = fields[index]
 		setValue(`fields.${index}`, fields[index + direction])
 		setValue(`fields.${index + direction}`, temp)
-	//}
+	}
 }
 
-const RequirementConfig : RequirementSettings = {isRequired: '', statisfyAll: false, dependencies: []}
-const RenderConfig : RenderSetings = {statisfyAll: false, dependencies: [], conditional: false}
-const emptyForm : Form = {title: '', category_id: 0, department_id: 0, start_time_limited: false, avalible_from: '', end_time_limited: false, avalible_until: '', rate_limit:'', fields: [], rate_limit_set: true, sketch: false, thumbnail_setting: 'default', thumbnail_id:0, thumbnail: undefined}
-const emptyField : Field = {label:'', inputType:'', multiple:'', fileTypes:[], required:RequirementConfig, render:RenderConfig,  options:[], /*renderIfRequired:'', requireIfRendered: ''*/}
-
-const emptyDependency : Dependency = {label:'', values:[]}
-
-export const optionDeleteWarning = 'Da biste uklonili ili mijenjali ovaj odabir, uklonite kvačice ispred istog kod određivanja ovisnosti.'
+export const optionDeleteWarning = 'Da biste uklonili ili mijenjali ovaj odabir, uklonite kvačice ispred njegovog imena kod određivanja ovisnosti.'
 export const fieldDeleteWarning = 'Da biste uklonili ili mijenjali ovo polje, prethodno uklonite ovisnosti povezane s njime.'
 
 function canOptionBeDeleted(fields:Field[], targetedField:Field, targeteOptionIndex:number) : boolean {
@@ -85,40 +80,51 @@ function canOptionBeDeleted(fields:Field[], targetedField:Field, targeteOptionIn
 	return returnValue
 }
 
-export default function ConfigureForm({props}: {props?:{existingSubmissions?: boolean, configuration?:Form, thumbnails?: {id: number, name:string}[]}}) {
+export default function ConfigureForm(props?: {existingSubmissions?: boolean, configuration?:Omit<Form, 'id'>}) {
+	const [showTemplateMenu, shouldShowTemplateMenu] = useState(props?.configuration===undefined)
 	const [attemptFailed, setAttemptFailed] = useState(false)
 	const [serverMessage, setServerMessage] = useState('')
 	const [attemptOccurred, setAttemptOccurred] = useState(false)
 	const [loading, isLoading] = useState(false)
-	const [departments,setDepartments]=useState<{id:number, name:string}[]>([])
-	const [categories,setCategories]=useState<{id:number, name:string}[]>([])
 
 	const [showCoreMenu, shouldShowCoreMenu] = useState(true)
 	const [showAvalibilityMenu, shouldShowAvalibilityMenu] = useState(true)
 	const [showContentMenu, shouldShowContentMenu] = useState(true)
 	const [showAppearanceMenu, shouldShowAppearanceMenu] = useState(true)
 
+	const {categories, departments} = useContext(ManageFormsContext) || {categories: null, departments: null}
+	
 	const session = useSession()
-
-	useEffect(
-		() =>{
-			isLoading(true)
-			getDepartments({tableName:'category'}).then((data)=>setCategories(data))
-			if(!session.data?.user.department_id) getDepartments({tableName:'department'}).then((data)=>setDepartments(data))
-			else if(!props) setValue('department_id', session.data.user.department_id)
-			isLoading(false)
-		},
-		[]
-	)
 
 	const {control, formState: {errors}, register, handleSubmit, reset, watch, setValue, getValues } = useForm<Form>({
 		resolver: zodResolver(formSchema),
 		mode: 'onSubmit',
 		reValidateMode: 'onSubmit',
-		defaultValues: props?.configuration || emptyForm
+		defaultValues: emptyForm
 	})
 	const {fields, append, prepend, remove} = useFieldArray({name:'fields', control})
-
+	
+	useEffect(
+		() =>{
+			isLoading(true)
+			if(props?.configuration) {
+				setValue('title', props.configuration.title)
+				setValue('fields', props.configuration.fields)
+				setValue('department_id', session.data?.user.role_id===1 ? props.configuration.department_id : session.data?.user.department_id || 0)
+				setValue('start_time_limited', props.configuration.start_time_limited)
+				setValue('avalible_from', props.configuration.avalible_from)
+				setValue('avalible_until', props.configuration.avalible_until)
+				setValue('end_time_limited', props.configuration.end_time_limited)
+				setValue('rate_limit', props.configuration.rate_limit)
+				setValue('rate_limit_set', props.configuration.rate_limit_set)
+				setValue('category_id', props.configuration.category_id)
+				setValue('thumbnail_id', props.configuration.thumbnail_id || 0)
+				setValue('thumbnail_setting', props.configuration.thumbnail_setting)
+			}
+			isLoading(false)
+		},
+		[props?.configuration]
+	)
 
 	const values=watch()
 	const fields2 = watch('fields')
@@ -129,8 +135,9 @@ export default function ConfigureForm({props}: {props?:{existingSubmissions?: bo
 	async function onSubmit(values: Form) {
 		isLoading(true)
 		setAttemptOccurred(true)
-
+		
 		let {fields, avalible_from, avalible_until, thumbnail, thumbnail_setting, thumbnail_id, ...rest} = values
+		console.log(avalible_from)
 		fields.map((field)=>{
 			field.required.dependencies.map((conditionalDependency, index)=>{
 				const i = field.render.dependencies.map((renderDependency)=>renderDependency.label).indexOf(conditionalDependency.label)
@@ -194,6 +201,7 @@ export default function ConfigureForm({props}: {props?:{existingSubmissions?: bo
 			</div>
 		</div>
 	)
+	else if(showTemplateMenu) return (<TemplateMenu setValue={setValue} isLoading={isLoading} showMenu={shouldShowTemplateMenu}/>)
 	else return (
 			<form onSubmit={handleSubmit(onSubmit)} className='serviceForm'>
 				<section>
@@ -204,21 +212,21 @@ export default function ConfigureForm({props}: {props?:{existingSubmissions?: bo
 						<h2>Osnovne postavke</h2>
 					</div>
 					<div className={`formSectionContent ${showCoreMenu ? '' : 'displayNone'}`}>
-						{session.data?.user.department_id === null &&
+						{session.data?.user.role_id === 1 &&
 							<div className="labelAndInputContainer">
 								<label htmlFor='departmentId'>Odabere kome su namijenjeni podaci prikupljeni ovim obrascom.</label>
-								<select {...register('department_id', { valueAsNumber: true })} defaultValue={departmentId}>
+								<select {...register('department_id', { valueAsNumber: true })} value={departmentId}>
 									<option disabled value={0} className='displayNone'></option>
-									{departments.map(({ name, id }) => <option key={name} value={id}>{name}</option>)}
+									{departments?.map(({ name, id }) => <option key={name} value={id}>{name}</option>)}
 								</select>
 								{errors.department_id && <b className='formErrorMessage'>{errors.department_id.message}</b>}
 							</div>
 						}
 						<div className="labelAndInputContainer">
 							<label htmlFor='category_id'>Odaberite kategoriju novog prijavnog obrasca</label>
-							<select {...register('category_id', { valueAsNumber: true })} defaultValue={values.category_id}>
+							<select {...register('category_id', { valueAsNumber: true })} value={values.category_id}>
 								<option disabled value={0} className='displayNone'></option>
-								{categories.map(({ name, id }) => <option key={name} value={id}>{name}</option>)}
+								{categories?.map(({ name, id }) => <option key={name} value={id}>{name}</option>)}
 							</select>
 							{errors.category_id && <b className='formErrorMessage'>{errors.category_id.message}</b>}
 						</div>
@@ -292,6 +300,9 @@ export default function ConfigureForm({props}: {props?:{existingSubmissions?: bo
 							
 							const b = watch(`fields.${index}.required.isRequired`)
 							if(b===null) setValue(`fields.${index}.required.isRequired`, '', {shouldValidate:true})
+
+							const c = watch(`fields.${index}.multiple`)
+							if(c===null) setValue(`fields.${index}.multiple`, undefined, {shouldValidate:true})
 
 							return (
 								<section className="unnested field" key={index}>
@@ -367,22 +378,13 @@ export default function ConfigureForm({props}: {props?:{existingSubmissions?: bo
 												<div className="labelAndInputContainer nested">
 													<label htmlFor='fileTypes'>Odaberite dozvoljene vrste datoteka</label>
 													<div className='checkboxContainer'>
-														{fileTypes.map(({ name, extension }) => <span key={name}><input type='checkbox' {...register(`fields.${index}.fileTypes`)} value={extension} /><p>{name}</p></span>)}
+														{fileTypes.map(({ name, type }) => <span key={name}><input type='checkbox' {...register(`fields.${index}.fileTypes`)} value={type} /><p>{name}</p></span>)}
 													</div>
 													{errors.fields?.[index]?.fileTypes && <b className="formErrorMessage">{errors.fields?.[index]?.fileTypes?.message || ''}</b>}
 												</div>
 												<div className="labelAndInputContainer nested radioInputsContainer">
 													<label htmlFor='fileTypes'>Koliko datoteka je moguće priložiti?</label>
-													<div>
-														<span>
-															<input type='radio' {...register(`fields.${index}.multiple`)} value="false" />
-															<p>Jednu</p>
-														</span>
-														<span>
-															<input type='radio' {...register(`fields.${index}.multiple`)} value="true" />
-															<p>Više</p>
-														</span>
-													</div>
+													<MyBooleanInput falseText="Jednu" trueText="Više" name={`fields.${index}.multiple`} control={control} reversed={true}/>
 													{errors.fields?.[index]?.multiple && <b className="formErrorMessage">{errors.fields?.[index]?.multiple?.message}</b>}
 												</div>
 											</>
@@ -462,7 +464,7 @@ export default function ConfigureForm({props}: {props?:{existingSubmissions?: bo
 						{values.thumbnail_setting === 'existing' && 
 							<div className='labelAndInputContainer'>
 								<label htmlFor='thumbnail_id'>Odaberite naslovnu sliku</label>
-								<ThumbnailMenu control={control} thumbnails={props?.thumbnails} current={values.thumbnail_id || 0} />
+								<ThumbnailMenu control={control} current={values.thumbnail_id || 0} />
 								{errors.thumbnail_id && <b className="formErrorMessage">{errors.thumbnail_id.message}</b>}
 							</div>
 						}
@@ -480,7 +482,7 @@ export default function ConfigureForm({props}: {props?:{existingSubmissions?: bo
 						</div>
 					</div>
 				</section>
-				<div className='buttonContainer' onClick={() => console.log(errors, fields2, values.avalible_from)}>
+				<div className='buttonContainer'>
 					<button type='submit' /*
 						
 							fields2.map((field, index)=>{

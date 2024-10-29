@@ -3,11 +3,11 @@ import {useFieldArray, useForm} from "react-hook-form";
 import '../services/servicesFormStyle.css'
 import BorderedLink, { BorderedButton } from "../BorderedLink/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import Loading from "../Loading/loading";
 import ActionResultInfo from "../actionResultInfo/actionResultInfo";
 import { useSession } from "next-auth/react";
-import {getDepartments, fieldDeleteWarning, canFieldBeDeleted} from '../../../lib/configureFormLib'
+import {fieldDeleteWarning, canFieldBeDeleted} from '../../../lib/configureFormLib'
 import { ConditionalDependencyForm, NestedField} from "./add-form";
 import DeleteIcon from "../delete-icon/delete-icon";
 import ThumbnailMenu from "./thumbnail-menu/thumbnail-menu";
@@ -16,60 +16,45 @@ import Image from "next/image";
 import {
 	fileTypes, inputTypes,
 	formSchema,
-	Form, Field, Dependency, RenderSetings, RequirementSettings, changesExist
+	Form, RenderSetings, RequirementSettings, changesExist
 } from '../../../lib/configureFormLib'
 import { upload } from '@vercel/blob/client';
-import { PutBlobResult } from "@vercel/blob";
-import { MyBooleanInput, RadioNumberInput } from "./special-inputs";
+import { MyBooleanInput } from "./special-inputs";
 import { shouldMoveField, moveField } from "./add-form";
+import { ManageFormsContext } from "../../context/manage-forms-context";
 
 const RequirementConfig : RequirementSettings = {isRequired: '', statisfyAll: false, dependencies: []}
 const RenderConfig : RenderSetings = {statisfyAll: false, dependencies: [], conditional: false}
-const emptyField : Field = {label:'', inputType:'', multiple:'', fileTypes:[], required:RequirementConfig, render:RenderConfig,  options:[], /*renderIfRequired:'', requireIfRendered: ''*/}
+const emptyField = {label:'', inputType:'', fileTypes:[], required:RequirementConfig, render:RenderConfig,  options:[], /*renderIfRequired:'', requireIfRendered: ''*/}
 
-const recordsExistMessage = 'Neki korisnici su već ispunili ovaj obrazac. Zbog toga nije moguće dodavati i uklanjati postojeća polja, kao ni mijenjati njihove osobitosti.'
+const recordsExistMessage = 'Neki korisnici su već ispunili ovaj obrazac. Zbog toga nije moguće dodavati i uklanjati postojeća polja, kao ni mijenjati njihove značajke.'
 
-export default function UpdateForm({form, recordsExist, thumbnails}: {recordsExist: boolean, form: {id: number} & Form, thumbnails?:{id: number, name:string}[]}) {
+export default function UpdateForm({form, recordsExist}: {recordsExist: boolean, form: {id: number} & Form}) {
 	const [attemptFailed, setAttemptFailed] = useState(false)
 	const [serverMessage, setServerMessage] = useState('')
 	const [attemptOccurred, setAttemptOccurred] = useState(false)
 	const [loading, isLoading] = useState(false)
-	const [departments,setDepartments]=useState<{id:number, name:string}[]>([])
-	const [categories,setCategories]=useState<{id:number, name:string}[]>([])
+	
+	const {categories, departments} = useContext(ManageFormsContext) || {categories: null, departments: null}
 
 	const [showCoreMenu, shouldShowCoreMenu] = useState(true)
 	const [showAvalibilityMenu, shouldShowAvalibilityMenu] = useState(true)
-	const [showContentMenu, shouldShowContentMenu] = useState(true)
+	const [showContentMenu, shouldShowContentMenu] = useState(!recordsExist)
 	const [showAppearanceMenu, shouldShowAppearanceMenu] = useState(true)
 		
 	const session = useSession()
 
-	useEffect(
-		() =>{
-			isLoading(true)
-			getDepartments({tableName:'category'}).then((data)=>setCategories(data))
-			if(!session.data?.user.department_id) getDepartments({tableName:'department'}).then((data)=>setDepartments(data))
-			else if(!form) setValue('department_id', session.data.user.department_id)
-			isLoading(false)
-		},
-		[]
-	)
-
-	const {thumbnail_id, ...rest} = form
-
+	
 	const {control, formState: {errors}, register, handleSubmit, reset, getValues, watch, setValue } = useForm<Form>({
 		resolver: zodResolver(formSchema),
 		mode: 'onSubmit',
 		reValidateMode: 'onSubmit',
-		defaultValues: {thumbnail_id: thumbnail_id ? thumbnail_id : 0, thumbnail: undefined, ...rest}
+		defaultValues: {...form, thumbnail: undefined}
 	})
 	const {fields, append, prepend, remove} = useFieldArray({name:'fields', control})
 
-
 	const values=watch()
 	const fields2 = watch('fields')
-
-	if(values.thumbnail_id===null) setValue('thumbnail_id', 0)
 
 	async function onSubmit(values: Form) {
 		
@@ -125,7 +110,7 @@ export default function UpdateForm({form, recordsExist, thumbnails}: {recordsExi
 		} catch(error) {
 			console.error(error)
 			isLoading(false)
-			setServerMessage('Dogodila se greška. nije moguće pohraniti promjene.')
+			setServerMessage('Dogodila se greška. Nije moguće pohraniti promjene.')
 			setAttemptFailed(true)
 			}
 	}
@@ -154,12 +139,12 @@ export default function UpdateForm({form, recordsExist, thumbnails}: {recordsExi
 						<h2>Osnovne postavke</h2>
 					</div>
 					<div className={`formSectionContent ${showCoreMenu ? '' : 'displayNone'}`}>
-						{session.data?.user.department_id === null &&
+						{session.data?.user.role_id === 1 &&
 							<div className="labelAndInputContainer">
 								<label htmlFor='departmentId'>Odabere kome su namijenjeni podaci prikupljeni ovim obrascom.</label>
 								<select {...register('department_id', { valueAsNumber: true })} value={values.department_id}>
 									<option disabled value={0} className='displayNone'></option>
-									{departments.map(({ name, id }) => <option key={name} value={id}>{name}</option>)}
+									{departments?.map(({ name, id }) => <option key={name} value={id}>{name}</option>)}
 								</select>
 								{errors.department_id && <b className='formErrorMessage'>{errors.department_id.message}</b>}
 							</div>
@@ -168,7 +153,7 @@ export default function UpdateForm({form, recordsExist, thumbnails}: {recordsExi
 							<label htmlFor='category_id'>Odaberite kategoriju novog prijavnog obrasca</label>
 							<select {...register('category_id', { valueAsNumber: true })} value={values.category_id}>
 								<option disabled value={0} className='displayNone'></option>
-								{categories.map(({ name, id }) => <option key={name} value={id}>{name}</option>)}
+								{categories?.map(({ name, id }) => <option key={name} value={id}>{name}</option>)}
 							</select>
 							{errors.category_id && <b className='formErrorMessage'>{errors.category_id.message}</b>}
 						</div>
@@ -242,6 +227,9 @@ export default function UpdateForm({form, recordsExist, thumbnails}: {recordsExi
 
 							const b = watch(`fields.${index}.required.isRequired`)
 							if (b === null) setValue(`fields.${index}.required.isRequired`, '', { shouldValidate: true })
+							
+							const c = watch(`fields.${index}.multiple`)
+							if(c===null) setValue(`fields.${index}.multiple`, undefined, {shouldValidate:true})
 
 							return (
 								<section className={`unnested field  ${recordsExist ? 'pointer-events-none' : ''}`} key={index}>
@@ -356,22 +344,13 @@ export default function UpdateForm({form, recordsExist, thumbnails}: {recordsExi
 												<div className="labelAndInputContainer nested">
 													<label htmlFor='fileTypes'>Odaberite dozvoljene vrste datoteka</label>
 													<div className='checkboxContainer'>
-														{fileTypes.map(({ name, extension }) => <span key={name}><input type='checkbox' {...register(`fields.${index}.fileTypes`)} value={extension} /><p>{name}</p></span>)}
+														{fileTypes.map(({ name, type }) => <span key={name}><input type='checkbox' {...register(`fields.${index}.fileTypes`)} value={type} /><p>{name}</p></span>)}
 													</div>
 													{errors.fields?.[index]?.fileTypes && <b className="formErrorMessage">{errors.fields?.[index]?.fileTypes?.message || ''}</b>}
 												</div>
 												<div className="labelAndInputContainer nested radioInputsContainer">
 													<label htmlFor='fileTypes'>Koliko datoteka je moguće priložiti?</label>
-													<div>
-														<span>
-															<input type='radio' {...register(`fields.${index}.multiple`)} value="false" />
-															<p>Jednu</p>
-														</span>
-														<span>
-															<input type='radio' {...register(`fields.${index}.multiple`)} value="true" />
-															<p>Više</p>
-														</span>
-													</div>
+													<MyBooleanInput falseText="Jednu" trueText="Više" name={`fields.${index}.multiple`} control={control} reversed={true}/>
 													{errors.fields?.[index]?.multiple && <b className="formErrorMessage">{errors.fields?.[index]?.multiple?.message}</b>}
 												</div>
 											</>
@@ -382,7 +361,7 @@ export default function UpdateForm({form, recordsExist, thumbnails}: {recordsExi
 						})}
 						{errors.fields && <b className='formErrorMessage'>{errors.fields.message}</b>}
 						{errors.fields?.root && <b className='formErrorMessage'>{errors.fields.root.message}</b>}
-						{!recordsExist && <button type="button" className="addField" onClick={() => append(emptyField)}>Dodaj novo polje</button>}
+						{!recordsExist && <BorderedButton className="addField" onClick={() => append(emptyField)}>Dodaj novo polje</BorderedButton>}
 					</div>
 				</section>
 				<section>
@@ -401,7 +380,7 @@ export default function UpdateForm({form, recordsExist, thumbnails}: {recordsExi
 									<p>Koristi zadanu</p>
 								</span>
 								<span>
-									<input type='radio' {...register('thumbnail_setting')} value='existing' onClick={()=>{if(values.thumbnail) {setValue('thumbnail', undefined); setValue('thumbnail_id', 0)}}}/>
+									<input type='radio' {...register('thumbnail_setting')} value='existing' onClick={()=>{if(values.thumbnail) {setValue('thumbnail', undefined);} setValue('thumbnail_id', values.thumbnail_id || form.thumbnail_id)}}/>
 									<p>Odaberi s popisa</p>
 								</span>
 								<span>
@@ -414,7 +393,7 @@ export default function UpdateForm({form, recordsExist, thumbnails}: {recordsExi
 						{values.thumbnail_setting === 'existing' && 
 							<div className='labelAndInputContainer'>
 								<label htmlFor='thumbnail_name'>Odaberite naslovnu sliku</label>
-								<ThumbnailMenu current={values.thumbnail_id || 0} control={control} thumbnails={thumbnails}/>
+								<ThumbnailMenu current={values.thumbnail_id || 0} control={control} />
 								{errors.thumbnail_id && <b className="formErrorMessage">{errors.thumbnail_id.message}</b>}
 							</div>
 						}
@@ -432,7 +411,7 @@ export default function UpdateForm({form, recordsExist, thumbnails}: {recordsExi
 						</div>
 					</div>
 				</section>
-				<div className='buttonContainer' onClick={() => console.log(errors, fields2, values.thumbnail_id)}>
+				<div className='buttonContainer'>
 					<button type='submit' className={!changesExist(form, values) ? 'disabled' : ''} /*
 						
 							fields2.map((field, index)=>{

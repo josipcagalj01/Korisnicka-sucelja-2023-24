@@ -217,10 +217,13 @@ export interface FormConfiguration {
 export async function getFormConfiguration(id: number) : Promise<FormConfiguration | null> {
 	try {
 		const response = await db.form.findUnique({
-			select:{category:{select:{id:true, name:true}}, fields:true, avalible_from:true, avalible_until:true, title:true, department: {select: {id: true, name: true}}, rate_limit:true, sketch:true},
+			select:{id: true, category:{select:{id:true, name:true}}, fields:true, avalible_from:true, avalible_until:true, title:true, department: {select: {id: true, name: true}}, rate_limit:true, sketch:true},
 			where:{id:id, sketch:false}
 		})
-		if(response) return response as FormConfiguration
+		if(response) {
+			const {fields, ...rest} = response
+			return {fields: fields as Field[], ...rest}
+		}
 		else return null
 	} catch(error) {
 		console.error
@@ -293,7 +296,7 @@ export async function getFormConfiguration3(id: number) : Promise<formConfigurat
 	try {
 		let where : any = {id:id}
 		const {user} = await getSession() || {user:null}
-		if(user?.role_id && user.role_id!==2) where.department = {id: user.department_id || 0}
+		if(user?.role_id!==1 && user?.role_id!==3) where.department = {id: user?.department_id || 0}
 		const response = await db.form.findUnique({
 			where: where,
 			select: {
@@ -346,7 +349,7 @@ export async function getSubmissions(id: number, offset: number, limit: number) 
 	try {
 		const {user} = await getSession() || {user:null}
 		let where : any = {form: {id:id}}
-		if(user?.role_id && user.role_id!==2) where.form ={department: {id: user.department_id || 0}}
+		if(user?.role_id!==1 && user?.role_id!==3) where.form ={department: {id: user?.department_id || 0}}
 		const response = await db.submission.findMany({
 			where: where,
 			select: {
@@ -382,7 +385,7 @@ export async function getSubmission(id: number) : Promise<submissionData | null>
 	try {
 		const {user} = await getSession() || {user:null}
 		let where : any = {id: id}
-		if(user?.role_id && user.role_id!==2) where.form = {department: {id: user.department_id || 0}}
+		if(user?.role_id!==1 && user?.role_id!==3) where.form = {department: {id: user?.department_id || 0}}
 		const [response, ...rest] = await db.submission.findMany({
 			select: {
 				id: true,

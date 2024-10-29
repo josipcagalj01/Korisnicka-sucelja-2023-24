@@ -1,0 +1,33 @@
+.titleAndCategory {
+	font-size: 9pt;
+}
+
+.templateMenu {
+	max-height: 400px;
+	overflow-y: scroll;
+	margin: 20px 10px 20px 10px;
+}
+
+.templateMenu .navigation {
+	margin-top: auto;
+}
+
+.templateMenu ul {
+	margin: 20px 10px 20px 10px;
+}
+
+.templateMenu ul > li > div {
+	display:block;
+}
+
+.templateMenu ul > li {
+	padding:3px;
+}
+
+.templateMenu ul >li:not(:first-child) {
+	margin-top: 10px;
+}
+
+.selected {
+	background-color: lightgrey;
+}
