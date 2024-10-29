@@ -15,13 +15,17 @@ export function filesOnly(label: string) : string {
 	return `Polje ${label} smije sadrzavati samo datoteke.`
 }
 
+export function uniqueFileNames(files: File[]) {
+	return !files.length ? true : files.map(({name})=>name).every((name, index,array)=>array.indexOf(name)==index)
+}
+
 export function isDate(input:string) : boolean {
 	if(isNaN(new Date(input).getTime())) return false
 	else return true
 }
 
 export function checkFileTypes(files:any[], fileTypes: string[]) : boolean {
-	if(files.some((file)=>!fileTypes.includes(file.name.split('.').slice(-1)[0]))) return false
+	if(files.some((file)=>!fileTypes.includes(file.type))) return false
 	else return true
 }
 
@@ -79,14 +83,13 @@ function checkConditionalRequirement(formCollectedData:any, dependency: {label:s
 }
 const re = new RegExp(/^\d+$/)
 
-export function generateZodSchema(fields: Field[], side:string) : {schema: z.ZodObject<any>, emptyForm: any} {
-	const clientRendering = side === 'client' ? true : false
+export function generateZodSchema(fields: Field[]) : {schema: z.ZodObject<any>, emptyForm?: any} {
+	const clientRendering = typeof window === 'undefined' ? false : true
 	let emptyForm : any = {}
 	let schema = z.object({})
 
-	fields.map(({label, inputType, fileTypes, ...rest}, index)=>{
+	fields.map(({label, inputType, fileTypes, multiple, ...rest}, index)=>{
 		const key = `a${index}`
-		const multiple = rest.multiple === 'true' ? true : false
 		const required = rest.required.isRequired === 'yes' ? true : false
 
 		if(inputType==='checkbox') {
@@ -119,9 +122,9 @@ export function generateZodSchema(fields: Field[], side:string) : {schema: z.Zod
 			else schema = schema.extend({[key]: z.string()})
 			if(clientRendering) emptyForm[key]=''
 		}
-		else if(inputType==='file') {
+		else if(inputType==='file' && clientRendering) {
 			if(required) {
-				if(multiple) schema = schema.extend({[key]: z.array(z.any()).min(1, missingFileMessage(label)).refine((files)=>onlyFiles(files), filesOnly(label)).refine((files)=>checkFileTypes(files, fileTypes), invalidFileTypeMessage)})
+				if(multiple) schema = schema.extend({[key]: z.array(z.any()).min(1, missingFileMessage(label)).refine((files)=>onlyFiles(files), filesOnly(label)).refine((files)=>checkFileTypes(files, fileTypes), invalidFileTypeMessage).refine((files)=>uniqueFileNames(files), 'Ime svake datoteke mora se razlikovati od imena svih drugih datoteka')})
 				else schema = schema.extend({[key]: z.array(z.any()).min(1, missingFileMessage(label)).max(1, 'Nije dozvoleno unijeti više od jedne datoteke').refine((files)=>onlyFiles(files), filesOnly(label)).refine((files)=>checkFileTypes(files, fileTypes), invalidFileTypeMessage)})
 			}
 			else {
@@ -174,12 +177,16 @@ export function generateZodSchema(fields: Field[], side:string) : {schema: z.Zod
 	fields.map((field, index, fields)=>{
 		const key = `a${index}`
 		if(field.required.isRequired==='conditional') {
+			if((field.inputType==='file' && clientRendering) || field.inputType!=='file') {
 			//@ts-expect-error
-			schema = schema.refine((data:any)=>{
-				if(shouldRender(index,data)) return isSet(data[key])
-				else return true
-			}, {path: [key], message: 'p ' + missingValueMessage(field.label)})
+				schema = schema.refine((data:any)=>{
+					if(shouldRender(index,data)) return isSet(data[key])
+					else return true
+				}, {path: [key], message: missingValueMessage(field.label)})
+			}
 		}
 	})
-	return {schema:schema, emptyForm:emptyForm}
+	let returnValue : {schema: z.ZodObject<any>, emptyForm?: any} = {schema: schema}
+	if(clientRendering) returnValue.emptyForm = emptyForm 
+	return returnValue
 }
