@@ -8,10 +8,17 @@
 	width: 100%;
 }
 
+.h1 {
+	margin-bottom: 0.5em;
+}
+
 .addFormLink {
-	margin-top: 35px;
-	margin-bottom: 2em;
 	margin-left:auto;
+}
+
+.addFormLink, .buttons {
+	margin-top: 30px;
+	margin-bottom: 1.8em;
 }
 
 .centerHorizontally {
@@ -21,4 +28,16 @@
 	width: fit-content;
 	position: sticky;
 	top: 100%;
+}
+
+.buttons {
+	display: flex;
+	justify-content: space-between;
+}
+
+@media screen and (max-width: 480px) {
+	.buttons {
+		flex-direction: column;
+		row-gap: 8px;
+	}
 }

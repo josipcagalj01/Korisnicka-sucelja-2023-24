@@ -57,6 +57,10 @@ div.serviceFormContainer {
 	column-gap: 10px;
 }
 
+.serviceForm > section .titleAndShowHideMenu h2 {
+	margin-bottom: auto;
+}
+
 .serviceForm > section > h2 {
 	word-break: break-all;
 }

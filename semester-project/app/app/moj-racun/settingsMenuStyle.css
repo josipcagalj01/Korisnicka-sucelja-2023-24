@@ -56,8 +56,20 @@
     }
 }
 
+@media screen and (max-height: 980px) {
+	.accountSettingsMenu > li {
+		aspect-ratio: 1.55;
+		height: 148px;
+	}
+	.accountSettingsMenu > li figure {
+		height: 80px;
+		width: 80px;
+	}
+}
+
 @media screen and (max-width:560px) {
     .accountSettingsMenu {
+        width:100%;
         flex-direction: column;
         row-gap:20px;
     }
