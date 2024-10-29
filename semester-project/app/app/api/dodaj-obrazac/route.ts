@@ -8,13 +8,13 @@ export async function POST(req:Request) {
 	const body = await req.json()
 	try {
 		const session = await getSession()
-		if(session?.user.role_id===1) return NextResponse.json({message: 'Samo zaposlenici smiju dodavati obrasce!'}, {status:401})
+		if(session?.user.role_id===2) return NextResponse.json({message: 'Samo zaposlenici smiju dodavati obrasce!'}, {status:401})
 		else {
-			const validatedRequest = await formSchema.parseAsync(body)
-			const titleExist = await db.form.findUnique({select: {id: true}, where: {title: validatedRequest.title}})
+			const {department_id, category_id, avalible_from, avalible_until, rate_limit, thumbnail, thumbnail_id, thumbnail_setting, title, ...rest } = await formSchema.parseAsync(body)
+			const titleExist = await db.form.findUnique({select: {id: true}, where: {title: title}})
+			if(department_id!==session?.user.department_id && session?.user.role_id!==1) return NextResponse.json({message: 'Možete dodati samo obrasce koji prikupljaju podatke namijenjene vašem odjelu.'}, {status: 409})
 			if(titleExist) return NextResponse.json({message: 'Već postoji obrazac s tim naslovom. Odaberite drugi naslov'}, {status: 409})
 			else {
-				const {department_id, category_id, avalible_from, avalible_until, rate_limit, thumbnail, thumbnail_id, thumbnail_setting, ...rest } = validatedRequest
 				let data:any = {
 					department: {connect: {id: department_id} },
 					author: { connect: { id: session?.user.id} },

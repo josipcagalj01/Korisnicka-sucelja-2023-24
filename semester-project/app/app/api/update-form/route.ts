@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "../../../lib/db";
-import { formSchema, inputTypes, Field } from "../../../lib/configureFormLib";
+import { formSchema, inputTypes, Field, FieldsEqual } from "../../../lib/configureFormLib";
 import { getSession } from "../../../lib/getSession";
 
 export async function POST(req: Request) {
@@ -12,7 +12,7 @@ export async function POST(req: Request) {
 
 		const existingForm = await db.form.findUnique({where: {id: id}})
 		if(!existingForm) return NextResponse.json({message: 'Ne postoji taj obrazac'}, {status: 400})
-		else if(existingForm.department_id !== user?.department_id && user?.role_id && user?.role_id!==2) 
+		else if(existingForm.department_id !== user?.department_id && user?.role_id!==1 && user?.role_id!==3) 
 			return NextResponse.json({message: 'Ovaj obrazac smiju uređivati samo zaposlenici za potrebe čijeg upravnog odjela je on napravljen.'},{status: 403})  
 		else {
 			if(existingForm.title !== validated.title) {
@@ -30,7 +30,8 @@ export async function POST(req: Request) {
 			Object.entries(validated).map(([key, value])=>{
 				if(key==='fields') {
 					if(!recordsExist) {
-						if(JSON.stringify(value) !== JSON.stringify(existingForm[key])) data[key] = value
+						if((value as Field[]).length !== (existingForm[key] as Field[]).length) data[key] = value
+						else if(!((value as Field[])?.every((field: Field, index: number)=>FieldsEqual(field, (existingForm[key] as Field[])[index])))) data[key] = value
 					}
 				}
 				else if(key==='sketch') {
@@ -39,9 +40,10 @@ export async function POST(req: Request) {
 					}
 				}
 				else if(key==='rate_limit') {
-					if(parseInt(value as string)!==existingForm.rate_limit) {
+					const rate_limit : number | null = !value ? null : parseInt(value as string)
+					if(rate_limit!==existingForm.rate_limit) {
 						if(!value) data.rate_limit = null
-						else data.rate_limit = parseInt(value as string)
+						else data.rate_limit = rate_limit
 					}
 				}
 				else if(['avalible_from', 'avalible_until'].includes(key)) {
@@ -51,37 +53,22 @@ export async function POST(req: Request) {
 				}
 				else if(key==='thumbnail_setting') {
 					if(existingForm[key as keyof typeof existingForm] !== value) {
-						if(value!=='default') data[key] = 'existing'
+						if(value==='new') data[key] = 'default'
+						else data[key] = value
 					}
 				}
 				else if(key==='thumbnail_id') {
-					if(!value) data[key] = null
-					else {
-						if(existingForm[key as keyof typeof existingForm] !== value) data[key] = value
+					const thumbnail_id : number | null = !value ? null : value as number
+					if(existingForm[key as keyof typeof existingForm] !== thumbnail_id) {
+						if(!thumbnail_id) data['thumbnail'] = {disconnect: true}
+						else data[key] = value
 					}
 				}
 				else {
 					if(JSON.stringify(value) !== JSON.stringify(existingForm[key as keyof typeof existingForm])) data[key] = value
 				}
 			})
-			const a = new Error('Dogodila se greška')
-	
-			const updatedForm = await db.form.update({data: data, where: {id: existingForm.id}})
-
-			if('sketch' in data && data.sketch) {
-				const query =
-				`CREATE TABLE if not exists Form${id} (
-					id serial primary key,
-					user_id serial references public.user(id),
-					config_id serial references form(id),
-					${(updatedForm.fields as Field[]).map((field: any, index:number) => {
-						const {dbType} = inputTypes.find(({type})=>type===field.inputType) || {}
-						return `a${index} ${dbType} ${field.required === 'yes' ? 'NOT NULL' : ''}`
-					})}
-				);`
-				await db.$queryRawUnsafe(query)
-			}
-
+			await db.form.update({data: data, where: {id: existingForm.id}})
 			return NextResponse.json({message: 'Promjene su uspješno spremljene'}, {status: 200})
 		}
 	}catch(error) {
