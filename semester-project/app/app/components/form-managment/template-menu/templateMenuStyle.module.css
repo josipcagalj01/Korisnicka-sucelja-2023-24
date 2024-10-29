@@ -14,6 +14,7 @@
 
 .templateMenu ul {
 	margin: 20px 10px 20px 10px;
+	width: 100%;
 }
 
 .templateMenu ul > li > div {
@@ -22,6 +23,7 @@
 
 .templateMenu ul > li {
 	padding:3px;
+	width:100%;
 }
 
 .templateMenu ul >li:not(:first-child) {
