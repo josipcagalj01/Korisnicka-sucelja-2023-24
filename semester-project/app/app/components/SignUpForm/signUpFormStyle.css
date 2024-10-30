@@ -50,7 +50,7 @@ input {
 	flex: 1;
 }
 
-#house-number > input, #house-number > label, #house-number {
+.formContainer #house-number > input, .formContainer #house-number > label, .formContainer #house-number {
 	width: 9ch;
 }
 
