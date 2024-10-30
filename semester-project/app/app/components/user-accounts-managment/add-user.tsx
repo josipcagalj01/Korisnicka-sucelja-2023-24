@@ -153,7 +153,7 @@ const SignUpForm = ({roles, departments}: {roles: {id: number, name: string}[], 
 				</div>
 				<div className='buttonContainer'>
 					<button type='submit' onClick={() => { attemptOccurred && setAttemptOccurred(false) }} className='formSubmitButton'>Izradi račun</button>
-					<button type='reset' onClick={() => reset()} className='resetButton'>Odustani</button>
+					<button type='button' onClick={() => reset()} className='resetButton'>Odustani</button>
 				</div>
 			</form>
 		</div>
