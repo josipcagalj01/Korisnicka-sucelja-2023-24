@@ -6,6 +6,10 @@
     margin:auto;
 }
 
+.accountPageContent:not(:first-child) {
+    margin-top: 1.2em;
+}
+
 .accountPageContent h2 {
     margin-bottom: 20px;
     width:fit-content;
@@ -69,7 +73,6 @@
 
 @media screen and (max-width:560px) {
     .accountSettingsMenu {
-        width:100%;
         flex-direction: column;
         row-gap:20px;
     }
