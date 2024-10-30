@@ -5,13 +5,14 @@ import Image from "next/image"
 export interface urlQuery {[key:string]: string | number | undefined}
 
 export interface pagesNavigationProps {
+	className?:string
 	basePath:string, page:number,
 	totalPages:number,
 	otherParams?: urlQuery}
 
-export default function PagesNavigation({basePath, page, totalPages, otherParams} : pagesNavigationProps) {
+export default function PagesNavigation({className='', basePath, page, totalPages, otherParams} : pagesNavigationProps) {
 	return (
-		<div className={"flex gap-4 " + styles.pagesNavigation}>
+		<div className={"flex gap-4 " + styles.pagesNavigation + ' ' + className}>
 			<BorderedLink href={{ pathname: `/${basePath}`, query: { _page: 1, ...otherParams} }} className={`${page < 2 && styles.disabled} ${styles.desktop}`}>
 				Prva
 			</BorderedLink>
