@@ -4,15 +4,6 @@
 }
 
 .categoryMenuContainer {
-    display: flex;
-    justify-content: center;
-    align-items:center;
-    column-gap:20px;
-    margin-top: 40px;
-    width: 100%;
-}
-
-.categoryMenuContainer {
   margin: 40px 0px 40px;
 }
 
@@ -108,17 +99,4 @@
 
 .announcmentContainer a {
   word-wrap: break-word;
-}
-
-@media screen and (max-width: 600px) {
-
-  .categoryMenuContainer {
-    display:grid;
-    grid-template-columns: auto auto;
-    row-gap:20px;
-  }
-
-  .categoryMenuContainer .borderedLink {
-    width: 100%;
-  }
 }

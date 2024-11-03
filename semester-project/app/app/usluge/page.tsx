@@ -3,14 +3,13 @@ import type { Metadata } from 'next'
 //const inter = Inter({ subsets: ['latin'] })
 import {Error404} from '../components/error/errorXYZ'
 import '../obavijesti/[announcmentId]/newsPageStyle.css'
-import { getTotalCount, getCategories, Category } from '../../lib/db_qurery_functions';
+import { getTotalCount } from '../../lib/db_qurery_functions';
 import { Suspense } from 'react';
 import Loading from '../components/Loading/loading'
-import BorderedLink from '../components/BorderedLink/button'
 import FormsList from '../components/FormsList';
 import { LoginRequired } from '../components/wrappers';
 import PagesNavigation, {urlQuery} from '../components/pages-navigation/PagesNavigation';
-import { category } from '@prisma/client';
+import { FormCategoryMenu } from '../components/category-menu/categoryMenu';
 
 export const metadata: Metadata = {
   title: 'Usluge',
@@ -20,38 +19,23 @@ export const metadata: Metadata = {
 async function Services({ searchParams }: { searchParams: Record<string, string | string[] | undefined>; }) {
 
 	const { _limit, _page, _category } = searchParams;
-	const [pageSize, page] = [_limit, _page].map(Number);
-
-	const {categories} = await getCategories()
+	const [pageSize, page, category] = [_limit, _page, _category].map(Number);
 	
 	let formsCount : number = 0
 	let where : any = {avalible_from: {lte: new Date(Date.now())}, OR: [ {avalible_until: null}, {avalible_until:{gte: new Date(Date.now())}} ], sketch: false}
-	let categoryExists : category | undefined
-	const category = _category?.toString().replace('_', ' ')
-	if(category) {
-		categoryExists = categories?.find(({name})=>category===name)
-		if(categoryExists) where.category_id = categoryExists.id
-		else return (<main className='errorMain'><Error404/></main>)
-	}
-	else formsCount = await getTotalCount({tableName:'form', condition: {where: where}})
 	
+	formsCount = await getTotalCount({tableName:'form', condition: {where: where}})
 	let totalPages = 1 
 	if(formsCount>0) totalPages = Math.ceil(formsCount / pageSize)
 	const query : urlQuery = {'_limit': pageSize, '_category': category}
-
-	if(page>totalPages) return (<main className='errorMain'><Error404/></main>)
+	if(_page && !_limit || _limit && !page) return (<main className='errorMain'><Error404/></main>)
+	else if(_page && isNaN(page) || _limit && isNaN(pageSize) || _category &&  isNaN(category)) return (<main className='errorMain'><Error404/></main>)
+	else if(page>totalPages) return (<main className='errorMain'><Error404/></main>)
 	return (
 			<main>
 				<LoginRequired>
 					<h1 className='serviceTitle'>Usluge</h1>
-					<div className='categoryMenuContainer'>
-						<BorderedLink className={!category ? 'current' : ''} href='/usluge?_page=1&_limit=10'>Sve usluge</BorderedLink>
-						{categories?.map(({id, name}) => (
-							<BorderedLink key={name} className={name === category ? 'current' : ''} href={`/usluge?_page=1&_limit=10&_category=${name.replace(' ', '_')}`}>
-								{name}
-							</BorderedLink>
-						))}
-					</div>
+					<FormCategoryMenu className='categoryMenuContainer' basePath='/usluge' query={{...(_page && !isNaN(page) ? {_page: page} : {}), ...query}} current={_category && !isNaN(category) ? category : undefined}/>
 					{_limit && _page && formsCount>0 && <PagesNavigation basePath='usluge' page={page} totalPages={totalPages} otherParams={query}/>}
 					<Suspense fallback={<Loading message='Učitavanje ugluga...'/>}>
 						<FormsList offset={pageSize * (page - 1)} limit={pageSize} category={category} className='mobile-no-thumbnail'/>
