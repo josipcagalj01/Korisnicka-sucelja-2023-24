@@ -1,0 +1,306 @@
+.centerHorizontally {
+	display: block;
+	margin: 1.5em auto auto auto;
+	width: fit-content;
+	position: sticky;
+	top: 100%;
+}
+
+.dateAndCategory {
+	margin-top: 35px;
+}
+
+.tableTitle {
+	margin-top: 1.5em;
+	margin-bottom: 1em;
+}
+
+.h1 {
+	margin-bottom: 0.5em;
+}
+
+.editFormLink {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	margin-left:auto;
+}
+
+.scrollWrapper {
+	width:100%;
+	overflow-x: scroll;
+	margin-top: 2em;
+}
+
+.scrollWrapper .submissionsList {
+	width:100%;
+}
+
+.submissionsList thead tr th {
+	text-align: left;
+}
+
+.formSubmissions thead tr th:last-child, .formSubmissions tbody tr td:last-child {
+	width: 16ch;
+}
+
+.submissionsList * {
+	text-wrap: nowrap;
+}
+
+.submissionsList thead tr * {
+	background-color:rgb(109, 107, 107);
+	color:white;
+}
+
+.submissionsList td, .submissionsList th {
+	padding-top:6px;
+	padding-bottom:6px;
+}
+
+.submissionsList td:not(:last-child), .submissionsList td:not(:first-child), .submissionsList th:not(:last-child), .submissionsList th:not(:first-child) {
+	padding-right:0.75em;
+	padding-left:0.75em;
+}
+
+.submissionsList td:first-child, .submissionsList th:first-child {
+	text-align: center;
+	width:7ch;
+	padding-left:5px;
+	padding-right: 0.75em;
+}
+
+.submissionsList td:last-child, .submissionsList th:last-child {
+	padding-right: 5px;
+	padding-left: 0.75em;
+}
+
+.submissionsList tbody tr:not(:last-child) td {
+	border-bottom: 1px solid;
+}
+
+.submissionsList tbody tr:nth-child(even) {
+	background-color: var(--grey-card-background);
+}
+
+.submissionsList a:hover {
+	text-decoration: underline;
+}
+
+.submission {
+	max-width: calc(80ch + 30px);
+	margin:auto;
+}
+
+.basicInfo, .applicantInfo {
+	margin-left: auto;
+	margin-right: auto;
+	display: grid;
+	grid-template-columns: auto 1fr;
+}
+
+.basicInfo > *:nth-child(odd), .applicantInfo > *:nth-child(odd) {
+	padding-left: 5px;
+	padding-right:1em;
+} 
+
+.basicInfo > *:nth-child(even), .applicantInfo > *:nth-child(even) {
+	padding-right: 5px;
+	padding-left:1em;
+} 
+
+.basicInfo > * , .applicantInfo > * {
+	border-bottom: 1px solid darkgray;
+}
+
+.basicInfo > *:nth-last-child(2), .applicantInfo > *:nth-last-child(2) {
+	border-bottom: unset;
+}
+
+.basicInfo > *:last-child, .applicantInfo > *:last-child {
+	border-bottom: unset;
+}
+
+.basicInfo *, .applicantInfo * {
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+.applicantInfo a:hover {
+	text-decoration: underline;
+}
+
+.basicInfo > *:nth-child(4n - 3), .basicInfo > *:nth-child(4n - 2), .applicantInfo > *:nth-child(4n - 3), .applicantInfo > *:nth-child(4n - 2) {
+	background-color: var(--grey-card-background);
+}
+
+.h2 {
+	max-width: 80ch;
+	margin-top: 1.5em;
+	margin-bottom: 0.7em;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.submission > .noAttachments {
+	width:100%;
+	margin-top: 8px;
+	margin-bottom: 15px;
+	padding: 5px;
+	background-color: var(--grey-card-background);
+	border-radius: 3px;
+}
+
+.labelAndValue h4 {
+	margin-bottom: 7px;
+}
+
+.labelAndValue:nth-child(even) {
+	background-color: var(--grey-card-background);
+}
+
+.labelAndValue {
+	border-top: 1px solid darkgray;
+}
+
+.labelAndValue:last-child {
+	border-bottom: 1px solid darkgray;
+}
+
+.labelAndValue {
+	display: grid;
+	grid-template-columns: 2fr 3fr;
+	column-gap: 2em;
+	align-items: center;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	width:100%;
+}
+
+.ul > li {
+	display: flex;
+	column-gap: 10px;
+	align-items: flex-start;
+	max-width: 100%;
+}
+
+/*.ul > li::before {
+  font-size:15px;
+  position:absolute;
+  left:-20px;
+  top:2px;
+  content: "\25a0";
+  color:rgba(0,0,0,0.6);
+}*/
+
+.imageContainer {
+	max-height: calc(100vh - 51px - 90px);
+	margin-left: auto;
+	margin-right: auto;
+	width:fit-content;
+	overflow-y: scroll;
+}
+
+.imageContainer, .popUp > embed {
+	margin-top: 5px;
+}
+
+.imageContainer, .popUp, .popUp > embed {
+	border: 1px solid darkgray;
+	border-radius: 3px;
+}
+
+.popUpContainer {
+	position:absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(255,255,255,0.6);
+	z-index: 5;
+
+}
+
+.popUpContainer > div {
+	position:fixed;
+	top: 45px;
+	left: calc((100% - 1152px) / 2);
+	min-height: calc(75vh - 90px);
+	max-height: calc(100vh - 90px);
+	width: 1152px;
+}
+
+.popUp {
+	margin: auto;
+	position: sticky;
+	top:100%;
+	width:100%;
+	max-height: calc(100vh - 90px);
+	z-index: 6;
+	background-color: white;
+	box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.75);	
+}
+
+.popUp > embed {
+	height: calc(100vh - 40px - 90px);
+}
+
+.popUp > * {
+	margin: 5px;
+}
+
+.attachmentAndLink:not(:last-child) {
+	margin-bottom: 10px;
+}
+
+.fileLink {
+	display:flex;
+	align-items: center;
+	column-gap: 5px;
+	width:fit-content;
+}
+
+.fileLink a {
+	display:block;
+	width:fit-content;
+	word-break: break-all;
+}
+
+.fileLink a:hover, .fileLink b:hover {
+	text-decoration: underline;
+}
+
+.fileLink figure {
+	width: 17px;
+	aspect-ratio: 1;
+}
+
+.popUpHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.popUpHeader button p {
+	margin: 5px;
+}
+
+@media screen and (max-width: 790px) {
+	.desktop {
+		display: none;
+	}
+}
+
+@media screen and (min-width: 481px) {
+	.mobile {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.labelAndValue {
+		grid-template-columns: 1fr;
+		row-gap: 5px;
+	}
+}
