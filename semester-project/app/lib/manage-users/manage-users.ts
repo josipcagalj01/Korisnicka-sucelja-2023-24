@@ -80,20 +80,17 @@ export async function getUserForForm(id: number) : Promise<User | null> {
 	}
 }
 
-export async function getUsersCount(page?:number, limit?:number, role_id?: number, department_id?:number, IstLetterName?: string, IstLetterSurname?: string) : Promise<number | null> {
+export async function getUsersCount(role_id?: number, department_id?:number, IstLetterName?: string, IstLetterSurname?: string) : Promise<number | null> {
 	const {user} = await getSession() || {user: null}
 	if(user?.role_id!==1) return null
 	else {
 		let where:any={}
 		if(role_id && !isNaN(role_id)) where.role = {id: role_id}
-		if(department_id && !isNaN(department_id)) where.department = {id: role_id}
+		if(department_id && !isNaN(department_id)) where.department = {id: department_id}
 		if(IstLetterName) where.name = {startsWith: IstLetterName, mode: 'insensitive'}
 		if(IstLetterSurname) where.surname = {startsWith: IstLetterSurname, mode: 'insensitive'}
 		try {
-			const count = await db.user.count({
-				skip: ( (page && limit) && (!isNaN(page) && !isNaN(limit)) ) ? (page-1)*limit : undefined,
-				take: ( (page && limit) && (!isNaN(page) && !isNaN(limit)) ) ? limit : undefined,
-			})
+			const count = await db.user.count({where:where})
 			return count
 		} catch(error) {
 			console.error(error)
@@ -109,7 +106,7 @@ export async function getUsers(page?:number, limit?:number, role_id?: number, de
 		else {
 			let where:any={}
 			if(role_id && !isNaN(role_id)) where.role = {id: role_id}
-			if(department_id && !isNaN(department_id)) where.department = {id: role_id}
+			if(department_id && !isNaN(department_id)) where.department = {id: department_id}
 			if(IstLetterName) where.name = {startsWith: IstLetterName, mode: 'insensitive'}
 			if(IstLetterSurname) where.surname = {startsWith: IstLetterSurname, mode: 'insensitive'}
 			const user = await db.user.findMany({
