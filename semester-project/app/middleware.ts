@@ -9,5 +9,6 @@ export const config = {
 		"/api/upload-form-thumbnail", "/api/upload-form-thumbnail/:id",
 		"/upravljanje-sustavom/upravljanje-korisnicima", "/upravljanje-sustavom/upravljanje-korisnicima/:option*",
 		"/api/update-user",
+		"/api/upload-form-attachment"
 	] 
 }
