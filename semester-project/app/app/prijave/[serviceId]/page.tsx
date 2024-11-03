@@ -100,7 +100,7 @@ async function Render({params, searchParams}: {params: Params, searchParams: Rec
 												<td>{submission.user.surname}</td>
 												<td>{submission.user.name}</td>
 												<td>{submission.user.email}</td>
-												<td>{submission.time.toLocaleDateString()} {submission.time.toLocaleTimeString()}</td>
+												<td>{submission.time.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})} {submission.time.toLocaleTimeString('hr-HR', {timeZone: 'Europe/Zagreb'})}</td>
 												<td><b><Link href={'/prijave/' + form.id + '/'+ submission.id}>Prikaži detalje</Link></b></td>
 											</tr>
 										)}

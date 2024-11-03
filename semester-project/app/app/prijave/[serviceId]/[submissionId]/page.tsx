@@ -79,7 +79,7 @@ async function Render({params}: {params:Params}) {
 					</div>
 					<div className={styles.labelAndValue}>
 						<p>Datum rođenja</p>
-						<b>{user.birth_date.toLocaleDateString()}</b>
+						<b>{user.birth_date.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})}</b>
 					</div>
 					<div className={styles.labelAndValue}>
 						<p>Adresa</p>
