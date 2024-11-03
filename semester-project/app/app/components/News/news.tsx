@@ -29,7 +29,7 @@ export default async function News({ limit, offset, desiredId, category, classNa
 							<figure className='announcmentImageContainer'>
 								<Image src={announcment.image.url} alt={announcment.image.title} fill={true} sizes='220px' style={{ objectFit: 'cover' }} />
 							</figure>
-							<p className='announcmentInfo'>{announcment.date} | {announcment.category.replace('_', ' ')}</p>
+							<p className='announcmentInfo'>{announcment.date} | {announcment.category}</p>
 							<Link href={'/obavijesti/' + announcment.id}>
 								<h3 className='announcmentTitle'>{announcment.title}</h3>
 							</Link>
