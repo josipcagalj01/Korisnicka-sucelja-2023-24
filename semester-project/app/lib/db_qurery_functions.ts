@@ -104,7 +104,7 @@ interface formsPackage {
 	forms : formsCardData[]
 }
 
-export async function getForms({ offset, limit, desiredId, category }: newsProps) : Promise<formsPackage> {
+export async function getForms({ offset, limit, category }: Omit<newsProps, 'category' | 'desidered_id'> & {category?: number}) : Promise<formsPackage> {
 	let query : any = {}
 	
 	if(offset) query.skip = offset
@@ -121,13 +121,9 @@ export async function getForms({ offset, limit, desiredId, category }: newsProps
 			{avalible_until:{gte: new Date(Date.now())}}
 		]
 	}
+	if(category && !isNaN(category)) where.category = {id: category}
 
 	try {
-		if(desiredId || category) {
-			const categoryId = await db.category.findUnique({select:{id:true}, where:{name:category}})
-			if(desiredId) where.desiredId = desiredId
-			if(category) where.category_id = categoryId?.id	
-		}
 		query.where = where
 		const response : any = await db.form.findMany(query)
 		return {count:response.length, forms: response}
@@ -167,7 +163,7 @@ export async function getForms2() : Promise<TemplateMenuOption[] | null> {
 	}
 }
 
-export async function getFormsForEmployees({ offset, limit, desiredId, category }: newsProps) : Promise<formsPackage> {
+export async function getFormsForEmployees({ offset, limit, category }: Omit<newsProps, 'category'> & {category?: number}) : Promise<formsPackage> {
 	const {user} = await getSession() || {user: null}
 	let query : any = {}
 	
@@ -180,13 +176,9 @@ export async function getFormsForEmployees({ offset, limit, desiredId, category 
 	let where : {[key:string]: any} = {}
 
 	if(user?.role_id!==1 && user?.role_id!==3) where.department = {id: user?.department_id || 0}
+	if(category && !isNaN(category)) where.category = {id:category}
 
 	try {
-		if(desiredId || category) {
-			const categoryId = await db.category.findUnique({select:{id:true}, where:{name:category}})
-			if(desiredId) where.desiredId = desiredId
-			if(category) where.category_id = categoryId?.id	
-		}
 		query.where = where
 		const response : any = await db.form.findMany(query)
 		return {count:response.length, forms: response}
@@ -345,11 +337,13 @@ type SubmissionBasicInfo = {
 	time: Date
 }
 
-export async function getSubmissions(id: number, offset: number, limit: number) : Promise<SubmissionBasicInfo[] | null> {
+export async function getSubmissions(id: number, offset: number, limit: number, IstLetterName?: string, IstLetterSurname?: string) : Promise<SubmissionBasicInfo[] | null> {
 	try {
 		const {user} = await getSession() || {user:null}
-		let where : any = {form: {id:id}}
+		let where : any = {form: {id:id}, success: true}
 		if(user?.role_id!==1 && user?.role_id!==3) where.form ={department: {id: user?.department_id || 0}}
+		if(IstLetterName) where.user = {name: {startsWith: IstLetterName, mode: 'insensitive'}}
+		if(IstLetterSurname) where.user = {surname: {startsWith: IstLetterSurname, mode: 'insensitive'}}
 		const response = await db.submission.findMany({
 			where: where,
 			select: {
@@ -366,8 +360,8 @@ export async function getSubmissions(id: number, offset: number, limit: number) 
 				},
 				time: true
 			},
-			skip:(limit && offset) ? offset : undefined,
-			take: (limit && offset) ? limit : undefined,
+			skip: offset || undefined,
+			take: limit || undefined,
 			orderBy: [
 				{time: 'asc'}
 			]
@@ -379,12 +373,29 @@ export async function getSubmissions(id: number, offset: number, limit: number) 
 	}
 }
 
-type submissionData = Omit<Prisma.submission, 'user_id' | 'form_id'> & {user: Omit<Prisma.user, 'password' | 'id' | 'role_id' | 'department_id' | 'username'>} & {form: (Pick<Prisma.form, 'id' | 'title' | 'fields'> & {category: Pick<Prisma.category, 'name'>} & {department: Pick<Prisma.department, 'name'>})}
+export async function getSubmissionsCount(id: number, IstLetterName?: string, IstLetterSurname?: string) : Promise<number | null> {
+	try {
+		const {user} = await getSession() || {user:null}
+		let where : any = {form: {id:id}, success: true}
+		if(user?.role_id!==1 && user?.role_id!==3) where.form ={department: {id: user?.department_id || 0}}
+		if(IstLetterName) where.user = {name: {startsWith: IstLetterName, mode: 'insensitive'}}
+		if(IstLetterSurname) where.user = {surname: {startsWith: IstLetterSurname, mode: 'insensitive'}}
+		const response = await db.submission.count({
+			where: where,
+		})
+		return response
+	} catch(error) {
+		console.error(error)
+		return null
+	}
+}
+
+type submissionData = Omit<Prisma.submission, 'user_id' | 'form_id' | 'success'> & {user: Omit<Prisma.user, 'password' | 'id' | 'role_id' | 'department_id' | 'username'>} & {form: (Pick<Prisma.form, 'id' | 'title' | 'fields'> & {category: Pick<Prisma.category, 'name'>} & {department: Pick<Prisma.department, 'name'>})} & {ordinal: number}
 
 export async function getSubmission(id: number) : Promise<submissionData | null> {
 	try {
 		const {user} = await getSession() || {user:null}
-		let where : any = {id: id}
+		let where : any = {id: id, success: true}
 		if(user?.role_id!==1 && user?.role_id!==3) where.form = {department: {id: user?.department_id || 0}}
 		const [response, ...rest] = await db.submission.findMany({
 			select: {
@@ -424,6 +435,7 @@ export async function getSubmission(id: number) : Promise<submissionData | null>
 			},
 			where: where
 		})
+		const ids = await db.submission.findMany({select: {id: true}, where: {form: {id: response?.form.id}}})
 		if(response) {
 			const {data, ...rest} = response
 			let dataToReturn : any = {...data as any}
@@ -436,10 +448,75 @@ export async function getSubmission(id: number) : Promise<submissionData | null>
 					dataToReturn[`a${field_index}`].push({id: id, name: splitted.slice(0, splitted.length-1).join('-') + extension || ''})
 				})
 			}
-			return {data:dataToReturn, ...rest}
+			return {data:dataToReturn, ...{ordinal: ids.map(({id})=>id).indexOf(rest.id) + 1} , ...rest}
 		}
 		else return null
 	}catch(error) {
+		console.error(error)
+		return null
+	}
+}
+
+export async function getMySubmissionsCount(category?:string) {
+	try {
+		const {user} = await getSession() || {user: null}
+		const count = await db.submission.count({
+			where: {
+				user: {id: user?.id},
+				form: category ? {category: {name: category}} : undefined
+			}
+		})
+		return count
+	} catch(error) {
+		console.error(error)
+		return null
+	}
+}
+
+export async function getMySubmissions(offset?: number, limit?: number, category?:string) {
+	const {user} = await getSession() || {user: null}
+	try {
+		const submissions = await db.submission.findMany({
+			select: {
+				id: true,
+				time: true,
+				form : {
+					select: {
+						title: true,
+						category: {
+							select: {
+								name:true
+							}
+						}
+					}
+				}
+			},
+			where: {
+				user: {id: user?.id},
+				form: category ? {category: {name: category}} : undefined
+			},
+			skip: offset,
+			take: limit,
+			orderBy: [
+				{time: 'asc'},
+				{form: {title: 'asc'} }
+			]
+		})
+		const ids = await db.submission.findMany({
+			select: {id: true},
+			where: {
+				user: {
+					id: user?.id
+				},
+			},
+			orderBy: [
+				{time: 'asc'},
+				{form: {title: 'asc'} }
+			]
+		})
+		const ids2 = ids.map(({id})=>id)
+		return submissions.map((submission)=>({no: ids2.indexOf(submission.id)+1, ...submission}))
+	} catch(error) {
 		console.error(error)
 		return null
 	}
