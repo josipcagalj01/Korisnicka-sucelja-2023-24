@@ -334,14 +334,12 @@ button[type="button"].arrow:hover {
 	margin-bottom:5px;
 	width:64px;
 }
-
-.deleteicon {
+.uploadedFileCard .deleteicon {
 	z-index:5;
 	position:absolute;
 	top:-7px;
 	right:-7px;
 }
-
 input[type="radio"], input[type='checkbox'] {
 	accent-color: grey;
 }
