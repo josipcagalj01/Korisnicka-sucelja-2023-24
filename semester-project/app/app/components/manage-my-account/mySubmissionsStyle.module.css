@@ -1,0 +1,42 @@
+.mySubmissions {
+	margin-top:2em;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	column-gap: 25px;
+	row-gap: 25px;
+	align-items: center;
+}
+
+.mySubmissions .card {
+	padding: 10px;
+	background-color: var(--grey-card-background);
+	border: 1px solid darkgray;
+	border-radius: 3px;
+}
+
+.mySubmissions .card > div:not(:last-child) {
+	border-bottom: 1px  solid darkgray;
+	padding-bottom: 8px;
+	margin-bottom: 8px;
+}
+
+.mySubmissions .card > div > div:first-child {
+	margin-bottom: 5px;
+}
+
+.mySubmissions .card div p {
+	font-size:10pt;
+}
+
+@media screen and (max-width: 480px) {
+	.mySubmissions {
+		grid-template-columns: 1fr;
+	}
+}
+
+
+@media screen and (min-width: 481px) and (max-width: 1000px) {
+	.mySubmissions {
+		grid-template-columns: 1fr 1fr;
+	}
+}
