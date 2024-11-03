@@ -1,6 +1,7 @@
 .borderedLink, .borderedButton {
 	display:block;
 	border: 1px solid grey;
+	border-radius: 3px;
 	width: fit-content;
 	background-color: white;
 	opacity: 1;
