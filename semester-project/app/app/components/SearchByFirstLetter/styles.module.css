@@ -1,0 +1,29 @@
+.alphabetMenuWrapper {
+	max-width: max-content;
+	margin: 1em auto auto auto;
+}
+
+.alphabetMenuWrapper > b {
+	display: block;
+	min-width: 6ch;
+	width:fit-content;
+	word-break: keep-all;
+	margin-bottom: 8px;
+}
+
+.alphabetMenu {
+	width: fit-content;
+	display: flex;
+	flex-wrap: wrap;
+	column-gap: 5px;
+	row-gap: 5px;
+}
+
+.alphabetMenu .borderedLink p {
+	min-width: 1.4ch;
+	text-align: center;
+}
+
+.alphabetMenu .borderedLink > p {
+	margin: 5px;
+}
