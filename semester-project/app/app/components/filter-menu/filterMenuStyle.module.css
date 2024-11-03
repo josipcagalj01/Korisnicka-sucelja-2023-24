@@ -1,0 +1,143 @@
+.filterMenu {
+	display:flex;
+	column-gap: 20px;
+	max-width:125ch;
+	margin-top: 2em;
+	margin-left:auto;
+	margin-right: auto;
+}
+
+.filterMenu > div:not(:last-child) {
+	width:100%;
+}
+
+.filterMenu > div label {
+	font-weight: bold;
+	display:block;
+	margin-bottom:7px;
+}
+
+.filterMenu label, .filterMenu select {
+	width:100%;
+}
+
+.labelAndSelect {
+	width: 100%;
+	display: grid;
+	align-items: center;
+	grid-template-columns: 1fr;
+}
+
+.labelAndSelect label {
+	align-self: flex-start;
+}
+
+.selectContainer {
+	position: relative;
+	display: flex;
+	column-gap: 7px;
+	align-items: center;
+}
+
+.selectContainer .deleteicon {
+	position: absolute;
+	top: calc(50% - 7px);
+	right: 30px;
+	z-index: 5;
+	opacity: 0.7;
+}
+
+.filterMenu select {
+	flex: 1;
+	border: 1px solid darkgray;
+	border-radius: 3px;
+	padding:3px;
+	padding-right: 43px;
+	width: calc(100% - 15px);
+	text-wrap: wrap;
+	background-color: white;
+}
+
+.filterMenu select {
+	appearance: none;
+	background-image:
+		url('../../../public/arrows/select-arrow-2.png'),
+    linear-gradient(to right, darkgray, darkgray);
+  background-position:
+    calc(100% - 7px) calc(50%),
+    calc(100% - 25px) 100%;
+  background-size:
+    11px 6px,
+    1px 100%;
+  background-repeat: no-repeat;
+}
+
+.filterMenu select:focus {
+	appearance: none;
+	background-image:
+		url('../../../public/arrows/select-arrow.png'),
+    linear-gradient(to right, darkgray, darkgray);
+  background-position:
+    calc(100% - 7px) calc(50%),
+    calc(100% - 25px) 100%;
+  background-size:
+    11px 6px,
+    1px 100%;
+  background-repeat: no-repeat;
+	outline:0;
+}
+
+.filterMenu button:disabled {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.filterMenu button {
+	line-height: normal;
+	padding:5px;
+	width: 8ch;
+}
+
+.filterMenu .buttonContainer {
+	margin-top: 29px;
+	display:flex;
+	column-gap: 10px;
+	align-items: center;
+}
+
+.filterMenu .buttonContainer button[type="submit"] {
+	border: 1px solid lightblue;
+	background-color: #6480ca;
+	color: white;
+}
+
+.filterMenu .buttonContainer button[type="button"] {
+	background-color: lightcoral;
+	color: white;
+}
+
+@media screen and (max-width: 480px) {
+	.filterMenu {
+		flex-direction: column;
+		row-gap: 10px;
+	}
+
+	.filterMenu .buttonContainer {
+		margin-top:10px;
+		width:fit-content;
+		margin-left: auto;
+	}
+}
+
+@media (hover:hover) {
+
+	.buttonContainer button[type="submit"]:hover {
+		background-color: #5a78c7;
+		color:darkblue;
+	}
+
+	.buttonContainer button[type='button']:hover {
+		color: darkred;
+		background-color: coral;
+	}
+}
