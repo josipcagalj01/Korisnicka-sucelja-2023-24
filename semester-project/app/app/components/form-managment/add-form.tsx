@@ -61,9 +61,36 @@ export function shouldMoveField(direction: 1 | -1, index: number, fields: Field[
 
 export function moveField(direction: 1 | -1, index: number, fields: Field[], setValue: UseFormSetValue<Form>) {
 	if(shouldMoveField(direction, index,fields)) {
+		const tempOptions1 = fields[index].options
+		const tempOptions2 = fields[index+direction].options
+		const dependencies1 = fields[index].render.dependencies
+		const dependencies2 = fields[index + direction].render.dependencies
+		const dependencies3 = fields[index].required.dependencies
+		const dependencies4 = fields[index + direction].required.dependencies
+		const fileTypes1 = fields[index].fileTypes
+		const fileTypes2 = fields[index + direction].fileTypes
+		setValue(`fields.${index + direction}.options`, [])
+		setValue(`fields.${index}.options`, [])
+		setValue(`fields.${index + direction}.render.dependencies`, [])
+		setValue(`fields.${index}.render.dependencies`, [])
+		setValue(`fields.${index + direction}.required.dependencies`, [])
+		setValue(`fields.${index}.required.dependencies`, [])
+		setValue(`fields.${index + direction}.fileTypes`, [])
+		setValue(`fields.${index}.fileTypes`, [])
+		
 		let temp = fields[index]
 		setValue(`fields.${index}`, fields[index + direction])
 		setValue(`fields.${index + direction}`, temp)
+		
+		setValue(`fields.${index + direction}.options`, tempOptions1)
+		setValue(`fields.${index}.options`, tempOptions2)
+		setValue(`fields.${index + direction}.render.dependencies`, dependencies1)
+		setValue(`fields.${index}.render.dependencies`, dependencies2)
+		setValue(`fields.${index + direction}.required.dependencies`, dependencies3)
+		setValue(`fields.${index}.required.dependencies`, dependencies4)
+		setValue(`fields.${index + direction}.fileTypes`, fileTypes1)
+		setValue(`fields.${index}.fileTypes`, fileTypes2)
+		
 	}
 }
 
@@ -72,7 +99,7 @@ export const fieldDeleteWarning = 'Da biste uklonili ili mijenjali ovo polje, pr
 
 function canOptionBeDeleted(fields:Field[], targetedField:Field, targeteOptionIndex:number) : boolean {
 	let returnValue = true
-	const targetedOption:string = targetedField.options[targeteOptionIndex].option
+	const targetedOption:string = targetedField.options[targeteOptionIndex]?.option || ''
 	fields.map(({required, render})=>{
 		if(required.dependencies.some(({values,label})=>values.includes(targetedOption) && label===targetedField.label)) {returnValue = false; return}
 		else if(render.dependencies.some(({values,label})=>values.includes(targetedOption) && label===targetedField.label)) {returnValue = false; return}
@@ -137,7 +164,7 @@ export default function ConfigureForm(props?: {existingSubmissions?: boolean, co
 		setAttemptOccurred(true)
 		
 		let {fields, avalible_from, avalible_until, thumbnail, thumbnail_setting, thumbnail_id, ...rest} = values
-		console.log(avalible_from)
+		
 		fields.map((field)=>{
 			field.required.dependencies.map((conditionalDependency, index)=>{
 				const i = field.render.dependencies.map((renderDependency)=>renderDependency.label).indexOf(conditionalDependency.label)
@@ -315,7 +342,7 @@ export default function ConfigureForm(props?: {existingSubmissions?: boolean, co
 											<button className="arrow down" disabled={!shouldMoveField(1, index, fields2)} type='button' onClick={()=>moveField(1, index, fields2, setValue)}>
 												<Image src='/arrows/arrow.png' width={14} height={14} alt='arrow' style={{objectFit:'contain'}}/>
 											</button>
-											<DeleteIcon className={`${!allowedToDelete ? 'disabled' : ''}`} onClick={()=>remove(index)}/>
+											<DeleteIcon className={`${!allowedToDelete ? 'disabled' : ''} deleteicon`} onClick={()=>remove(index)}/>
 										</div>
 										
 									</div>
@@ -592,7 +619,7 @@ export function ConditionalDependencyForm({index, control, register, errors, fie
 							<div>
 								<label htmlFor={`fields.${index}.${dependencyName}.${i}.values`}>Ima vrijednost(i)</label>
 								<div className='checkboxContainer'>
-									{dependencies[i].label &&
+									{dependencies[i]?.label &&
 										<>
 											{fields2.find(({label})=>label===dependencies[i].label)?.options?.map(({option})=>
 												<span key={Math.random()}>
