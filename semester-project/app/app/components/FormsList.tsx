@@ -6,7 +6,9 @@ import { getForms, getFormsForEmployees } from '../../lib/db_qurery_functions';
 import './News/newsStyle.css'
 import styles from '../obrasci/editableFormsStyle.module.css'
 
-export default async function FormsList({ limit, offset, desiredId, category, className }: newsProps) {
+type Props = Omit<newsProps, 'category'> & {category?:number} 
+
+export default async function FormsList({ limit, offset, desiredId, category, className }: Props) {
 	const {count, forms} = await getForms({limit:limit, offset:offset, desiredId:desiredId, category:category})
 	if (count === -1) return (<ActionResultInfo message='Dogodila se greška pri učitavanju usluga.' className='margin-top-40px'/>)
 	else if (count === 0) return (<h3 className={styles.centerHorizontally}>Još nema dostupnih obrazaca</h3>)
@@ -36,7 +38,7 @@ export default async function FormsList({ limit, offset, desiredId, category, cl
 	}
 }
 
-export async function FormsList2({ limit, offset, desiredId, category, className }: newsProps) {
+export async function FormsList2({ limit, offset, desiredId, category, className }: Props) {
 	const {count, forms} = await getFormsForEmployees({limit:limit, offset:offset, desiredId:desiredId, category:category})
 	if (count === -1) return (<ActionResultInfo message='Dogodila se greška pri učitavanju obrazaca.' />)
 	else if (count === 0) return (<h3 className={styles.centerHorizontally}>Nema obrazaca za prikazati</h3>)
@@ -66,7 +68,7 @@ export async function FormsList2({ limit, offset, desiredId, category, className
 	}
 }
 
-export async function FormsList3({ limit, offset, desiredId, category, className }: newsProps) {
+export async function FormsList3({ limit, offset, desiredId, category, className }: Props) {
 	const {count, forms} = await getFormsForEmployees({limit:limit, offset:offset, desiredId:desiredId, category:category})
 	if (count === -1) return (<ActionResultInfo message='Dogodila se greška pri učitavanju obrazaca.' />)
 	else if (count === 0) return (<h3 className={styles.centerHorizontally}>Nema obrazaca za prikazati</h3>)
