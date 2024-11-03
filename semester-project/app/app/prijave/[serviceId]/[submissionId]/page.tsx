@@ -64,7 +64,7 @@ async function Render({params}: {params:Params}) {
 					</div>
 					<div className={styles.labelAndValue}>
 						<p>Vrijeme podnošenja</p>
-						<b>{time.toLocaleDateString()} {time.toLocaleTimeString('hr-HR', {timeZone: 'Europe/Zagreb'})}</b>
+						<b>{time.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})} {time.toLocaleTimeString('hr-HR', {timeZone: 'Europe/Zagreb'})}</b>
 					</div>
 				</section>
 				<section>
