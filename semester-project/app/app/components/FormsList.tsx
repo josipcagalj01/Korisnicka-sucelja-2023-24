@@ -24,7 +24,7 @@ export default async function FormsList({ limit, offset, desiredId, category, cl
 								<figure className='announcmentImageContainer'>
 									<Image src={thumbnailUrl} alt='bilazgrada' fill={true} sizes='220px' style={{ objectFit: 'cover' }} />
 								</figure>
-								<p className='announcmentInfo'>{form.avalible_from.toLocaleDateString('hr-HR')} | {form.category.name.replace?.('_', ' ')}</p>
+								<p className='announcmentInfo'>{form.avalible_from.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})} | {form.category.name.replace?.('_', ' ')}</p>
 								<Link href={'/usluge/' + form.id}>
 									<h3 className='announcmentTitle'>{form.title}</h3>
 								</Link>
@@ -54,7 +54,7 @@ export async function FormsList2({ limit, offset, desiredId, category, className
 								<figure className='announcmentImageContainer'>
 									<Image src={thumbnailUrl} alt={thumbnailUrl} fill={true} sizes='220px' style={{ objectFit: 'cover' }} />
 								</figure>
-								<p className='announcmentInfo'>{form.avalible_from.toLocaleDateString('hr-HR')} | {form.category.name.replace?.('_', ' ')}</p>
+								<p className='announcmentInfo'>{form.avalible_from.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})} | {form.category.name.replace?.('_', ' ')}</p>
 								<Link href={'/obrasci/' + form.id}>
 									<h3 className='announcmentTitle'>{form.title}</h3>
 								</Link>
@@ -78,7 +78,7 @@ export async function FormsList3({ limit, offset, desiredId, category, className
 				<div className='AnnouncmentsContainer'>
 					{forms.map((form) => (
 						<article className={`announcment ${className ? className : ''}`} key={form.id}>
-							<p className='announcmentInfo'>{form.avalible_from.toLocaleDateString()} | {form.category.name.replace?.('_', ' ')}</p>
+							<p className='announcmentInfo'>{form.avalible_from.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})} | {form.category.name.replace?.('_', ' ')}</p>
 							<Link href={'/prijave/' + form.id + '?_page=1&_limit=25'}>
 								<h3 className='announcmentTitle'>{form.title}</h3>
 							</Link>

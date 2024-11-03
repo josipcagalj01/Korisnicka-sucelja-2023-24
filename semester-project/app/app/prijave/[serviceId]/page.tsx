@@ -67,7 +67,7 @@ async function Render({params, searchParams}: {params: Params, searchParams: Rec
 				<>
 					<h1 className={styles.h1}>{form.title}</h1>
 					<h2 className="serviceTitle">Pristigle prijave</h2>
-					<p className={styles.dateAndCategory}>{form.avalible_from?.toLocaleDateString()} | {form.category.name}</p>
+					<p className={styles.dateAndCategory}>{form.avalible_from?.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})} | {form.category.name}</p>
 					<BorderedLink href={'/obrasci/'+form.id} className={styles.editFormLink}>Postavke obrasca</BorderedLink>
 					{!submissions && <ActionResultInfo ok={false} message="Nije moguće učitati podatke o ispunjavanju ovog obrasca" />}
 					{submissions && 

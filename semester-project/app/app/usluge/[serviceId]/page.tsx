@@ -42,7 +42,7 @@ async function RenderForm({ params }: { params: serviceParams }) {
 		return (
 		<>
 			<h1 className="serviceTitle">{Form.title}</h1>
-			<p className='date&category'>{Form.avalible_from?.toLocaleDateString()} | {Form.category.name}</p>
+			<p className='date&category'>{Form.avalible_from?.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})} | {Form.category.name}</p>
 			<DynamicForm now={now} Form={Form} rate={rate}/>
 		</>
 	)}
