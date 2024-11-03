@@ -11,7 +11,8 @@ interface Action {
 	thumbnail:string,
 	formName?:string
 	basePath: string,
-	basePathOnly?: boolean
+	basePathOnly?: boolean,
+	query?:string
 }
 
 const employeeActions : Settings = {
