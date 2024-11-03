@@ -1,0 +1,20 @@
+.categoryMenuContainer {
+	display: flex;
+	justify-content: center;
+	align-items:center;
+	column-gap:20px;
+	width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+
+  .categoryMenuContainer {
+    display:grid;
+    grid-template-columns: auto auto;
+    row-gap:20px;
+  }
+
+  .categoryMenuContainer .borderedLink {
+    width: 100%;
+  }
+}
