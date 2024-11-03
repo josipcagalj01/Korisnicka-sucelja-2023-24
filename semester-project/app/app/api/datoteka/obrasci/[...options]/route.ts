@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
 import { db } from "../../../../../lib/db";
 import { MultipleParams } from "../../../../../lib/interfaces";
-import jwt from "jsonwebtoken";
 
 export async function GET(req: Request, {params}: {params: MultipleParams}) {
-	
+	if(params.options.length===2) {
 		try {
 			if(!isNaN(parseInt(params.options[0]))) {
 				const id = parseInt(params.options[0])
@@ -42,6 +41,6 @@ export async function GET(req: Request, {params}: {params: MultipleParams}) {
 			console.error(error)
 			return NextResponse.json({ message: "Dogodila se greška! Nije moguće dohvatiti datoteku." }, { status: 500 })
 		}
-	
-	
+	}
+	else return NextResponse.json({ message: "Nisu navedeni svi potrebni parametri." }, { status: 400 })
 }
