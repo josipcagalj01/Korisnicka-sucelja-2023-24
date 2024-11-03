@@ -64,7 +64,7 @@ async function Render({params}: {params:Params}) {
 					</div>
 					<div className={styles.labelAndValue}>
 						<p>Vrijeme podnošenja</p>
-						<b>{time.toLocaleDateString()} {time.toLocaleTimeString()}</b>
+						<b>{time.toLocaleDateString()} {time.toLocaleTimeString('hr-HR', {timeZone: 'Europe/Zagreb'})}</b>
 					</div>
 				</section>
 				<section>
@@ -96,7 +96,7 @@ async function Render({params}: {params:Params}) {
 						<div className={styles.labelAndValue} key = {field.label}>
 							<p>{field.label}</p>
 							{['text', 'pin', 'email', 'radio', 'number'].includes(field.inputType) && <b>{isSet((data as any)[`a${index}`]) ? (data as any)[`a${index}`] : '/'}</b>}
-							{field.inputType === 'date' && <b>{isSet((data as any)[`a${index}`]) ? new Date((data as any)[`a${index}`]).toLocaleDateString() : '/'}</b>}
+							{field.inputType === 'date' && <b>{isSet((data as any)[`a${index}`]) ? new Date((data as any)[`a${index}`]).toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'}) : '/'}</b>}
 							{field.inputType==='checkbox' &&
 								<ul className={styles.ul}>
 									{(data as any)[`a${index}`].map((value: string)=><li key={value}><Bullet/><b>{value}</b></li>)}
