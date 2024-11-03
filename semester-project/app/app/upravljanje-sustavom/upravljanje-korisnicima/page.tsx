@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 	title: 'Upravljanje korisnickim računima'
 }
 
-const basePath = 'upravljanje-sustavom/upravljanje-korisnicima'
+const basePath = '/upravljanje-sustavom/upravljanje-korisnicima'
 
 export default async function Action({ searchParams }: { searchParams: Record<string, string | string[] | undefined>; }) {
 	const { _limit, _page, _role, _department, _namestart, _surnamestart } = searchParams;
@@ -62,7 +62,8 @@ async function UserList({page, limit, role, department, namestart, surnamestart}
 			<SeartchByFirstLetter label="Prezime:" basePath={basePath} query={query} current={surnamestart} param="_surnamestart"/>
 			
 			{users?.length ?
-				<>{page && limit && <PagesNavigation basePath={basePath} page={page} totalPages={totalPages} otherParams={query}/>}
+				<>
+				{page && limit && <PagesNavigation basePath={basePath} page={page} totalPages={totalPages} otherParams={query}/>}
 				<section className='usersList _80ch'>
 					{users.map((user)=>
 						<div key={user.pin} className="userInfo">
