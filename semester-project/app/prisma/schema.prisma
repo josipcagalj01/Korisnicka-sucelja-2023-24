@@ -82,6 +82,7 @@ model submission {
 	form form @relation(fields: [form_id], references: [id])
 	data Json
 	time DateTime @db.Timestamptz
+	success Boolean
 	attachments submission_attachment[]
 }
 
