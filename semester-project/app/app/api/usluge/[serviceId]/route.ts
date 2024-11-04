@@ -38,19 +38,20 @@ export async function POST(req:Request, {params}: {params:serviceParams}) {
 			if(rate<0) return NextResponse.json({message: 'Sustav ne može pohraniti Vašu prijavu.'}, {status:500})
 			else if(rate >=rate_limit) return NextResponse.json({message: `Korisnik ${session?.user.name} ${session?.user.surname} je ispunio obrazac već ${rate} puta. Nema pravo ponovo ispuniti obrazac.`}, {status:409})
 		}
-		else if(avalible_from) {
-			const timeFormat : any = {hour: "2-digit", minute: "2-digit"}
-			if(avalible_from.getTime()>=Date.now()) return NextResponse.json(
-				{message: `Obrazac se otvara ${avalible_from?.toLocaleDateString()} u ${avalible_from?.toLocaleTimeString('hr-HR',timeFormat)}. Na žalost, ovaj obrazac još nije raspoloživ.`},
+		else if(avalible_from && avalible_from.getTime()>=Date.now()) {
+			const timeFormat : any = {hour: "2-digit", minute: "2-digit", timeZone: 'Europe/Zagreb'}
+			return NextResponse.json(
+				{message: `Obrazac se otvara ${avalible_from?.toLocaleDateString('hr-HR', timeFormat)} u ${avalible_from?.toLocaleTimeString('hr-HR',timeFormat)}. Na žalost, ovaj obrazac još nije raspoloživ.`},
 				{status:409}
-		)}
-		else if(avalible_until) {
-			const timeFormat : any = {hour: "2-digit", minute: "2-digit"}
-			if(avalible_until.getTime()<Date.now())
-				return NextResponse.json(
-					{message: `Obrazac je zatvoren ${avalible_until?.toLocaleDateString()} u ${avalible_until?.toLocaleTimeString([],timeFormat)} Na žalost, ovaj obrazac više nije raspoloživ..`},
-					{status:409}
-		)}
+			)
+		}
+		else if(avalible_until && avalible_until.getTime()<Date.now()) {
+			const timeFormat : any = {hour: "2-digit", minute: "2-digit", timeZone: 'Europe/Zagreb'}
+			return NextResponse.json(
+				{message: `Obrazac je zatvoren ${avalible_until?.toLocaleDateString()} u ${avalible_until?.toLocaleTimeString([],timeFormat)} Na žalost, ovaj obrazac više nije raspoloživ.`},
+				{status:409}
+			)	
+		}
 		
 		const {schema} = generateZodSchema(fields as Field[])
 				
