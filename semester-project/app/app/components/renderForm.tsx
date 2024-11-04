@@ -191,7 +191,11 @@ function DynamicForm({rate, form}: {form:Omit<FormConfiguration, 'avalible_from'
 				<BorderedLink href='/usluge?_page=1&_limit=10'>Povratak na usluge</BorderedLink>
 				{!success ?
 					<BorderedButton onClick={() => { setAttemptOccurred(false); }}>Pokušaj ponovo</BorderedButton> :
-					<BorderedButton onClick={()=>{if(rate_limit) setCount(count+1); setAttemptOccurred(false)}}>
+					<BorderedButton onClick={()=>{
+						if(rate_limit) setCount(count+1);
+						setAttemptOccurred(false);
+						setSuccess(false);
+					}}>
 						Ponovo ispunite obrazac
 					</BorderedButton>
 				}
@@ -230,7 +234,7 @@ function DynamicForm({rate, form}: {form:Omit<FormConfiguration, 'avalible_from'
 						}
 					})}
 					<div className='buttonContainer'>
-						<button type='submit' onClick={()=>console.log(errors)}>Pošalji</button>
+						<button type='submit'>Pošalji</button>
 						<button type='button' onClick={() => reset()}>Odustani</button>
 					</div>
 				</form>
