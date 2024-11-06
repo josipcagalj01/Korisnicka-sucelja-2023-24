@@ -22,6 +22,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 				const submission = await db.submission.findUnique({
 					where: {id: id},
 					select: {
+						time: true,
 						form: {
 							select: {
 								id: true,
@@ -38,6 +39,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 				})
 
 				if(!submission) throw new Error('Submission does not exist.');
+				else if(Date.now() - submission.time.getTime() > 4 * 60 * 1000) throw new Error('This submission has already been completed.')
 				
 				const field = (submission.form.fields as Field[])[field_index]
 				if(!field) throw new Error('Field marked with provided index does not exist');
