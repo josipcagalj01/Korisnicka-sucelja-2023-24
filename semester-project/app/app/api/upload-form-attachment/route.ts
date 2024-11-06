@@ -77,6 +77,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 						db.submission.update({data: {success: true}, where: {id: payload.id}})
 					])
 				} catch (error) {
+					console.error(error)
 					throw new Error('Could not update form');
 				}
 			},
