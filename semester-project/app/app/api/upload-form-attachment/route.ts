@@ -63,24 +63,8 @@ export async function POST(request: Request): Promise<NextResponse> {
 
 				console.log('blob upload completed', blob, tokenPayload);
 
-				try {
-					// Run any logic after the file upload completed
-					const payload = JSON.parse(tokenPayload || '{}');
-					await db.$transaction([
-						db.submission_attachment.create({
-							data: {
-								submission: {connect: {id: payload.id}},
-								name: blob.url.split('/').slice(-1)[0],
-								field_index: payload.field_index
-							},
-						}),
-						db.submission.update({data: {success: true}, where: {id: payload.id}})
-					])
-				} catch (error) {
-					console.error(error)
-					throw new Error('Could not update form');
-				}
-			},
+				
+			}
 		});
 		return NextResponse.json(jsonResponse);
 	} catch (error) {
