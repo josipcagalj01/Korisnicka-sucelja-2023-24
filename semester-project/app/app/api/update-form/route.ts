@@ -5,9 +5,11 @@ import { getSession } from "../../../lib/getSession";
 
 export async function POST(req: Request) {
 	const {id, ...rest} = await req.json()
+	const {avalible_from, avalible_until, ...rest2} = rest
+	
 	const {user} = await getSession() || {user: null}
 	try {
-		const {thumbnail, ...validated} = await formSchema.parseAsync(rest)
+		const {thumbnail, ...validated} = await formSchema.parseAsync({avalible_from: avalible_from ? new Date(avalible_from) : null, avalible_until: avalible_until ? new Date(avalible_until) : null, ...rest2})
 		let data: any = {}
 
 		const existingForm = await db.form.findUnique({where: {id: id}})
@@ -40,7 +42,7 @@ export async function POST(req: Request) {
 					}
 				}
 				else if(key==='rate_limit') {
-					const rate_limit : number | null = !value ? null : parseInt(value as string)
+					const rate_limit : number | null | undefined = !value ? null : value as number
 					if(rate_limit!==existingForm.rate_limit) {
 						if(!value) data.rate_limit = null
 						else data.rate_limit = rate_limit
@@ -48,7 +50,8 @@ export async function POST(req: Request) {
 				}
 				else if(['avalible_from', 'avalible_until'].includes(key)) {
 					if(JSON.stringify(value) !== JSON.stringify(existingForm[key as keyof typeof existingForm])) {
-						if(value) data[key] = value
+						if(!value) data[key] = null
+						else data[key] = value
 					}
 				}
 				else if(key==='thumbnail_setting') {
@@ -68,6 +71,7 @@ export async function POST(req: Request) {
 					if(JSON.stringify(value) !== JSON.stringify(existingForm[key as keyof typeof existingForm])) data[key] = value
 				}
 			})
+			console.log(data)
 			await db.form.update({data: data, where: {id: existingForm.id}})
 			return NextResponse.json({message: 'Promjene su uspješno spremljene'}, {status: 200})
 		}
