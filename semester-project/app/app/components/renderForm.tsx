@@ -23,15 +23,15 @@ interface dynamicObject {
 }
 
 export default function RenderForm({now, Form, rate}:{now: Date, Form: FormConfiguration, rate: number}) {
-	const {avalible_from, avalible_until, ...rest} = Form
+	const {avalible_from, ...rest} = Form
 	return (
-		<TimeConflictCheck now={now} from={avalible_from} until={avalible_until}>
+		<TimeConflictCheck now={now} from={avalible_from} until={rest.avalible_until}>
 			<DynamicForm form={rest} rate={rate} />
 		</TimeConflictCheck>
 	)
 }
 
-function DynamicForm({rate, form}: {form:Omit<FormConfiguration, 'avalible_from' | 'avalible_until'>, rate:number}) {
+function DynamicForm({rate, form}: {form:Omit<FormConfiguration, 'avalible_from'>, rate:number}) {
 	const {fields, rate_limit, ...rest} = form
 	
 	const [count, setCount] = useState(rate)
@@ -124,7 +124,7 @@ function DynamicForm({rate, form}: {form:Omit<FormConfiguration, 'avalible_from'
 		return (
 			<>
 				<FileList whatToWatch={field} />
-				<input type='file' name={field} multiple={multiple} disabled={(disabled || watchingItem?.length) && !multiple} onChange={(e)=>appendFiles(e)} accept={inputTypes.map((a)=>'.'+a).join(', ')}/>
+				<input type='file' name={field} multiple={multiple} disabled={(disabled || watchingItem?.length) && !multiple} className={multiple ? 'multiple' : ''} onChange={(e)=>appendFiles(e)} accept={inputTypes.map((a)=>'.'+a).join(', ')}/>
 			</>
 		)
 	}
@@ -204,6 +204,7 @@ function DynamicForm({rate, form}: {form:Omit<FormConfiguration, 'avalible_from'
 	)
 	else return (
 		<>
+			{form.avalible_until && <p className='rateLimitInfo'>Moguće ispuniti do: <b>{form.avalible_until.toLocaleString('hr-HR', {timeZone: 'Europe/Zagreb', dateStyle: 'full', timeStyle: 'short'})}</b></p>}
 			{rate_limit && <b className='rateLimitInfo'>Obrazac je moguće ispuniti najviše {rate_limit} {times1}. {count && count < rate_limit ? <>Već ste {count} {times2} ispunili ovaj obrazac.</> : ''}</b>}
 			<div className="serviceFormContainer">
 				<form className="serviceForm" onSubmit={handleSubmit(onSubmit)}>

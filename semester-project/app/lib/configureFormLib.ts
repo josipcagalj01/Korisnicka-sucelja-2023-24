@@ -259,10 +259,10 @@ export const formSchema = z.object({
 	category_id: z.number().refine((value)=>value, 'Potrebno je odabrati kategoriju prijavnog obrasca.').refine((value)=>validateDepartment((value),'category'),'Ne postoji odabrana kategorija!'),
 	start_time_limited: z.boolean()/*z.string().min(1, 'Unesite odabir').refine((value)=>trueFalseCheck(value), 'Podatak nije označen na pravi način.')*/,
 	end_time_limited:  z.boolean(),
-	avalible_from:z.string(),
-	avalible_until:z.string(),
+	avalible_from:z.date({invalid_type_error: 'Ovo polje prima samo datume.'}).nullish(),
+	avalible_until:z.date({invalid_type_error: 'Ovo polje prima samo datume.'}).nullish(),
 	rate_limit_set: z.boolean()/*z.string().refine((value)=>trueFalseCheck(value), 'Podatak nije označen na pravi način.')*/,
-	rate_limit : z.string().refine((value)=>checkRateLimit2(value), 'Unesena je nedopuštena vrijednost.'),
+	rate_limit : z.number({invalid_type_error: 'Ograničenje broja ispunjavanja po korisniku smije biti samo broj'}).positive('Ograničenje broja ispunjavanja po korisniku mora biti pozitivno').optional().nullish(),
 	fields: z.array(fieldSchema).refine((value)=>validateUniquenessOfFields(value), 'Nazivi polja moraju biti jedinstveni.'),
 	sketch: z.boolean(),
 	thumbnail_setting: z.string().min(1, 'Unesite odabir').refine((value)=>['default', 'existing', 'new'].includes(value), 'Polje ima nedopuštenu vrijednost. Dopuštene vrijednosti su: ' + ['default', 'existing', 'new'].join(' ') + '.'),
@@ -271,12 +271,30 @@ export const formSchema = z.object({
 })
 .refine(({start_time_limited})=>!(start_time_limited === undefined || start_time_limited === null), {path: ['start_time_limited'], message: 'Unesite odabir'})
 .refine(({end_time_limited})=>!(end_time_limited === undefined || end_time_limited === null), {path: ['end_time_limited'], message: 'Unesite odabir'})
-.refine((data)=>isTimeSet(data.start_time_limited, data.avalible_from), {path: ['startTime'], message: 'Odredite kada će obrazac postati dostupan.'})
-.refine((data)=>isTimeSet(data.end_time_limited, data.avalible_until), {path: ['endTime'], message: 'Odredite do kada će obrazac biti dostupan.'})
+.refine((data)=>{
+	if(data.start_time_limited) {
+		if(data.avalible_from) return true
+		else return false
+	}
+	else return true
+}, {path: ['avalible_from'], message: 'Odredite kada će obrazac postati dostupan.'})
+.refine((data)=>{
+	if(data.end_time_limited) {
+		if(data.avalible_until) return true
+		else return false
+	}
+	else return true
+}, {path: ['avalible_until'], message: 'Odredite do kada će obrazac biti dostupan.'})
 //.refine((data)=>checkBoundaries(data.start_time_limited, new Date(data.avalible_from)), {path: ['startTime'], message: 'Obrazac ne može postati dostupan prije objave.'})
 //.refine((data)=>checkBoundaries(data.end_time_limited, new Date(data.avalible_until)), {path: ['endTime'], message: 'Obrazac ne može postati biti dostupan prije objave.'})
-.refine((data)=>checkBoundaries2(data.start_time_limited, new Date(data.avalible_from), data.end_time_limited, new Date(data.avalible_until)), {path:['avalible_from'], message:'Obrazac ne može prestati biti dostupan prije početka dostupnosti.'})
-.refine((data)=>checkBoundaries2(data.start_time_limited, new Date(data.avalible_from), data.end_time_limited, new Date(data.avalible_until)), {path:['avalible_until'], message:'Obrazac ne može prestati biti dostupan prije početka dostupnosti.'})
+.refine((data)=>{
+	if(data.avalible_from && data.avalible_until) return data.avalible_from.getTime() < data.avalible_until.getTime()
+	else return true
+}, {path:['avalible_from'], message:'Obrazac ne može prestati biti dostupan prije početka dostupnosti.'})
+.refine((data)=>{
+	if(data.avalible_from && data.avalible_until) return data.avalible_from.getTime() < data.avalible_until.getTime()
+	else return true
+}, {path:['avalible_until'], message:'Obrazac ne može prestati biti dostupan prije početka dostupnosti.'})
 .refine((data)=>data.rate_limit_set!==true || data.rate_limit, {path: ['rate_limit'], message: 'Unesite koliko puta će biti moguće ispuniti obrazac'})
 .refine(({fields, sketch})=>sketch || fields.length>=1,{path: ['fields'], message: 'Obrazac mora sadržavati barem jedno polje.'})
 .refine(({fields}) : boolean =>{
@@ -318,7 +336,7 @@ export type RenderSetings = z.infer<typeof render>
 export const optionDeleteWarning = 'Da biste uklonili ili mijenjali ovaj odabir, uklonite kvačice ispred istog kod određivanja ovisnosti.'
 export const fieldDeleteWarning = 'Da biste uklonili ili mijenjali ovo polje, prethodno uklonite ovisnosti povezane s njime.'
 
-export const emptyForm : Form = {title: '', category_id: 0, department_id: 0, start_time_limited: false, avalible_from: '', end_time_limited: false, avalible_until: '', rate_limit:'', fields: [], rate_limit_set: true, sketch: false, thumbnail_setting: 'default', thumbnail_id:0, thumbnail: undefined}
+export const emptyForm : Form = {title: '', category_id: 0, department_id: 0, start_time_limited: false, avalible_from: null, end_time_limited: false, avalible_until: null, rate_limit:undefined, fields: [], rate_limit_set: true, sketch: false, thumbnail_setting: 'default', thumbnail_id:0, thumbnail: undefined}
 export const RequirementConfig : RequirementSettings = {isRequired: '', statisfyAll: false, dependencies: []}
 export const RenderConfig : RenderSetings = {statisfyAll: false, dependencies: [], conditional: false}
 export const emptyField = {label:'', inputType:'', fileTypes:[], required:RequirementConfig, render:RenderConfig,  options:[], /*renderIfRequired:'', requireIfRendered: ''*/}

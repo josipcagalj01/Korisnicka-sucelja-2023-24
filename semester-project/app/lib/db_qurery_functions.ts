@@ -233,7 +233,7 @@ export async function getFormConfigurationForEmployee(id: number) : Promise<form
 		const response = await db.form.findUnique({where: where })
 		
 		if(response) {
-			const {author_id, avalible_from, rate_limit, avalible_until, fields, ...rest} = response
+			const {author_id, fields, ...rest} = response
 			let recordsExist : boolean
 			const count = await db.submission.count({
 				where: {
@@ -244,10 +244,7 @@ export async function getFormConfigurationForEmployee(id: number) : Promise<form
 			return ({
 				recordsExist: recordsExist,
 				form:{
-					avalible_from: avalible_from ?  `${avalible_from.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'}).split(/\.\s*/).toReversed().slice(1).join('-')}T${avalible_from.toLocaleTimeString('hr-HR', {timeZone: 'Europe/Zagreb'}).slice(0,5)}` : '',
-					avalible_until: avalible_until ? `${avalible_until.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'}).split(/\.\s*/).toReversed().slice(1).join('-')}T${avalible_until.toLocaleTimeString('hr-HR', {timeZone: 'Europe/Zagreb'}).slice(0,5)}` : '',
 					fields: fields as Field[],
-					rate_limit: rate_limit?.toString() || '',
 					...rest
 				}
 			})
@@ -266,12 +263,9 @@ export async function getFormTemplate(id: number) {
 		})
 		if(!response) return null
 		else {
-			const {id, avalible_from, avalible_until, fields, rate_limit, author_id, ...rest} = response
+			const {id, fields, author_id, ...rest} = response
 			return ({
-				avalible_from: avalible_from ?  `${avalible_from.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'}).split(/\.\s*/).toReversed().slice(1).join('-')}T${avalible_from.toLocaleTimeString('hr-HR', {timeZone: 'Europe/Zagreb'}).slice(0,5)}` : '',
-				avalible_until: avalible_until ? `${avalible_until.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'}).split(/\.\s*/).toReversed().slice(1).join('-')}T${avalible_until.toLocaleTimeString('hr-HR', {timeZone: 'Europe/Zagreb'}).slice(0,5)}` : '',
 				fields: fields as Field[],
-				rate_limit: rate_limit?.toString() || '',
 				...rest
 			})
 

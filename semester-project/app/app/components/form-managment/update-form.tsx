@@ -8,7 +8,7 @@ import Loading from "../Loading/loading";
 import ActionResultInfo from "../actionResultInfo/actionResultInfo";
 import { useSession } from "next-auth/react";
 import {fieldDeleteWarning, canFieldBeDeleted} from '../../../lib/configureFormLib'
-import { ConditionalDependencyForm, NestedField} from "./add-form";
+import { ConditionalDependencyForm, NestedField, deleteField} from "./add-form";
 import DeleteIcon from "../delete-icon/delete-icon";
 import ThumbnailMenu from "./thumbnail-menu/thumbnail-menu";
 import FileInput from "./file-input/file-input";
@@ -19,7 +19,7 @@ import {
 	Form, RenderSetings, RequirementSettings, changesExist
 } from '../../../lib/configureFormLib'
 import { upload } from '@vercel/blob/client';
-import { MyBooleanInput } from "./special-inputs";
+import { MyBooleanInput, NumberInput, DateInput } from "./special-inputs";
 import { shouldMoveField, moveField } from "./add-form";
 import { ManageFormsContext } from "../../context/manage-forms-context";
 
@@ -61,7 +61,7 @@ export default function UpdateForm({form, recordsExist}: {recordsExist: boolean,
 		isLoading(true)
 		setAttemptOccurred(true)
 
-		let {fields, avalible_from, avalible_until, thumbnail, thumbnail_id, thumbnail_setting, ...rest } = values
+		let {fields, thumbnail, thumbnail_id, thumbnail_setting, ...rest } = values
 		fields.map((field)=>{
 			field.required.dependencies.map((conditionalDependency, index)=>{
 				const i = field.render.dependencies.map((renderDependency)=>renderDependency.label).indexOf(conditionalDependency.label)
@@ -81,8 +81,7 @@ export default function UpdateForm({form, recordsExist}: {recordsExist: boolean,
 				body: JSON.stringify({
 					id: form.id,
 					fields:fields,
-					avalible_from: avalible_from ? new Date(avalible_from).toISOString() : '',
-					avalible_until: avalible_until ? new Date(avalible_until).toISOString() : '',
+					
 					thumbnail_id : thumbnail ? null : thumbnail_id,
 					thumbnail_setting: thumbnail ? 'default' : thumbnail_setting,
 					...rest
@@ -180,30 +179,30 @@ export default function UpdateForm({form, recordsExist}: {recordsExist: boolean,
 							{values.start_time_limited &&
 								<div className="labelAndInputContainer">
 									<label htmlFor="avalible_from">Odredite od kada će obrazac biti dostupan</label>
-									<input type='datetime-local' {...register('avalible_from')} />
+									<DateInput name="avalible_from" control={control} />
 									{errors.avalible_from && <b className="formErrorMessage">{errors.avalible_from.message}</b>}
 								</div>
 							}
 							<div className="labelAndInputContainer">
 								<label htmlFor="end_time_limited">Hoće li obrazac prestati biti dostupan u točno određenom trenutku?</label>
-								<MyBooleanInput control={control} name='end_time_limited' />
+								<MyBooleanInput control={control} name='end_time_limited' onClickFalse={()=>{if(values.avalible_until) setValue('avalible_until', null)}}/>
 								{errors.end_time_limited && <b className="formErrorMessage">{errors.end_time_limited.message}</b>}
 							</div>
 							{values.end_time_limited &&
 								<div className="labelAndInputContainer">
 									<label htmlFor="avalible_until">Odredite do kada će obrazac biti dostupan.</label>
-									<input type='datetime-local' {...register('avalible_until')} title="avalible_until" />
+									<DateInput name="avalible_until" control={control} />
 									{errors.avalible_until && <b className="formErrorMessage">{errors.avalible_until.message}</b>}
 								</div>
 							}
 							<div className="labelAndInputContainer">
 								<label htmlFor="rate_limit_set">Ograniči broj prijava po korisniku</label>
-								<MyBooleanInput control={control} name='rate_limit_set' />
+								<MyBooleanInput control={control} name='rate_limit_set' onClickFalse={()=>setValue('rate_limit', null)}/>
 							</div>
 							{values.rate_limit_set &&
 								<div className="labelAndInputContainer">
 									<label htmlFor="rate_limit">Odredite koliko najviše puta korisnik može ispuniti obrazac.</label>
-									<input type='number'{...register('rate_limit', { valueAsNumber: true })} />
+									<NumberInput control={control} name="rate_limit" />
 									{errors.rate_limit && <b className="formErrorMessage">{errors.rate_limit.message}</b>}
 								</div>
 							}
@@ -243,7 +242,7 @@ export default function UpdateForm({form, recordsExist}: {recordsExist: boolean,
 												<Image src='/arrows/arrow.png' width={64} height={64} alt='arrow' style={{objectFit:'contain'}}/>
 											</button>
 											<DeleteIcon className={`${!allowedToDelete ? 'disabled' : ''}`} onClick={
-												() => {
+												() => { deleteField(fields2, index, reset)/* 
 													//Ucini da to hoce li neko polje biti obvezno ne ovisi o polju koje ce se obrisati
 													fields2.map((item, i) => {
 														if (field.required.isRequired === 'conditional') {
@@ -278,7 +277,7 @@ export default function UpdateForm({form, recordsExist}: {recordsExist: boolean,
 														})
 													}
 													remove(index)
-												}}
+												*/}}
 											/>
 										</div>
 									</div>

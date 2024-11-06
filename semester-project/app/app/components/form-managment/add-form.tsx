@@ -1,5 +1,5 @@
 'use client'
-import { Control, FieldErrors, useFieldArray, useForm, UseFormRegister, UseFormSetValue, useWatch, Controller } from "react-hook-form";
+import { Control, FieldErrors, useFieldArray, useForm, UseFormRegister, UseFormSetValue, useWatch, Controller, UseFieldArrayRemove, UseFormReset } from "react-hook-form";
 import '../services/servicesFormStyle.css'
 import BorderedLink, { BorderedButton } from "../BorderedLink/button";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,7 +19,7 @@ import ThumbnailMenu from "./thumbnail-menu/thumbnail-menu";
 import FileInput from "./file-input/file-input";
 import { upload } from '@vercel/blob/client';
 import Image from "next/image";
-import { MyBooleanInput } from "./special-inputs";
+import { MyBooleanInput, NumberInput, DateInput } from "./special-inputs";
 import TemplateMenu from "./template-menu/template-menu";
 import { ManageFormsContext } from "../../context/manage-forms-context";
 
@@ -107,6 +107,35 @@ function canOptionBeDeleted(fields:Field[], targetedField:Field, targeteOptionIn
 	return returnValue
 }
 
+export function deleteField(fields: Field[], index:number, reset: UseFormReset<Form>) {
+	const targetedfield = fields[index]
+	let newFields = fields.filter((a)=>a.label!==targetedfield.label)
+	newFields.forEach((field, i)=>{
+		
+			if(field.render.dependencies.map(({label})=>label).includes(targetedfield.label)) {
+				const newDependencies = field.render.dependencies.filter((dependency)=>dependency.label!==targetedfield.label)
+				newFields[i].render.dependencies =  newDependencies
+				const newConditional = newDependencies.length !== 0
+				if(field.render.conditional) newFields[i].render.conditional = newConditional
+				
+				
+				if(field.requireIfRendered) {
+					newFields[i].requireIfRendered = newConditional
+					
+					if(field.required.isRequired==='conditional') newFields[i].required.isRequired =  newConditional ? 'conditional' : ''
+				}
+			}
+
+			if(field.required.dependencies.map(({label})=>label).includes(targetedfield.label)) {
+				const newDependencies = field.required.dependencies.filter((dependency)=>dependency.label!==targetedfield.label)
+				newFields[i].required.dependencies =  newDependencies
+				if(field.required.isRequired==='conditional') newFields[i].required.isRequired =  newDependencies.length!==0 ? 'conditional' : ''
+			}
+		
+	})
+	reset({fields: newFields})
+}
+
 export default function ConfigureForm(props?: {existingSubmissions?: boolean, configuration?:Omit<Form, 'id'>}) {
 	const [showTemplateMenu, shouldShowTemplateMenu] = useState(props?.configuration===undefined)
 	const [attemptFailed, setAttemptFailed] = useState(false)
@@ -139,8 +168,8 @@ export default function ConfigureForm(props?: {existingSubmissions?: boolean, co
 				setValue('fields', props.configuration.fields)
 				setValue('department_id', session.data?.user.role_id===1 ? props.configuration.department_id : session.data?.user.department_id || 0)
 				setValue('start_time_limited', props.configuration.start_time_limited)
-				setValue('avalible_from', props.configuration.avalible_from)
-				setValue('avalible_until', props.configuration.avalible_until)
+				setValue('avalible_from', new Date(`${props.configuration.avalible_from}`))
+				setValue('avalible_until', new Date(`${props.configuration.avalible_until}`))
 				setValue('end_time_limited', props.configuration.end_time_limited)
 				setValue('rate_limit', props.configuration.rate_limit)
 				setValue('rate_limit_set', props.configuration.rate_limit_set)
@@ -280,7 +309,7 @@ export default function ConfigureForm(props?: {existingSubmissions?: boolean, co
 						{values.start_time_limited &&
 							<div className="labelAndInputContainer">
 								<label htmlFor="avalible_from">Odredite od kada će obrazac biti dostupan.</label>
-								<input type='datetime-local' {...register('avalible_from')} />
+								<DateInput control={control} name="avalible_from"/>
 								{errors.avalible_from && <b className="formErrorMessage">{errors.avalible_from.message}</b>}
 							</div>
 						}
@@ -292,7 +321,7 @@ export default function ConfigureForm(props?: {existingSubmissions?: boolean, co
 						{values.end_time_limited &&
 							<div className="labelAndInputContainer">
 								<label htmlFor="avalible_until">Odredite do kada će obrazac biti dostupan.</label>
-								<input type='datetime-local' {...register('avalible_until')} title="avalible_until" />
+								<DateInput control={control} name="avalible_until" />
 								{errors.avalible_until && <b className="formErrorMessage">{errors.avalible_until.message}</b>}
 							</div>
 						}
@@ -303,7 +332,7 @@ export default function ConfigureForm(props?: {existingSubmissions?: boolean, co
 						{values.rate_limit_set &&
 							<div className="labelAndInputContainer">
 								<label htmlFor="rate_limit">Odredite koliko najviše puta korisnik može ispuniti obrazac.</label>
-								<input type='number'{...register('rate_limit')}/>
+								<NumberInput name='rate_limit' control={control}/>
 								{errors.rate_limit && <b className="formErrorMessage">{errors.rate_limit.message}</b>}
 							</div>
 						}
@@ -342,7 +371,7 @@ export default function ConfigureForm(props?: {existingSubmissions?: boolean, co
 											<button className="arrow down" disabled={!shouldMoveField(1, index, fields2)} type='button' onClick={()=>moveField(1, index, fields2, setValue)}>
 												<Image src='/arrows/arrow.png' width={14} height={14} alt='arrow' style={{objectFit:'contain'}}/>
 											</button>
-											<DeleteIcon className={`${!allowedToDelete ? 'disabled' : ''} deleteicon`} onClick={()=>remove(index)}/>
+											<DeleteIcon className={`deleteicon`} onClick={()=>deleteField(fields2, index, reset)}/>
 										</div>
 										
 									</div>
