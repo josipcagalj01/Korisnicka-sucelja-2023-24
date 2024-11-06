@@ -33,22 +33,21 @@ export async function POST(req:Request, {params}: {params:serviceParams}) {
 			where: {id:formId}
 		}) || {}
 
-		if(rate_limit) {
-			const rate = await getRate(id)
-			if(rate<0) return NextResponse.json({message: 'Sustav ne može pohraniti Vašu prijavu.'}, {status:500})
-			else if(rate >=rate_limit) return NextResponse.json({message: `Korisnik ${session?.user.name} ${session?.user.surname} je ispunio obrazac već ${rate} puta. Nema pravo ponovo ispuniti obrazac.`}, {status:409})
-		}
+		let rate = 0
+		if(rate_limit) rate = await getRate(id)
+		if(rate<0) return NextResponse.json({message: 'Sustav ne može pohraniti Vašu prijavu.'}, {status:500})
+		else if(rate_limit && rate >=rate_limit) return NextResponse.json({message: `Korisnik ${session?.user.name} ${session?.user.surname} je ispunio obrazac već ${rate} puta. Nema pravo ponovo ispuniti obrazac.`}, {status:409})
 		else if(avalible_from && avalible_from.getTime()>=Date.now()) {
-			const timeFormat : any = {hour: "2-digit", minute: "2-digit", timeZone: 'Europe/Zagreb'}
+			const timeFormat : any = {timeZone: 'Europe/Zagreb', dateStyle: 'full', timeStyle: 'short'}
 			return NextResponse.json(
-				{message: `Obrazac se otvara ${avalible_from?.toLocaleDateString('hr-HR', timeFormat)} u ${avalible_from?.toLocaleTimeString('hr-HR',timeFormat)}. Na žalost, ovaj obrazac još nije raspoloživ.`},
+				{message: `Obrazac se otvara u: ${avalible_from.toLocaleString('hr-HR', timeFormat)}. Nažalost, ovaj obrazac još nije raspoloživ.`},
 				{status:409}
 			)
 		}
 		else if(avalible_until && avalible_until.getTime()<Date.now()) {
-			const timeFormat : any = {hour: "2-digit", minute: "2-digit", timeZone: 'Europe/Zagreb'}
+			const timeFormat : any = {timeZone: 'Europe/Zagreb', dateStyle: 'full', timeStyle: 'short'}
 			return NextResponse.json(
-				{message: `Obrazac je zatvoren ${avalible_until?.toLocaleDateString()} u ${avalible_until?.toLocaleTimeString([],timeFormat)} Na žalost, ovaj obrazac više nije raspoloživ.`},
+				{message: `Obrazac je zatvoren: ${avalible_until.toLocaleString('hr-HR', timeFormat)} Nažalost, ovaj obrazac više nije raspoloživ.`},
 				{status:409}
 			)	
 		}
