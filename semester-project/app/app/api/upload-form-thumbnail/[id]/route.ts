@@ -16,7 +16,7 @@ export async function POST(request: Request, {params}: {params: Params}): Promis
 		else {
 			const form = await db.form.findUnique({where: {id: id}})
 			if(!form) return NextResponse.json({message: 'Ne postoji obrazac čija je oznaka navedena.'}, {status: 404})
-			else if(user?.department_id !== form.department_id && (user?.role_id && user?.role_id!==2)) return NextResponse.json({message: 'Nemate dopuštenje izvesti ovu radnju.'}, {status: 403})
+			else if(user?.department_id !== form.department_id && (user?.role_id!==1 && user?.role_id!==3)) return NextResponse.json({message: 'Nemate dopuštenje izvesti ovu radnju.'}, {status: 403})
 			else {
 				const jsonResponse = await handleUpload({
 					body,
