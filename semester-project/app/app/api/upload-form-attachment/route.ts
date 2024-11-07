@@ -10,7 +10,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 			body,
 			request,
 			onBeforeGenerateToken: async ( pathname, clientPayload ) => {
-				if(!clientPayload) throw new Error('Could not upload file');
+				/*if(!clientPayload) throw new Error('Could not upload file');
 
 				const payload = JSON.parse(clientPayload)
 				const id = parseInt(payload.id)
@@ -50,12 +50,12 @@ export async function POST(request: Request): Promise<NextResponse> {
 					const existingAttachments = await db.submission_attachment.findMany({select: {id: true}, where: {submission: {id: id}, field_index: field_index}})
 					if(existingAttachments) throw new Error(`Field ${field.label} has already received file. No more files can be attached`)
 				}
-				await db.submission.update({where: {id: id}, data: {success: false}})
+				await db.submission.update({where: {id: id}, data: {success: false}})*/
 		
 				return {
-					allowedContentTypes: field.fileTypes,
+					allowedContentTypes: /*field.fileTypes*/['image/png', 'application/pdf'],
 					tokenPayload: JSON.stringify({
-						...payload
+						id: 1
 					}),
 				};
 			},
