@@ -154,7 +154,7 @@ function DynamicForm({rate, form}: {form:Omit<FormConfiguration, 'avalible_from'
 						for(let i=0; i<(values as any)[`a${j}`].length; i++) {
 							await upload([transformStr(rest.category.name), transformStr(rest.department.name), `${rest.id}`, `${submission_id}`, values[`a${j}`][i].name].join('/'), values[`a${j}`][i], {
 								access: 'public',
-								handleUploadUrl: '/api/upload-form-attachment',
+								handleUploadUrl: '/api/upload-file',
 								clientPayload: JSON.stringify({id: submission_id, field_index: j})
 							})
 						}
