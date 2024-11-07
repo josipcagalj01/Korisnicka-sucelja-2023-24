@@ -1,47 +1,46 @@
 import { handleUpload, type HandleUploadBody } from '@vercel/blob/client';
 import { NextResponse } from 'next/server';
-import { db } from '../../../lib/db';
-import { Field } from '../../../lib/configureFormLib';
-
+ 
 export async function POST(request: Request): Promise<NextResponse> {
 	const body = (await request.json()) as HandleUploadBody;
+ 
 	try {
 		const jsonResponse = await handleUpload({
 			body,
 			request,
-			onBeforeGenerateToken: async ( pathname, clientPayload ) => {
-				console.log(clientPayload)
-				
+			onBeforeGenerateToken: async (
+				pathname,
+				/* clientPayload */
+			) => {
+				// Generate a client token for the browser to upload the file
+				// ⚠️ Authenticate and authorize users before generating the token.
+				// Otherwise, you're allowing anonymous uploads.
+ 
 				return {
-					allowedContentTypes: /*field.fileTypes*/['image/png', 'application/pdf'],
+					allowedContentTypes: ['image/jpeg', 'image/png', 'image/gif'],
 					tokenPayload: JSON.stringify({
-						
+						// optional, sent to your server on upload completion
+						// you could pass a user id from auth, or a value from clientPayload
 					}),
 				};
 			},
 			onUploadCompleted: async ({ blob, tokenPayload }) => {
-
+				// Get notified of client upload completion
+				// ⚠️ This will not work on `localhost` websites,
+				// Use ngrok or similar to get the full upload flow
+ 
 				console.log('blob upload completed', blob, tokenPayload);
-
+ 
 				try {
 					// Run any logic after the file upload completed
-					const payload = JSON.parse(tokenPayload || '{}');
-					await db.$transaction([
-						db.submission_attachment.create({
-							data: {
-								submission: {connect: {id: payload.id}},
-								name: blob.url.split('/').slice(-1)[0],
-								field_index: payload.field_index
-							},
-						}),
-						db.submission.update({data: {success: true}, where: {id: payload.id}})
-					])
+					// const { userId } = JSON.parse(tokenPayload);
+					// await db.update({ avatar: blob.url, userId });
 				} catch (error) {
-					console.error(error)
-					throw new Error('Could not update form');
+					throw new Error('Could not update user');
 				}
-			}
+			},
 		});
+ 
 		return NextResponse.json(jsonResponse);
 	} catch (error) {
 		return NextResponse.json(
