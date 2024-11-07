@@ -298,6 +298,7 @@ export default function UpdateForm({form, recordsExist}: {recordsExist: boolean,
 												disableTrue={!(index != 0 && fields2.some((field) => field.label != fields2[index].label && ['checkbox', 'radio'].includes(field.inputType)))}
 												onClickFalse={() => {
 													setValue(`fields.${index}.render.statisfyAll`, false)
+													setValue(`fields.${index}.render.dependencies`, [])
 													if (fields2[index].required.isRequired === 'conditional') setValue(`fields.${index}.required.isRequired`, '')
 												}}
 											/>
