@@ -52,12 +52,12 @@ export async function POST(request: Request, {params}: {params: Params}): Promis
 						// Use ngrok or similar to get the full upload flow
 		
 						console.log('blob upload completed', blob, tokenPayload);
-		
+						const id = parseInt(params.id)
 						try {
 							// Run any logic after the file upload completed
 							// const { userId } = JSON.parse(tokenPayload);
 							// await db.update({ avatar: blob.url, userId });
-							/*const new_thumbnail = await db.form_thumbnail.create({data: {name: blob.url.split('/').slice(-1)[0]}})
+							const new_thumbnail = await db.form_thumbnail.create({data: {name: blob.url.split('/').slice(-1)[0]}})
 							await db.form.update({
 								data: {
 									thumbnail: {
@@ -65,7 +65,7 @@ export async function POST(request: Request, {params}: {params: Params}): Promis
 									},
 									thumbnail_setting: 'existing'
 								},
-								where: {id: id}})*/
+								where: {id: id}})
 						} catch (error) {
 							throw new Error('Could not update form');
 						}
