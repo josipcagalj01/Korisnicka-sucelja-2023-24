@@ -7,6 +7,7 @@ export async function POST(req:Request) {
 	let formId = 0
 	const {avalible_from, avalible_until, ...rest} = await req.json()
 	const toValidate = {avalible_from: avalible_from ? new Date(avalible_from) : null, avalible_until: avalible_until ? new Date(avalible_until) : null, ...rest}
+	
 	try {
 		const session = await getSession()
 		if(session?.user.role_id===2) return NextResponse.json({message: 'Samo zaposlenici smiju dodavati obrasce!'}, {status:401})
@@ -22,7 +23,7 @@ export async function POST(req:Request) {
 					...rest
 					
 				}
-				if(avalible_from) data.avalible_from = new Date(avalible_from).getTime() < Date.now() ? new Date(Date.now()).setSeconds(0) : new Date(avalible_from)
+				if(avalible_from) data.avalible_from = new Date(avalible_from)
 				if (avalible_until) data.avalible_until = new Date(avalible_until)
 				if(rest.rate_limit_set) data.rate_limit = rate_limit
 				if(thumbnail_setting === 'existing') data.thumbnail = {connect: {id: thumbnail_id}}
