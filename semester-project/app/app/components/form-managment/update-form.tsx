@@ -95,7 +95,7 @@ export default function UpdateForm({form, recordsExist}: {recordsExist: boolean,
 				if(values.thumbnail) { 
 					await upload('form-thumbnails/' + values.thumbnail.name, values.thumbnail, {
 						access: 'public',
-						handleUploadUrl: '/api/upload-form-thumbnail/'+form.id,
+						handleUploadUrl: '/api/upload-file',
 					});
 				}
 				reset()
