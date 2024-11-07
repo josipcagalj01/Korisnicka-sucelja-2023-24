@@ -10,14 +10,14 @@ interface Params {
 export async function POST(request: Request, {params}: {params: Params}): Promise<NextResponse> {
 	const body = (await request.json()) as HandleUploadBody;
 	try {
-		const id = parseInt(params.id)
-		const {user} = await getSession() || {user:null}
-		if(isNaN(id)) return NextResponse.json({message: 'Unesen je krivi oblik oznake obrasca'}, {status: 400})
-		else {
+		
+		
+		
+		/*else {
 			const form = await db.form.findUnique({where: {id: id}})
 			if(!form) return NextResponse.json({message: 'Ne postoji obrazac čija je oznaka navedena.'}, {status: 404})
 			else if(user?.department_id !== form.department_id && (user?.role_id!==1 && user?.role_id!==3)) return NextResponse.json({message: 'Nemate dopuštenje izvesti ovu radnju.'}, {status: 403})
-			else {
+			else {*/
 		console.log('tu smo')
 				const jsonResponse = await handleUpload({
 					body,
@@ -26,6 +26,14 @@ export async function POST(request: Request, {params}: {params: Params}): Promis
 						pathname,
 						/* clientPayload */
 					) => {
+						const id = parseInt(params.id)
+						const {user} = await getSession() || {user:null}
+						if(isNaN(id)) throw new Error('Invalid form id format provided')/*return NextResponse.json({message: 'Unesen je krivi oblik oznake obrasca'}, {status: 400})*/
+						else {
+							const form = await db.form.findUnique({where: {id: id}})
+							if(!form) throw new Error('Form whose id is ... does not exist') /*NextResponse.json({message: 'Ne postoji obrazac čija je oznaka navedena.'}, {status: 404})*/
+							else if(user?.department_id !== form.department_id && (user?.role_id!==1 && user?.role_id!==3)) throw new Error('Access denied')/*return NextResponse.json({message: 'Nemate dopuštenje izvesti ovu radnju.'}, {status: 403})*/
+						}
 						// Generate a client token for the browser to upload the file
 						// ⚠️ Authenticate and authorize users before generating the token.
 						// Otherwise, you're allowing anonymous uploads.
@@ -64,8 +72,8 @@ export async function POST(request: Request, {params}: {params: Params}): Promis
 					},
 				});
 				return NextResponse.json(jsonResponse);
-			}
-		}
+			
+		
 	} catch (error) {
 		return NextResponse.json(
 			{ error: (error as Error).message },
