@@ -22,7 +22,7 @@ export default async function FormsList({ limit, offset, desiredId, category, cl
 						return (
 							<article className={`announcment ${className ? className : ''}`} key={form.id}>
 								<figure className='announcmentImageContainer'>
-									<Image src={thumbnailUrl} alt='bilazgrada' fill={true} sizes='220px' style={{ objectFit: 'cover' }} />
+									<Image src={thumbnailUrl} alt='bilazgrada' fill={true} sizes='220px' style={{ objectFit: 'cover' }} quality={100} />
 								</figure>
 								<p className='announcmentInfo'>{form.avalible_from.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})} | {form.category.name.replace?.('_', ' ')}</p>
 								<Link href={'/usluge/' + form.id}>
@@ -52,7 +52,7 @@ export async function FormsList2({ limit, offset, desiredId, category, className
 						return (
 							<article className={`announcment ${className ? className : ''}`} key={form.id}>
 								<figure className='announcmentImageContainer'>
-									<Image src={thumbnailUrl} alt={thumbnailUrl} fill={true} sizes='220px' style={{ objectFit: 'cover' }} />
+									<Image src={thumbnailUrl} alt={thumbnailUrl} fill={true} sizes='220px' style={{ objectFit: 'cover' }} quality={100}/>
 								</figure>
 								<p className='announcmentInfo'>{form.avalible_from.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})} | {form.category.name.replace?.('_', ' ')}</p>
 								<Link href={'/obrasci/' + form.id}>
