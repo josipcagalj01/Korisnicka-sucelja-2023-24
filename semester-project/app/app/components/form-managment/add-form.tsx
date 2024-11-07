@@ -59,38 +59,15 @@ export function shouldMoveField(direction: 1 | -1, index: number, fields: Field[
 	}
 }
 
-export function moveField(direction: 1 | -1, index: number, fields: Field[], setValue: UseFormSetValue<Form>) {
-	if(shouldMoveField(direction, index,fields)) {
-		const tempOptions1 = fields[index].options
-		const tempOptions2 = fields[index+direction].options
-		const dependencies1 = fields[index].render.dependencies
-		const dependencies2 = fields[index + direction].render.dependencies
-		const dependencies3 = fields[index].required.dependencies
-		const dependencies4 = fields[index + direction].required.dependencies
-		const fileTypes1 = fields[index].fileTypes
-		const fileTypes2 = fields[index + direction].fileTypes
-		setValue(`fields.${index + direction}.options`, [])
-		setValue(`fields.${index}.options`, [])
-		setValue(`fields.${index + direction}.render.dependencies`, [])
-		setValue(`fields.${index}.render.dependencies`, [])
-		setValue(`fields.${index + direction}.required.dependencies`, [])
-		setValue(`fields.${index}.required.dependencies`, [])
-		setValue(`fields.${index + direction}.fileTypes`, [])
-		setValue(`fields.${index}.fileTypes`, [])
-		
-		let temp = fields[index]
-		setValue(`fields.${index}`, fields[index + direction])
-		setValue(`fields.${index + direction}`, temp)
-		
-		setValue(`fields.${index + direction}.options`, tempOptions1)
-		setValue(`fields.${index}.options`, tempOptions2)
-		setValue(`fields.${index + direction}.render.dependencies`, dependencies1)
-		setValue(`fields.${index}.render.dependencies`, dependencies2)
-		setValue(`fields.${index + direction}.required.dependencies`, dependencies3)
-		setValue(`fields.${index}.required.dependencies`, dependencies4)
-		setValue(`fields.${index + direction}.fileTypes`, fileTypes1)
-		setValue(`fields.${index}.fileTypes`, fileTypes2)
-		
+export function moveField(direction: 1 | -1, index: number, form: Form, reset: UseFormReset<Form>) {
+	if(shouldMoveField(direction, index,form.fields)) {
+		const {fields, ...rest} = form
+		let newFields = form.fields
+		const tempField = form.fields[index]
+		newFields[index] = form.fields[index + direction]
+		newFields[index + direction] = tempField
+
+		reset({fields: newFields, ...rest}, {keepDefaultValues: true})		
 	}
 }
 
@@ -107,7 +84,8 @@ function canOptionBeDeleted(fields:Field[], targetedField:Field, targeteOptionIn
 	return returnValue
 }
 
-export function deleteField(fields: Field[], index:number, reset: UseFormReset<Form>) {
+export function deleteField(form: Form, index:number, reset: UseFormReset<Form>) {
+	const {fields, ...rest} = form
 	const targetedfield = fields[index]
 	let newFields = fields.filter((a)=>a.label!==targetedfield.label)
 	newFields.forEach((field, i)=>{
@@ -133,7 +111,7 @@ export function deleteField(fields: Field[], index:number, reset: UseFormReset<F
 			}
 		
 	})
-	reset({fields: newFields})
+	reset({fields: newFields, ...rest}, {keepDefaultValues: true})
 }
 
 export default function ConfigureForm(props?: {existingSubmissions?: boolean, configuration?:Omit<Form, 'id'>}) {
@@ -365,13 +343,13 @@ export default function ConfigureForm(props?: {existingSubmissions?: boolean, co
 									<div className="fieldSectionHeader">
 										<p>Polje br. {index+1}</p>
 										<div className='fieldNav'>
-											<button className="arrow" disabled={!shouldMoveField(-1, index, fields2)} type='button' onClick={()=>moveField(-1, index, fields2, setValue)}>
+											<button className="arrow" disabled={!shouldMoveField(-1, index, fields2)} type='button' onClick={()=>moveField(-1, index, values, reset)}>
 												<Image src='/arrows/arrow.png' width={14} height={14} alt='arrow' style={{objectFit:'contain'}}/>
 											</button>
-											<button className="arrow down" disabled={!shouldMoveField(1, index, fields2)} type='button' onClick={()=>moveField(1, index, fields2, setValue)}>
+											<button className="arrow down" disabled={!shouldMoveField(1, index, fields2)} type='button' onClick={()=>moveField(1, index, values, reset)}>
 												<Image src='/arrows/arrow.png' width={14} height={14} alt='arrow' style={{objectFit:'contain'}}/>
 											</button>
-											<DeleteIcon className={`deleteicon`} onClick={()=>deleteField(fields2, index, reset)}/>
+											<DeleteIcon className={`deleteicon`} onClick={()=>deleteField(values, index, reset)}/>
 										</div>
 										
 									</div>

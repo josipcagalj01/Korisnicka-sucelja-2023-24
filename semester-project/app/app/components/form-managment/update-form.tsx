@@ -235,14 +235,14 @@ export default function UpdateForm({form, recordsExist}: {recordsExist: boolean,
 									<div className="fieldSectionHeader">
 										<p>Polje br. {index + 1}</p>
 										<div className="fieldNav">
-											<button type="button" className="arrow" disabled={!shouldMoveField(-1, index, fields2)} onClick={()=>moveField(-1, index, fields2, setValue)}>
+											<button type="button" className="arrow" disabled={!shouldMoveField(-1, index, fields2)} onClick={()=>moveField(-1, index, values, reset)}>
 												<Image src='/arrows/arrow.png' width={22} height={22} alt='arrow' />
 											</button>
-											<button className="arrow down" disabled={!shouldMoveField(1, index, fields2)} type='button' onClick={()=>moveField(1, index, fields2, setValue)}>
+											<button className="arrow down" disabled={!shouldMoveField(1, index, fields2)} type='button' onClick={()=>moveField(1, index, values, reset)}>
 												<Image src='/arrows/arrow.png' width={64} height={64} alt='arrow' style={{objectFit:'contain'}}/>
 											</button>
 											<DeleteIcon className={`${!allowedToDelete ? 'disabled' : ''}`} onClick={
-												() => { deleteField(fields2, index, reset)/* 
+												() => { deleteField(values, index, reset)/* 
 													//Ucini da to hoce li neko polje biti obvezno ne ovisi o polju koje ce se obrisati
 													fields2.map((item, i) => {
 														if (field.required.isRequired === 'conditional') {
@@ -410,7 +410,7 @@ export default function UpdateForm({form, recordsExist}: {recordsExist: boolean,
 						</div>
 					</div>
 				</section>
-				<div className='buttonContainer'>
+				<div className='buttonContainer' onClick={()=>console.log(values)}>
 					<button type='submit' className={!changesExist(form, values) ? 'disabled' : ''} /*
 						
 							fields2.map((field, index)=>{
