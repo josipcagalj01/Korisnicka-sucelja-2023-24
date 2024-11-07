@@ -10,52 +10,12 @@ export async function POST(request: Request): Promise<NextResponse> {
 			body,
 			request,
 			onBeforeGenerateToken: async ( pathname, clientPayload ) => {
-				/*if(!clientPayload) throw new Error('Could not upload file');
-
-				const payload = JSON.parse(clientPayload)
-				const id = parseInt(payload.id)
-				const field_index = parseInt(payload.field_index)
-
-				if(isNaN(id)) throw new Error('Invalid submission id format or submission id not provided');
-				if(isNaN(field_index)) throw new Error('Invalid field index format or field field index not provided');
-
-				const submission = await db.submission.findUnique({
-					where: {id: id},
-					select: {
-						time: true,
-						form: {
-							select: {
-								id: true,
-								fields: true,
-								category: {
-									select: {name: true}
-								},
-								department: {
-									select: {name: true}
-								}
-							}
-						}
-					}
-				})
-
-				if(!submission) throw new Error('Submission does not exist.');
-				else if(Date.now() - submission.time.getTime() > 4 * 60 * 1000) throw new Error('This submission has already been completed.')
+				console.log(clientPayload)
 				
-				const field = (submission.form.fields as Field[])[field_index]
-				if(!field) throw new Error('Field marked with provided index does not exist');
-
-				if(field.inputType!=='file') throw new Error(`Field ${field.label} doesn't accept files.`);
-
-				if(field.multiple) {
-					const existingAttachments = await db.submission_attachment.findMany({select: {id: true}, where: {submission: {id: id}, field_index: field_index}})
-					if(existingAttachments) throw new Error(`Field ${field.label} has already received file. No more files can be attached`)
-				}
-				await db.submission.update({where: {id: id}, data: {success: false}})*/
-		
 				return {
 					allowedContentTypes: /*field.fileTypes*/['image/png', 'application/pdf'],
 					tokenPayload: JSON.stringify({
-						id: 1
+						
 					}),
 				};
 			},
