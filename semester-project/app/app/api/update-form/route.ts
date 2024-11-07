@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "../../../lib/db";
 import { formSchema, inputTypes, Field, FieldsEqual } from "../../../lib/configureFormLib";
 import { getSession } from "../../../lib/getSession";
+import { getRate } from "../../../lib/db_qurery_functions";
 
 export async function POST(req: Request) {
 	const {id, ...rest} = await req.json()
@@ -17,15 +18,10 @@ export async function POST(req: Request) {
 		else if(existingForm.department_id !== user?.department_id && user?.role_id!==1 && user?.role_id!==3) 
 			return NextResponse.json({message: 'Ovaj obrazac smiju uređivati samo zaposlenici za potrebe čijeg upravnog odjela je on napravljen.'},{status: 403})  
 		else {
-			if(existingForm.title !== validated.title) {
-				const a = await db.form.findUnique({select: {id:true}, where: {title: validated.title, NOT: {id: {equals: id}}}})
-				if(a) return NextResponse.json({message: 'Već postoji obrazac s tim naslovom. Odaberite drugi naslov'}, {status: 409})
-			}
-
 			let recordsExist : boolean
-			if(validated.sketch) {
-				const [{count}, ...rest] : any[] = await db.$queryRawUnsafe(`SELECT COUNT(*) from Form${id};`)
-				recordsExist = Number(count) ? true : false
+			if(!validated.sketch) {
+				const rate = await getRate(id)
+				recordsExist = rate ? true : false
 			}
 			else recordsExist = false
 
