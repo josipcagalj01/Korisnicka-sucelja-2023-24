@@ -89,8 +89,8 @@ function DynamicForm({rate, form}: {form:Omit<FormConfiguration, 'avalible_from'
 			<div className='uploadedFilesList'>
 				{watchingItem.map((file: File, index:number) =>{
 					let fileType=''
-					const extension : string = file.name.split('.').slice(-1)[0]
-					let nameToDisplay = file.name.slice(0, file.name.length -  extension.length - 1)
+					const extension : string = file.name.slice(file.name.lastIndexOf('.')+1, file.name.length).toLowerCase()
+					let nameToDisplay = file.name.slice(0, file.name.lastIndexOf('.'))
 					if(nameToDisplay.length>10) nameToDisplay = nameToDisplay.slice(0,10) + '...' + extension
 					else nameToDisplay = file.name
 					if(extension.startsWith('doc')) fileType='doc'
