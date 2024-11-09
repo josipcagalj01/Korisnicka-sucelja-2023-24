@@ -24,7 +24,7 @@ export default async function FormsList({ limit, offset, desiredId, category, cl
 								<figure className='announcmentImageContainer'>
 									<Image src={thumbnailUrl} alt='bilazgrada' fill={true} sizes='410px' style={{ objectFit: 'cover' }} quality={100} />
 								</figure>
-								<p className='announcmentInfo'>{form.avalible_from.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})} | {form.category.name.replace?.('_', ' ')}</p>
+								<p className='announcmentInfo'>{form.avalible_from?.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})} | {form.category.name.replace?.('_', ' ')}</p>
 								<Link href={'/usluge/' + form.id}>
 									<h3 className='announcmentTitle'>{form.title}</h3>
 								</Link>
@@ -54,7 +54,7 @@ export async function FormsList2({ limit, offset, desiredId, category, className
 								<figure className='announcmentImageContainer'>
 									<Image src={thumbnailUrl} alt={thumbnailUrl} fill={true} sizes='410px' style={{ objectFit: 'cover' }} quality={100}/>
 								</figure>
-								<p className='announcmentInfo'>{form.avalible_from.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})} | {form.category.name.replace?.('_', ' ')}</p>
+								<p className='announcmentInfo'>{form.avalible_from?.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})} | {form.category.name.replace?.('_', ' ')}</p>
 								<Link href={'/obrasci/' + form.id}>
 									<h3 className='announcmentTitle'>{form.title}</h3>
 								</Link>
@@ -76,13 +76,31 @@ export async function FormsList3({ limit, offset, desiredId, category, className
 		return (
 			<>
 				<div className='AnnouncmentsContainer'>
-					{forms.map((form) => (
-						<article className={`announcment ${className ? className : ''}`} key={form.id}>
-							<p className='announcmentInfo'>{form.avalible_from.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})} | {form.category.name.replace?.('_', ' ')}</p>
-							<Link href={'/prijave/' + form.id + '?_page=1&_limit=25'}>
-								<h3 className='announcmentTitle'>{form.title}</h3>
-							</Link>
-						</article>))}
+					{forms.map(({id, title, unseenSubmissions, avalible_from, category}) => {
+						const count = unseenSubmissions || 0
+						let unseen:string = ''; let submissions:string=''
+						if(count===1) {
+							unseen = 'nepregledana'
+							submissions = 'prijava'
+						}
+						else if(count >= 2 && count <= 4) {
+							submissions='prijave'
+							unseen='nepregledane'
+						}
+						else {
+							submissions = 'prijava'
+							unseen = 'nepregledanih'
+						}
+						return (
+							<article className={`announcment ${className ? className : ''}`} key={id}>
+								<p className='announcmentInfo'>{avalible_from?.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})} | {category.name.replace?.('_', ' ')}</p>
+								<Link href={'/prijave/' + id + '?_page=1&_limit=25'}>
+									<h3 className='announcmentTitle'>{title}</h3>
+								</Link>
+								{count>0 ? <b>Postoji {count} {unseen} {submissions}.</b>: null}
+							</article>
+						)
+					})}
 				</div>
 			</>
 		)

@@ -94,9 +94,9 @@ interface formsCardData {
 	id:number,
 	title:string,
 	category: Category,
-	avalible_from: Date,
-	avalible_until: Date,
-	thumbnail_id: number | null
+	avalible_from: Date | null,
+	thumbnail_id: number | null,
+	unseenSubmissions?: number
 }
 
 interface formsPackage {
@@ -180,8 +180,20 @@ export async function getFormsForEmployees({ offset, limit, category }: Omit<new
 
 	try {
 		query.where = where
-		const response : any = await db.form.findMany(query)
-		return {count:response.length, forms: response}
+		const response = await db.form.findMany({
+			select: {id:true, title:true, category: true, avalible_from:true, thumbnail_id: true},
+			skip: offset && !isNaN(offset) && limit && !isNaN(limit) ? offset : undefined,
+			take: offset && !isNaN(offset) && limit && !isNaN(limit) ? limit : undefined,
+			where: where
+		})
+		
+		let unseenSubmissionsPerFormCount : number[] = []
+		for(let i = 0; i<response.length;i++) {
+			const count = await db.submission.count({where: {seen: false, form: {id: response[i].id}}})
+			unseenSubmissionsPerFormCount.push(count)
+		}
+		
+		return {count:response.length, forms: response.map((form, index) => ({unseenSubmissions: unseenSubmissionsPerFormCount[index], ...form}))}
 	}catch(error) {
 		console.error(error)
 		return {count:-1, forms:[]}
@@ -321,6 +333,7 @@ export async function getThumbnails() : Promise <{id: number, name: string}[] | 
 
 type SubmissionBasicInfo = {
 	id: number,
+	seen: boolean
 	user: {
 		id:number,
 		name: string,
@@ -342,6 +355,7 @@ export async function getSubmissions(id: number, offset: number, limit: number, 
 			where: where,
 			select: {
 				id:true,
+				seen: true,
 				user: {
 					select: {
 						pin:true,
@@ -357,7 +371,7 @@ export async function getSubmissions(id: number, offset: number, limit: number, 
 			skip: offset || undefined,
 			take: limit || undefined,
 			orderBy: [
-				{time: 'asc'}
+				{time: 'desc'}
 			]
 		})
 		return response
@@ -384,7 +398,7 @@ export async function getSubmissionsCount(id: number, IstLetterName?: string, Is
 	}
 }
 
-type submissionData = Omit<Prisma.submission, 'user_id' | 'form_id' | 'success'> & {user: Omit<Prisma.user, 'password' | 'id' | 'role_id' | 'department_id' | 'username'>} & {form: (Pick<Prisma.form, 'id' | 'title' | 'fields'> & {category: Pick<Prisma.category, 'name'>} & {department: Pick<Prisma.department, 'name'>})} & {ordinal: number}
+type submissionData = Omit<Prisma.submission, 'user_id' | 'form_id' | 'success' | 'seen'> & {user: Omit<Prisma.user, 'password' | 'id' | 'role_id' | 'department_id' | 'username'>} & {form: (Pick<Prisma.form, 'id' | 'title' | 'fields'> & {category: Pick<Prisma.category, 'name'>} & {department: Pick<Prisma.department, 'name'>})} & {ordinal: number}
 
 export async function getSubmission(id: number) : Promise<submissionData | null> {
 	try {
@@ -406,7 +420,7 @@ export async function getSubmission(id: number) : Promise<submissionData | null>
 						town: true,
 						street: true,
 						house_number: true,
-						birth_date: true
+						birth_date: true,
 					}
 				},
 				form: {
@@ -442,6 +456,7 @@ export async function getSubmission(id: number) : Promise<submissionData | null>
 					dataToReturn[`a${field_index}`].push({id: id, name: splitted.slice(0, splitted.length-1).join('-') + extension || ''})
 				})
 			}
+			await db.submission.update({data: {seen: true}, where: {id: id}})
 			return {data:dataToReturn, ...{ordinal: ids.map(({id})=>id).indexOf(rest.id) + 1} , ...rest}
 		}
 		else return null

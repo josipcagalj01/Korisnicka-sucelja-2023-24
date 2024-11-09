@@ -9,12 +9,13 @@ import ActionResultInfo from "../../components/actionResultInfo/actionResultInfo
 import '../../obavijesti/[announcmentId]/newsPageStyle.css'
 import BorderedLink from "../../components/BorderedLink/button";
 import styles from '../submissionsStyle.module.css'
-import Link from "next/link";
 import SeartchByFirstLetter from "../../components/SearchByFirstLetter/menu";
 
 interface Params {
 	serviceId: string
 }
+
+export const revalidate = 0
 
 export const generateMetadata = async ({ params }: { params: Params}): Promise<Metadata> => {
 	const id = parseInt(params.serviceId)
@@ -78,7 +79,8 @@ async function Render({params, searchParams}: {params: Params, searchParams: Rec
 					}
 					{submissions?.length ?
 						<>
-							{!isNaN(pageSize) && !isNaN(page) && <PagesNavigation basePath={`prijave/${id}`} page={page} totalPages={totalPages} otherParams={query}/>}
+							{!isNaN(pageSize) && !isNaN(page) && <PagesNavigation className={styles.pagesNavigation} basePath={`prijave/${id}`} page={page} totalPages={totalPages} otherParams={query}/>}
+							{submissions.some(({seen})=>!seen) ? <p>NAPOMENA: Nepregledane prijave su podebljane.</p> : null}
 							<div className={styles.scrollWrapper}>
 								<table className={styles.submissionsList + ' ' + styles.formSubmissions}>
 									<thead>
@@ -94,14 +96,14 @@ async function Render({params, searchParams}: {params: Params, searchParams: Rec
 									</thead>
 									<tbody>
 										{submissions.map((submission, index)=>
-											<tr key={submission.id}>
+											<tr key={submission.id} className={!submission.seen ? styles.unseen : ''}>
 												<td>{pageSize*(page-1)+index+1}.</td>
 												<td>{submission.user.pin}</td>
 												<td>{submission.user.surname}</td>
 												<td>{submission.user.name}</td>
 												<td>{submission.user.email}</td>
 												<td>{submission.time.toLocaleDateString('hr-HR', {timeZone: 'Europe/Zagreb'})} {submission.time.toLocaleTimeString('hr-HR', {timeZone: 'Europe/Zagreb'})}</td>
-												<td><b><Link href={'/prijave/' + form.id + '/'+ submission.id}>Prikaži detalje</Link></b></td>
+												<td><BorderedLink className={styles.borderedLink} href={'/prijave/' + form.id + '/'+ submission.id}>Prikaži detalje</BorderedLink></td>
 											</tr>
 										)}
 									</tbody>

@@ -28,7 +28,7 @@
 .scrollWrapper {
 	width:100%;
 	overflow-x: scroll;
-	margin-top: 2em;
+	margin-top: 1.5em;
 }
 
 .scrollWrapper .submissionsList {
@@ -41,6 +41,10 @@
 
 .formSubmissions thead tr th:last-child, .formSubmissions tbody tr td:last-child {
 	width: 16ch;
+}
+
+.pagesNavigation {
+	margin-bottom: 1.5em
 }
 
 .submissionsList * {
@@ -82,8 +86,12 @@
 	background-color: var(--grey-card-background);
 }
 
-.submissionsList a:hover {
-	text-decoration: underline;
+.submissionsList tbody tr.unseen td:not(:last-child) {
+	font-weight: bold;
+}
+
+.submissionsList .borderedLink > p {
+	margin: 5px;
 }
 
 .submission {

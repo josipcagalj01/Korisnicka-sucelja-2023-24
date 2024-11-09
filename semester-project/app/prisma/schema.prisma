@@ -83,6 +83,7 @@ model submission {
 	data Json
 	time DateTime @db.Timestamptz
 	success Boolean
+	seen Boolean
 	attachments submission_attachment[]
 }
 

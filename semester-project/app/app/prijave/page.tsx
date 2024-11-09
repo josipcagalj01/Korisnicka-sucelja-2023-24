@@ -12,6 +12,8 @@ export const metadata : Metadata = {
 	title: 'Prijave'
 }
 
+export const revalidate=0
+
 export default async function SubmittedForms({ searchParams }: { searchParams: Record<string, string | string[] | undefined>; }) {
 
 	return (

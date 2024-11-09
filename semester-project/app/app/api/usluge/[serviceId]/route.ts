@@ -96,7 +96,8 @@ export async function POST(req:Request, {params}: {params:serviceParams}) {
 				},
 				data: data_for_db,
 				time: new Date(Date.now()),
-				success: true
+				success: true,
+				seen: false
 			}
 		})
 		
