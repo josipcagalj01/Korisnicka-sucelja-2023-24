@@ -37,7 +37,7 @@ async function Services({ searchParams }: { searchParams: Record<string, string 
 					<FormCategoryMenu className='categoryMenuContainer' basePath='/obrasci' query={{...(_page && !isNaN(page) ? {_page: page} : {}), ...query}} current={_category && !isNaN(category) ? category : undefined}/>
 					<BorderedLink href='/obrasci/dodaj-novi-obrazac' className={styles.addFormLink}>Dodaj novi obrazac</BorderedLink>
 					{_limit && _page && formsCount>0 && <PagesNavigation basePath='obrasci' page={page} totalPages={totalPages} otherParams={query}/>}
-					<Suspense fallback={<Loading message='Učitavanje ugluga...'/>}>
+					<Suspense fallback={<Loading message='Učitavanje usluga...'/>}>
 						<FormsList2 offset={pageSize * (page - 1)} limit={pageSize} category={category} className='mobile-no-thumbnail'/>
 					</Suspense>
 					{_limit && _page && formsCount>0 && <PagesNavigation basePath='obrasci' page={page} totalPages={totalPages} otherParams={query}/>}
