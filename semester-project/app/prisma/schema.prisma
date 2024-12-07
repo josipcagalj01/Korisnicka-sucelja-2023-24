@@ -37,6 +37,7 @@ model department {
 	name String @unique
 	users user[]
 	forms form[]
+	announcments announcment[]
 }
 
 model role {
@@ -70,8 +71,9 @@ model form {
 	fields Json
 	sketch Boolean
 	thumbnail_setting String
-	thumbnail form_thumbnail? @relation(fields: [thumbnail_id], references: [id])
-	thumbnail_id Int? @db.SmallInt 
+	thumbnail thumbnail? @relation(fields: [thumbnail_id], references: [id])
+	thumbnail_id Int? @db.SmallInt
+	announcments announcment[]
 }
 
 model submission {
@@ -87,10 +89,35 @@ model submission {
 	attachments submission_attachment[]
 }
 
-model form_thumbnail {
+model thumbnail {
 	id Int @db.SmallInt @id @default(autoincrement())
 	name String @unique
 	forms form[]
+	announcments announcment[]
+}
+
+model announcment_category {
+	id Int @db.SmallInt @id @default(autoincrement())
+	name String @unique
+	announcments announcment[]
+}
+
+model announcment {
+	id Int  @id @default(autoincrement())
+	date DateTime @db.Date
+	category_id Int @db.SmallInt
+	category announcment_category @relation(fields: [category_id], references: [id])
+	department_id Int @db.SmallInt
+	department  department @relation(fields: [department_id], references: [id])
+	thumbnail_setting String
+	thumbnail_id Int? @db.SmallInt
+	thumbnail thumbnail? @relation(fields: [thumbnail_id], references: [id])
+	title String
+	content Json
+	sketch Boolean
+	form_id Int?
+	form form? @relation(fields: [form_id], references: [id])
+	attachments announcment_attachment[]
 }
 
 model submission_attachment {
@@ -99,4 +126,11 @@ model submission_attachment {
 	submission submission @relation(fields: [submission_id], references: [id])
 	name String
 	field_index Int @db.SmallInt
+}
+
+model announcment_attachment {
+	id Int  @id @default(autoincrement())
+	name String
+	announcment_id Int
+	announcment announcment @relation(fields: [announcment_id], references: [id])
 }
