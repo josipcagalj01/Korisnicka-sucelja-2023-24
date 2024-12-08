@@ -85,7 +85,7 @@ export default function EditAnnouncment({props}: {props:Configuration}) {
 					if(thumbnail) {
 						await upload('form-thumbnails/' + values.thumbnail.name, values.thumbnail, {
 							access: 'public',
-							handleUploadUrl: '/api/upload-announcment-thumbnail/',
+							handleUploadUrl: '/api/upload-announcment-thumbnail',
 							clientPayload: JSON.stringify({id: id})
 						});
 					}
@@ -107,7 +107,7 @@ export default function EditAnnouncment({props}: {props:Configuration}) {
 						}
 					}
 				} catch(error) {
-					setServerMessage(message + 'Dogodio se problem pri pohrani datoteka na poslužitelj. Možete ih pokušati ponovo prenijeti kroz stranicu za upravljanje objavama')
+					setServerMessage(message + ' Dogodio se problem pri pohrani datoteka na poslužitelj. Možete ih pokušati ponovo prenijeti kroz stranicu za upravljanje objavama')
 				}
 			}
 			isLoading(false)
