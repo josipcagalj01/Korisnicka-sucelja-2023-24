@@ -1,3 +1,11 @@
+.form section {
+	border: 1px solid gray;
+	border-radius: 3px;
+	background-color: #eeeeee;
+	padding:7px;
+	margin-bottom: 25px;
+}
+
 .titleAndCategory {
 	font-size: 9pt;
 }
@@ -14,7 +22,6 @@
 
 .templateMenu ul {
 	margin: 20px 10px 20px 10px;
-	width: 100%;
 }
 
 .templateMenu ul > li > div {
@@ -27,7 +34,7 @@
 }
 
 .templateMenu ul >li:not(:first-child) {
-	margin-top: 10px;
+	margin-top: 8px;
 }
 
 .selected {

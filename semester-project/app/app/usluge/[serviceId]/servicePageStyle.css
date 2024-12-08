@@ -13,5 +13,6 @@
 
 .rateLimitInfo {
 	display:block;
-	margin: 10px auto 10px auto;
+	margin-top: 10px;
+	width: 100%;
 }

@@ -1,3 +1,9 @@
+.formMain {
+	max-height: calc(100vh - 74px - 45px);
+	display: flex;
+	flex-direction: column;
+}
+
 .serviceTitle {
 	margin-bottom: 35px;
 }
@@ -17,7 +23,11 @@ main > .afterServiceRequestInfo {
 }
 
 div.serviceFormContainer {
-	max-width: 100%;;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	max-width: 100%;
 	width: fit-content;
 	margin: 20px auto auto auto;
 	border: 1px solid gray;
@@ -29,6 +39,7 @@ div.serviceFormContainer {
 	width: 80ch;
 	max-width: calc(100% - 40px);
 	margin: 20px;
+	scrollbar-color: darkgray #eeeeee;
 }
 
 .serviceForm label {
@@ -38,30 +49,85 @@ div.serviceFormContainer {
 	font-weight: bold;
 }
 
-.serviceForm {
-	margin: 20px auto auto auto;
+.labelAndInputContainer .editor {
+	padding: 5px;
+	display: block;
+	width:100%;
+	min-height: 250px;
+	max-height: calc(100vh - 74px - 40px - 440px);
+	word-wrap: break-all;
+	overflow-y: scroll;
 }
 
-.serviceForm > section {
+.labelAndInputContainer .editor-toolbar {
+	column-gap: 12px;
+	padding: 7px;
+	background-color: var(--grey-card-background);
+	border-bottom: 1px solid darkgray;
+}
+
+.labelAndInputContainer .editor-wrapper {
+	display: block;
+	width:100%;
+	border: 1px solid darkgray;
+}
+
+.serviceForm {
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	width:100%;
+	overflow-y: hidden;
+	position: relative;
+}
+
+.formContent {
+	overflow-y: scroll;
+	flex:1;
+	margin-bottom: 1em;
+	position: relative;
+}
+
+.serviceForm .border {
+	width: 100%;
+	border-top: 1px solid darkgray;
+	position: absolute;
+	z-index: 2;
+	border-radius: 3px;
+}
+
+.serviceForm .border.top {
+	top: 0;
+}
+
+.serviceForm .border.bottom {
+	height: 1px;
+	bottom: calc(55px + 1em);
+}
+
+.formContent > section {
 	border: 1px solid gray;
 	border-radius: 3px;
 	background-color: #eeeeee;
-	width: calc(80ch + 40px);
-	max-width: 100%;
+	width: 100%;
 	padding:7px;
+}
+
+.formContent >section:not(:last-of-type) {
 	margin-bottom: 25px;
 }
 
-.serviceForm > section .titleAndShowHideMenu {
+.formContent > section .titleAndShowHideMenu {
 	display: flex;
 	column-gap: 10px;
 }
 
-.serviceForm > section .titleAndShowHideMenu h2 {
+.formContent > section .titleAndShowHideMenu h2 {
 	margin-bottom: auto;
 }
 
-.serviceForm > section > h2 {
+.formContent > section > h2 {
 	word-break: break-all;
 }
 
@@ -453,6 +519,8 @@ input[type="file"]:hover::before {
 }
 
 .buttonContainer {
+	position: sticky;
+	top:100%;
 	display: flex;
 	justify-content: center;
 	column-gap: 10px;
@@ -471,13 +539,18 @@ input[type="file"]:hover::before {
 		color: #ffcc00;
 	}
 
-	.serviceForm .buttonContainer button[type='button']:hover {
+	.serviceForm .buttonContainer button[type="submit"].deleteButton:hover {
 		color: darkred;
 		background-color: coral;
 	}
 }
 
 @media screen and (max-width:480px) {
+
+	.formMain {
+		max-height: unset;
+	}
+
 	main .afterServiceRequestInfo {
 		top: 0;
 	}
@@ -501,8 +574,10 @@ input[type="file"]:hover::before {
 	}
 }
 
-@media screen and (max-width: calc(80ch - 1px)) {
-
+@media screen and (max-width: 1500px) {
+	.formContent > section {
+		width:100%;
+	}
 
 	/*.serviceForm {
 		width: calc(100% - 40px);
@@ -519,7 +594,7 @@ input[type="file"]:hover::before {
 	margin:20px 0px auto auto;
 }
 
-.serviceForm .buttonContainer button[type="button"] {
+.serviceForm .buttonContainer button[type="submit"].deleteButton {
 	background-color: lightcoral;
 	color: white;
 	border: 1px solid gray;
