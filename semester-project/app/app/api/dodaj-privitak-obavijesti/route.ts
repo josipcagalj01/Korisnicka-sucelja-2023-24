@@ -46,7 +46,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 					const payload = JSON.parse(tokenPayload || '{}');
 					await db.announcment_attachment.create({
 						data: {
-							announcment: {connect: payload.id},
+							announcment: {connect: {id: payload.id}},
 							name: blob.url.split('/').slice(-1)[0]
 						}
 					})
