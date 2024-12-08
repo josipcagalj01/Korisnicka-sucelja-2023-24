@@ -25,7 +25,7 @@ export async function GET(req: Request, {params}: {params: MultipleParams}) {
 				const id = parseInt(params.options[1])
 				if(isNaN(id)) return NextResponse.json({message: 'Nije pronađena tražena datoteka'}, {status: 404} )
 				else {
-					const {name} = await db.form_thumbnail.findUnique({where: {id: id}}) || {name: null}
+					const {name} = await db.thumbnail.findUnique({where: {id: id}}) || {name: null}
 					if(!name) return NextResponse.json({message: 'Nije pronađena tražena datoteka'}, {status: 404} )
 					else {
 						const fetched_thumbnail = await fetch(`${process.env.VERCEL_BLOB_URL}/form-thumbnails/${name}`)
