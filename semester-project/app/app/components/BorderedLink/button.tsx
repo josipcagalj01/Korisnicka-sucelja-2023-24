@@ -6,12 +6,13 @@ import './borderedLinkStyle.css'
 interface linkProps {
 	href: Url,
 	children: React.ReactNode,
-	className?: string
+	className?: string,
+	target?: string
 }
 
-export default function BorderedLink({ href, children, className = '' }: linkProps) {
+export default function BorderedLink({ href, children, className = '', target='' }: linkProps) {
 	return (
-		<Link href={href ?? ''} className={`borderedLink ${className}`}><p className='linkText'>{children}</p></Link>
+		<Link href={href ?? ''} className={`borderedLink ${className}`} target={target}><p className='linkText'>{children}</p></Link>
 	)
 }
 
