@@ -3,11 +3,7 @@ import { NextResponse } from 'next/server';
 import { db } from '../../../lib/db';
 import { getSession } from '../../../lib/getSession';
 
-interface Params {
-	id: string
-}
-
-export async function POST(request: Request, {params}: {params: Params}): Promise<NextResponse> {
+export async function POST(request: Request): Promise<NextResponse> {
 	const body = (await request.json()) as HandleUploadBody;
 	try {
 		const jsonResponse = await handleUpload({
@@ -29,6 +25,7 @@ export async function POST(request: Request, {params}: {params: Params}): Promis
 					tokenPayload: JSON.stringify({
 						// optional, sent to your server on upload completion
 						// you could pass a user id from auth, or a value from clientPayload
+						...payload
 					}),
 				};
 			},
@@ -38,8 +35,8 @@ export async function POST(request: Request, {params}: {params: Params}): Promis
 				// Use ngrok or similar to get the full upload flow
 
 				console.log('blob upload completed', blob, tokenPayload);
-				const id = parseInt(params.id)
 				try {
+					const payload = JSON.parse(tokenPayload || '{}');
 					const new_thumbnail = await db.thumbnail.create({ data: { name: blob.url.split('/').slice(-1)[0] } })
 					await db.announcment.update({
 						data: {
@@ -48,15 +45,17 @@ export async function POST(request: Request, {params}: {params: Params}): Promis
 							},
 							thumbnail_setting: 'existing'
 						},
-						where: { id: id }
+						where: { id: payload.id }
 					})
 				} catch (error) {
+					console.error(error)
 					throw new Error('Could not update form');
 				}
 			},
 		});
 		return NextResponse.json(jsonResponse);
 	} catch (error) {
+		console.error(error)
 		return NextResponse.json(
 			{ error: (error as Error).message },
 			{ status: 400 }, // The webhook will retry 5 times waiting for a 200
