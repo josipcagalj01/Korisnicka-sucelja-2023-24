@@ -10,7 +10,9 @@ export async function POST(request: Request): Promise<NextResponse> {
 			body,
 			request,
 			onBeforeGenerateToken: async (pathname, clientPayload) => {
-				const payload = JSON.parse(clientPayload || '')
+				if(!clientPayload) throw new Error('Could not upload file');
+				
+				const payload = JSON.parse(clientPayload)
 				const id = parseInt(payload.id)
 				const { user } = await getSession() || { user: null }
 				if (isNaN(id)) throw new Error('Invalid announcment id format provided')
@@ -19,7 +21,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 					if (!announcment) throw new Error('Form whose id is ... does not exist')
 					else if (user?.department_id !== announcment.department_id && (user?.role_id !== 1 && user?.role_id !== 3)) throw new Error('Access denied')
 				}
-
+				console.log('evo nas ', payload)
 				return {
 					allowedContentTypes: ['image/jpeg', 'image/png', 'image/gif'],
 					tokenPayload: JSON.stringify({
