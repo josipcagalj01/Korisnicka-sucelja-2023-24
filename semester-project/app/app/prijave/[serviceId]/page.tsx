@@ -85,7 +85,7 @@ async function Render({params, searchParams}: {params: Params, searchParams: Rec
 								<table className={styles.submissionsList + ' ' + styles.formSubmissions}>
 									<thead>
 										<tr>
-											<th>R. br</th>
+											<th></th>
 											<th>OIB podnositelja</th>
 											<th>Prezime podnositelja</th>
 											<th>Ime podnositelja</th>
