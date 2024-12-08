@@ -17,8 +17,8 @@
 }
 
 .addFormLink, .buttons {
-	margin-top: 30px;
-	margin-bottom: 1.8em;
+	margin-top: 1.6em;
+	margin-bottom: 1.6em;
 }
 
 .centerHorizontally {
@@ -30,9 +30,29 @@
 	top: 100%;
 }
 
-.buttons {
+div.centerHorizontally a {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10px;
+}
+
+.buttons, .buttons > div {
 	display: flex;
+}
+
+.buttons {
 	justify-content: space-between;
+}
+
+.buttons > div {
+	column-gap: 10px;
+	row-gap: 8px;
+	flex-wrap: wrap;
+}
+
+.disabled {
+	opacity: 0.5;
+	pointer-events: none;
 }
 
 @media screen and (max-width: 480px) {
