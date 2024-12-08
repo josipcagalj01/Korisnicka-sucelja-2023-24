@@ -1,6 +1,11 @@
-.announcmentPageMain {
-  display:flex;
-  align-items:center;
+.newsPageWholeContent {
+  width:calc(120ch + 21px);
+  max-width: 100%;
+  margin:auto;
+}
+
+.newsPageWholeContent.onlyText {
+  width: 80ch;
 }
 
 .categoryMenuContainer {
@@ -16,69 +21,113 @@
   margin:auto;
 }
 
+.announcmentContent {
+  margin-top: 20px;
+  max-width: 100%;
+}
+
+.showAside.announcmentContent {
+  display: grid;
+  grid-template-columns: max-content 40ch;
+  column-gap: 20px;
+}
+
+.announcmentContent .attachments {
+  border-left: 1px solid darkgray;
+}
+
+.attachments {
+  max-width: fit-content;
+}
+
+.attachments > div {
+  margin-left: 20px;
+  position: sticky;
+  top: 10px;
+}
+
+.attachments > div div:last-of-type {
+  margin-top: 20px;
+}
+
+.attachments > div > div li {
+  margin-left: 20px;
+}
+
+.attachments > div > div h3 {
+  margin-bottom: 10px;
+}
+
+.attachments > div a:last-of-type {
+  margin-top: 6px;
+}
+
+.attachmentsList a:hover {
+  text-decoration: underline;
+}
+
+h1.announcmentTitle {
+  margin-bottom: 20px;
+}
+
 .announcmentContainer h1 {
-  margin-bottom:20px;
+  font-size: 22pt;
 }
 
 .announcmentContainer h4 {
-  padding-top:10px;
-  padding-bottom: 10px;
+  font-size: 12pt;
 }
 
  .announcmentContainer h2 {
-  padding: 10px 0px 10px;
+  font-size: 18pt;
  }
 
 .announcmentContainer h3 {
-  padding: 10px 0px 10px;
+  font-size: 14pt;
 }
 
-.announcmentContainer img {
+img.announcmentThumbnail {
   background-color: #eeeeee;
-  margin:20px 0px 10px;
+  
 }
 
-.announcmentContainer h2, .announcmentContainer h3, .announcmentContainer h4 {
-  text-align: center;
+figure.thumbnailWrapper.noAside {
+  width: 80ch;
 }
 
-.announcmentContainer li {
+figure.thumbnailWrapper {
+  width: 100%;
+  aspect-ratio: 1.77777778;
+  margin-top:20px;
+}
+
+.announcmentContainer p {
+  min-height: 20px;
+}
+
+.announcmentContainer li, .attachments li {
   position:relative;
   margin:0;
 }
 
 .announcmentContainer ul, .announcmentContainer ol {
-  padding-bottom:7px;
   margin-left: 50px;
 }
 
-.announcmentContainer ul ol, .announcmentContainer ol ul {
-  padding-bottom: initial;
+.attachments ul {
+  margin-left: 20px;
 }
 
 .announcmentContainer ul {
   list-style: none;
 }
 
-.announcmentContainer ul > li::before {
+.announcmentContainer ul > li::before, .attachments ul > li::before {
   font-size:15px;
   position:absolute;
   left:-20px;
-  top:4px;
   content: "\25a0";
   color:rgba(0,0,0,0.6);
-}
-
-.announcmentContainer ol p ,.announcmentContainer ul p {
-  padding: 3px 0px 3px;
-}
-
-.announcmentContainer li p, .announcmentContainer li b {
-  margin-left:5px;
-}
-
-.announcmentContainer p, .announcmentContainer b {
-  padding: 7px 0px 8px;
 }
 
 .announcmentContainer a:hover {
@@ -94,9 +143,40 @@
     counter-increment: item;
     position:absolute;
     left:-20px;
-    top:3px;
 }
 
 .announcmentContainer a {
   word-wrap: break-word;
+}
+
+@media screen and (max-width: calc(120ch + 59px)) {
+  .announcmentContent {
+    grid-template-columns: max-content auto;
+  }
+
+}
+
+@media screen and (max-width: calc(80ch + 40px + 39ch)) {
+  .showAside.announcmentContent {
+    grid-template-columns: 1fr;
+    row-gap: 20px;
+    width: max-content;
+  }
+
+  .showAside.announcmentContent .attachments {
+    max-width: 100%;
+    border-left: unset;
+    border-top: 1px solid darkgray;
+
+  }
+
+  .attachments > div {
+    margin: 20px auto auto auto;
+  }
+}
+
+@media screen and (max-width: calc(80ch + 39px)) {
+  figure.thumbnailWrapper.noAside {
+    width: 100%;
+  }
 }

@@ -1,0 +1,7 @@
+div.editorToolbar .borderedButton > p {
+	margin: 5px;
+}
+
+div.editorToolbar {
+	column-gap: 12px;
+}

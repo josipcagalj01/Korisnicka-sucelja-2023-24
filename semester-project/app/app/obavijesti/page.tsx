@@ -4,7 +4,7 @@ import type { Metadata } from 'next'
 import { Error404 } from '../components/error/errorXYZ'
 import './[announcmentId]/newsPageStyle.css'
 import News from '../components/News/news'
-import { getTotalNewsCount } from '../../lib/contentfulClient'
+import { getAnnoumcmentsCount } from '../../lib/manage-announcments/db_queries'
 import { Suspense } from 'react';
 import Loading from '../components/Loading/loading'
 import PagesNavigation from '../components/pages-navigation/PagesNavigation'
@@ -18,22 +18,21 @@ export const metadata: Metadata = {
 async function Announcments({ searchParams }: { searchParams: Record<string, string | string[] | undefined>; }) {
 
 	const { _limit, _page, _category } = searchParams;
-	const [pageSize, page] = [_limit, _page].map(Number);
-	const category = _category?.toString()
+	const [pageSize, page, categoryId] = [_limit, _page, _category].map(Number);
 
-	const totalAnnouncments = await getTotalNewsCount({ category })
-	const totalPages = Math.ceil(totalAnnouncments / pageSize);
+	const totalAnnouncments = await getAnnoumcmentsCount({categoryId: _category ? categoryId : undefined})
+	const totalPages = totalAnnouncments>0 ? Math.ceil(totalAnnouncments / pageSize) : 1;
 
-	const query = {'_limit': pageSize, '_category': category}
+	const query = {'_limit': pageSize, '_category': categoryId}
 
 	if (page > totalPages) return (<main className='errorMain'><Error404 /></main>)
 	return (
 		<main>
 			<h1>Obavijesti</h1>
-			<NewsCategoryMenu className='categoryMenuContainer' basePath='/obavijesti' query={{...(_page && !isNaN(page) ? {_page: page} : {}), ...query}} current={_category ? _category as string : undefined}/>
+			<NewsCategoryMenu className='categoryMenuContainer' basePath='/obavijesti' query={{...(_page && !isNaN(page) ? {_page: page} : {}), ...query}} current={_category ? categoryId : undefined}/>
 			{_limit && _page && <PagesNavigation basePath='obavijesti' page={page} totalPages={totalPages} otherParams={query}/>}
 			<Suspense fallback={<Loading message='Učitavanje obavijesti ...' />}>
-				<News offset={pageSize * (page - 1)} limit={pageSize} category={_category?.toString()} className='mobile-no-thumbnail' />
+				<News offset={pageSize * (page - 1)} limit={pageSize} category={_category ? categoryId : undefined} className='mobile-no-thumbnail' />
 			</Suspense>
 			{_limit && _page && <PagesNavigation basePath='obavijesti' page={page} totalPages={totalPages} otherParams={query}/>}
 		</main>
