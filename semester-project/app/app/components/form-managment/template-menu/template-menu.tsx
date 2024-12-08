@@ -66,7 +66,7 @@ function ChooseTemplate({control, name, current}: Omit<NumberRadioInputProps, 'c
 						)}
 					)}
 				</ul>
-				{existingForms?.length && <Navigation page={page} totalPages={totalPages} setPage={setPage}/>}
+				{existingForms?.length && <Navigation page={page} className={styles.navigation} totalPages={totalPages} setPage={setPage}/>}
 			</div>
 		</div>
 	)
@@ -109,7 +109,7 @@ export default function TemplateMenu(props: templateMenuProps) {
 	}
 
 	return (
-		<form className='serviceForm' onSubmit={handleSubmit(onSubmit)}>
+		<form className={styles.form + ' serviceForm'} onSubmit={handleSubmit(onSubmit)}>
 			<section>
 				<div className='formSectionContent'>
 					<div className='labelAndInputContainer'>
