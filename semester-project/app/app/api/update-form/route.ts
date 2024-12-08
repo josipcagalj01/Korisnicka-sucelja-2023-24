@@ -67,7 +67,6 @@ export async function POST(req: Request) {
 					if(JSON.stringify(value) !== JSON.stringify(existingForm[key as keyof typeof existingForm])) data[key] = value
 				}
 			})
-			console.log(data)
 			await db.form.update({data: data, where: {id: existingForm.id}})
 			return NextResponse.json({message: 'Promjene su uspješno spremljene'}, {status: 200})
 		}
