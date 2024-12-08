@@ -85,7 +85,7 @@ export default function EditAnnouncment({props}: {props:Configuration}) {
 					if(thumbnail) {
 						await upload('form-thumbnails/' + values.thumbnail.name, values.thumbnail, {
 							access: 'public',
-							handleUploadUrl: '/api/upload-thumbnail/',
+							handleUploadUrl: '/api/upload-announcment-thumbnail/',
 							clientPayload: JSON.stringify({id: id})
 						});
 					}
