@@ -42,7 +42,7 @@ export async function POST(request: Request, {params}: {params: Params}): Promis
 				console.log('blob upload completed', blob, tokenPayload);
 				const id = parseInt(params.id)
 				try {
-					const new_thumbnail = await db.form_thumbnail.create({ data: { name: blob.url.split('/').slice(-1)[0] } })
+					const new_thumbnail = await db.thumbnail.create({ data: { name: blob.url.split('/').slice(-1)[0] } })
 					await db.form.update({
 						data: {
 							thumbnail: {
