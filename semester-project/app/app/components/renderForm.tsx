@@ -208,35 +208,37 @@ function DynamicForm({rate, form}: {form:Omit<FormConfiguration, 'avalible_from'
 			{rate_limit && <b className='rateLimitInfo'>Obrazac je moguće ispuniti najviše {rate_limit} {times1}. {count && count < rate_limit ? <>Već ste {count} {times2} ispunili ovaj obrazac.</> : ''}</b>}
 			<div className="serviceFormContainer">
 				<form className="serviceForm" onSubmit={handleSubmit(onSubmit)}>
-					{fields.map((field, index) => {
-						if(values[`a${index}`]===null) setValue(`a${index}`, emptyForm[`a${index}`], {shouldValidate:true})
-						if(shouldRender(index)) return (
-							<div key={field.label} className='labelAndInputContainer'>
-								<label htmlFor={`a${index}`}>{field.label}</label>
-								{field.inputType === 'file' && <FileInput field={`a${index}`} inputTypes={fileTypes.filter(({type})=>field.fileTypes.includes(type)).map(({extension})=>extension)} multiple={field.multiple} />}
-								{['radio', 'checkbox'].includes(field.inputType) &&
-									<div className={field.inputType+'Container'}>
-										{field.options.map(({ option }) =>
-											<span key={option}>
-												<input type={field.inputType} value={option} {...register(`a${index}`)} />
-												<p>{option}</p>
-											</span>
-										)}
-									</div>
-								}
-								{['pin', 'text'].includes(field.inputType) && <input type='text' {...register(`a${index}`)} />}
-								{['int', 'float'].includes(field.inputType) && <input type='number' {...register(`a${index}`)} step={field.inputType==='float' ? "any" : undefined}/>}
-								{field.inputType==='date' && <input type='date' {...register(`a${index}`)} />}
-								{errors[`a${index}`] && <b className='formErrorMessage'>{(errors[`a${index}`] as any).message}</b>}
-							</div>
-						)
-						else {
-							if(isSet(values[`a${index}`])) setValue(`a${index}`, emptyForm[`a${index}`], {shouldValidate:true})
-						}
-					})}
+					<div className="formContent">
+						{fields.map((field, index) => {
+							if(values[`a${index}`]===null) setValue(`a${index}`, emptyForm[`a${index}`], {shouldValidate:true})
+							if(shouldRender(index)) return (
+								<div key={field.label} className='labelAndInputContainer'>
+									<label htmlFor={`a${index}`}>{field.label}</label>
+									{field.inputType === 'file' && <FileInput field={`a${index}`} inputTypes={fileTypes.filter(({type})=>field.fileTypes.includes(type)).map(({extension})=>extension)} multiple={field.multiple} />}
+									{['radio', 'checkbox'].includes(field.inputType) &&
+										<div className={field.inputType+'Container'}>
+											{field.options.map(({ option }) =>
+												<span key={option}>
+													<input type={field.inputType} value={option} {...register(`a${index}`)} />
+													<p>{option}</p>
+												</span>
+											)}
+										</div>
+									}
+									{['pin', 'text'].includes(field.inputType) && <input type='text' {...register(`a${index}`)} />}
+									{['int', 'float'].includes(field.inputType) && <input type='number' {...register(`a${index}`)} step={field.inputType==='float' ? "any" : undefined}/>}
+									{field.inputType==='date' && <input type='date' {...register(`a${index}`)} />}
+									{errors[`a${index}`] && <b className='formErrorMessage'>{(errors[`a${index}`] as any).message}</b>}
+								</div>
+							)
+							else {
+								if(isSet(values[`a${index}`])) setValue(`a${index}`, emptyForm[`a${index}`], {shouldValidate:true})
+							}
+						})}
+					</div>
 					<div className='buttonContainer'>
 						<button type='submit'>Pošalji</button>
-						<button type='button' onClick={() => reset()}>Odustani</button>
+						<BorderedButton onClick={() => reset()}>Odustani</BorderedButton>
 					</div>
 				</form>
 			</div>
