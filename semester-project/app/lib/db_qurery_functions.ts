@@ -11,7 +11,7 @@ export interface Category {
 
 interface categoryList {
 	success : boolean,
-	categories?: Category[]
+	categories?: Prisma.category[]
 }
 
 export async function getTotalCount({tableName, condition}:{tableName:string, condition?:any}):Promise<number> {
@@ -62,7 +62,7 @@ export async function getSubmissionsCountForEmployees (props?: {condition:any}):
 
 export async function getCategories():Promise<categoryList> {
 	try {
-		const response:Category[] = await db.category.findMany()
+		const response:Prisma.category[] = await db.category.findMany()
 		return {success:true, categories:response}
 	}catch(error){
 		console.error(error)
@@ -70,7 +70,7 @@ export async function getCategories():Promise<categoryList> {
 	}
 }
 
-export async function getDepartments():Promise<{id: number, name: string}[] | null> {
+export async function getDepartments():Promise<Prisma.department[] | null> {
 	try {
 		const response = await db.department.findMany()
 		return response
@@ -80,7 +80,7 @@ export async function getDepartments():Promise<{id: number, name: string}[] | nu
 	}
 }
 
-export async function getRoles():Promise<{id: number, name: string}[] | null> {
+export async function getRoles():Promise<Prisma.role[] | null> {
 	try {
 		const response = await db.role.findMany()
 		return response
@@ -104,7 +104,7 @@ interface formsPackage {
 	forms : formsCardData[]
 }
 
-export async function getForms({ offset, limit, category }: Omit<newsProps, 'category' | 'desidered_id'> & {category?: number}) : Promise<formsPackage> {
+export async function getForms({ offset, limit, category }:newsProps) : Promise<formsPackage> {
 	let query : any = {}
 	
 	if(offset) query.skip = offset
@@ -163,7 +163,7 @@ export async function getForms2() : Promise<TemplateMenuOption[] | null> {
 	}
 }
 
-export async function getFormsForEmployees({ offset, limit, category }: Omit<newsProps, 'category'> & {category?: number}) : Promise<formsPackage> {
+export async function getFormsForEmployees({ offset, limit, category }: newsProps) : Promise<formsPackage> {
 	const {user} = await getSession() || {user: null}
 	let query : any = {}
 	
@@ -268,6 +268,35 @@ export async function getFormConfigurationForEmployee(id: number) : Promise<form
 	}
 }
 
+export async function getFormConfigurationToDelete(id: number) {
+	try {
+		let where : any = {id:id}
+		const {user} = await getSession() || {user:null}
+		if(user?.role_id!==1 && user?.role_id!==3) where.department = {id: user?.department_id}
+		const response = await db.form.findUnique({
+			where: where,
+			select: {
+				id: true,
+				title: true,
+				department_id: true,
+			}
+		})
+		const count = await db.submission.count({
+			where: {
+				form: {id: id}
+			}
+		})
+		
+		if(response) {
+			return ({recordsExist: count!==0, ...response})
+		}
+		else return null
+	} catch(error) {
+		console.error
+		return null
+	}
+}
+
 export async function getFormTemplate(id: number) {
 	try {
 		const response = await db.form.findUnique({
@@ -319,7 +348,7 @@ export async function getFormConfiguration3(id: number) : Promise<formConfigurat
 
 export async function getThumbnails() : Promise <{id: number, name: string}[] | null> {
 	try {
-		const thumbnails = await db.form_thumbnail.findMany()
+		const thumbnails = await db.thumbnail.findMany()
 		return thumbnails.map(({id,name})=>{
 			const splitted = name.split('-')
 			const extension = name.slice(name.lastIndexOf('.'), name.length)
@@ -443,7 +472,17 @@ export async function getSubmission(id: number) : Promise<submissionData | null>
 			},
 			where: where
 		})
-		const ids = await db.submission.findMany({select: {id: true}, where: {form: {id: response?.form.id}}})
+		const ids = await db.submission.findMany({
+			select: {id: true},
+			where: {
+				form: {
+					id: response?.form.id
+				}
+			},
+			orderBy: [
+				{time: 'asc'}
+			]
+		})
 		if(response) {
 			const {data, ...rest} = response
 			let dataToReturn : any = {...data as any}
