@@ -238,285 +238,289 @@ export default function ConfigureForm(props?: {existingSubmissions?: boolean, co
 	else if(showTemplateMenu) return (<TemplateMenu setValue={setValue} isLoading={isLoading} showMenu={shouldShowTemplateMenu}/>)
 	else return (
 			<form onSubmit={handleSubmit(onSubmit)} className='serviceForm'>
-				<section>
-					<div className="titleAndShowHideMenu">
-						<button type='button' className={`arrow ${showCoreMenu ? 'opened' : 'closed' }`} onClick={()=>shouldShowCoreMenu(!showCoreMenu)}>
-							<Image src='/arrows/show-hide-arrow.png' width={10} height={20} alt='show-hide-arrow'/>
-						</button>
-						<h2>Osnovne postavke</h2>
-					</div>
-					<div className={`formSectionContent ${showCoreMenu ? '' : 'displayNone'}`}>
-						{session.data?.user.role_id === 1 &&
+				<div className="border top"></div>
+				<div className="formContent">
+					<section>
+						<div className="titleAndShowHideMenu">
+							<button type='button' className={`arrow ${showCoreMenu ? 'opened' : 'closed' }`} onClick={()=>shouldShowCoreMenu(!showCoreMenu)}>
+								<Image src='/arrows/show-hide-arrow.png' width={10} height={20} alt='show-hide-arrow'/>
+							</button>
+							<h2>Osnovne postavke</h2>
+						</div>
+						<div className={`formSectionContent ${showCoreMenu ? '' : 'displayNone'}`}>
+							{session.data?.user.role_id === 1 &&
+								<div className="labelAndInputContainer">
+									<label htmlFor='departmentId'>Odabere kome su namijenjeni podaci prikupljeni ovim obrascom.</label>
+									<select {...register('department_id', { valueAsNumber: true })} value={departmentId}>
+										<option disabled value={0} className='displayNone'></option>
+										{departments?.map(({ name, id }) => <option key={name} value={id}>{name}</option>)}
+									</select>
+									{errors.department_id && <b className='formErrorMessage'>{errors.department_id.message}</b>}
+								</div>
+							}
 							<div className="labelAndInputContainer">
-								<label htmlFor='departmentId'>Odabere kome su namijenjeni podaci prikupljeni ovim obrascom.</label>
-								<select {...register('department_id', { valueAsNumber: true })} value={departmentId}>
+								<label htmlFor='category_id'>Odaberite kategoriju novog prijavnog obrasca</label>
+								<select {...register('category_id', { valueAsNumber: true })} value={values.category_id}>
 									<option disabled value={0} className='displayNone'></option>
-									{departments?.map(({ name, id }) => <option key={name} value={id}>{name}</option>)}
+									{categories?.map(({ name, id }) => <option key={name} value={id}>{name}</option>)}
 								</select>
-								{errors.department_id && <b className='formErrorMessage'>{errors.department_id.message}</b>}
+								{errors.category_id && <b className='formErrorMessage'>{errors.category_id.message}</b>}
 							</div>
-						}
-						<div className="labelAndInputContainer">
-							<label htmlFor='category_id'>Odaberite kategoriju novog prijavnog obrasca</label>
-							<select {...register('category_id', { valueAsNumber: true })} value={values.category_id}>
-								<option disabled value={0} className='displayNone'></option>
-								{categories?.map(({ name, id }) => <option key={name} value={id}>{name}</option>)}
-							</select>
-							{errors.category_id && <b className='formErrorMessage'>{errors.category_id.message}</b>}
-						</div>
-						<div className="labelAndInputContainer">
-							<label htmlFor="title">Unesite naziv prijavnog obrasca</label>
-							<input type="text" {...register('title')} />
-							{errors.title && <b className='formErrorMessage'>{errors.title.message}</b>}
-						</div>
-					</div>
-				</section>
-				<section>
-					<div className="titleAndShowHideMenu">
-						<button type='button' className={`arrow ${showAvalibilityMenu ? 'opened' : 'closed' }`} onClick={()=>shouldShowAvalibilityMenu(!showAvalibilityMenu)}>
-							<Image src='/arrows/show-hide-arrow.png' width={10} height={20} alt='show-hide-arrow'/>
-						</button>
-						<h2>Postavke dostupnosti</h2>
-					</div>
-					<div className={`formSectionContent ${showAvalibilityMenu ? '' : 'displayNone'}`}>
-						<div className="labelAndInputContainer">
-							<label htmlFor="start_time_limited">Hoće li obrazac će postati dostupan od točno određenog trenutka?</label>
-							<MyBooleanInput control={control} name = 'start_time_limited'/>
-							{errors.start_time_limited && <b className="formErrorMessage">{errors.start_time_limited.message}</b>}
-						</div>
-						{values.start_time_limited &&
 							<div className="labelAndInputContainer">
-								<label htmlFor="avalible_from">Odredite od kada će obrazac biti dostupan.</label>
-								<DateInput control={control} name="avalible_from"/>
-								{errors.avalible_from && <b className="formErrorMessage">{errors.avalible_from.message}</b>}
+								<label htmlFor="title">Unesite naziv prijavnog obrasca</label>
+								<input type="text" {...register('title')} />
+								{errors.title && <b className='formErrorMessage'>{errors.title.message}</b>}
 							</div>
-						}
-						<div className="labelAndInputContainer">
-							<label htmlFor="end_time_limited">Hoće li obrazac prestati biti dostupan u točno određenom trenutku?</label>
-							<MyBooleanInput control={control} name='end_time_limited' />
-							{errors.end_time_limited && <b className="formErrorMessage">{errors.end_time_limited.message}</b>}
 						</div>
-						{values.end_time_limited &&
-							<div className="labelAndInputContainer">
-								<label htmlFor="avalible_until">Odredite do kada će obrazac biti dostupan.</label>
-								<DateInput control={control} name="avalible_until" />
-								{errors.avalible_until && <b className="formErrorMessage">{errors.avalible_until.message}</b>}
-							</div>
-						}
-						<div className="labelAndInputContainer">
-							<label htmlFor="rate_limit_set">Ograniči broj prijava po korisniku</label>
-							<MyBooleanInput control={control} name='rate_limit_set' />
+					</section>
+					<section>
+						<div className="titleAndShowHideMenu">
+							<button type='button' className={`arrow ${showAvalibilityMenu ? 'opened' : 'closed' }`} onClick={()=>shouldShowAvalibilityMenu(!showAvalibilityMenu)}>
+								<Image src='/arrows/show-hide-arrow.png' width={10} height={20} alt='show-hide-arrow'/>
+							</button>
+							<h2>Postavke dostupnosti</h2>
 						</div>
-						{values.rate_limit_set &&
+						<div className={`formSectionContent ${showAvalibilityMenu ? '' : 'displayNone'}`}>
 							<div className="labelAndInputContainer">
-								<label htmlFor="rate_limit">Odredite koliko najviše puta korisnik može ispuniti obrazac.</label>
-								<NumberInput name='rate_limit' control={control}/>
-								{errors.rate_limit && <b className="formErrorMessage">{errors.rate_limit.message}</b>}
+								<label htmlFor="start_time_limited">Hoće li obrazac će postati dostupan od točno određenog trenutka?</label>
+								<MyBooleanInput control={control} name = 'start_time_limited'/>
+								{errors.start_time_limited && <b className="formErrorMessage">{errors.start_time_limited.message}</b>}
 							</div>
-						}
-					</div>				
-				</section>
-				<section>
-					<div className="titleAndShowHideMenu">
-						<button type='button' className={`arrow ${showContentMenu ? 'opened' : 'closed'}`} onClick={() => shouldShowContentMenu(!showContentMenu)}>
-							<Image src='/arrows/show-hide-arrow.png' width={10} height={20} alt='show-hide-arrow' />
-						</button>
-						<h2>Sadržaj obrasca</h2>
-					</div>
-					<div className={`formSectionContent ${showContentMenu ? '' : 'displayNone'}`}>
-						{!fields2.length && <h3>Još nije dodano ni jedno polje</h3>}
-						{fields.map((field, index) => {
-							const allowedToDelete = canFieldBeDeleted(fields2, index)
-							const inputType = watch(`fields.${index}.inputType`)
+							{values.start_time_limited &&
+								<div className="labelAndInputContainer">
+									<label htmlFor="avalible_from">Odredite od kada će obrazac biti dostupan.</label>
+									<DateInput control={control} name="avalible_from"/>
+									{errors.avalible_from && <b className="formErrorMessage">{errors.avalible_from.message}</b>}
+								</div>
+							}
+							<div className="labelAndInputContainer">
+								<label htmlFor="end_time_limited">Hoće li obrazac prestati biti dostupan u točno određenom trenutku?</label>
+								<MyBooleanInput control={control} name='end_time_limited' />
+								{errors.end_time_limited && <b className="formErrorMessage">{errors.end_time_limited.message}</b>}
+							</div>
+							{values.end_time_limited &&
+								<div className="labelAndInputContainer">
+									<label htmlFor="avalible_until">Odredite do kada će obrazac biti dostupan.</label>
+									<DateInput control={control} name="avalible_until" />
+									{errors.avalible_until && <b className="formErrorMessage">{errors.avalible_until.message}</b>}
+								</div>
+							}
+							<div className="labelAndInputContainer">
+								<label htmlFor="rate_limit_set">Ograniči broj prijava po korisniku</label>
+								<MyBooleanInput control={control} name='rate_limit_set' />
+							</div>
+							{values.rate_limit_set &&
+								<div className="labelAndInputContainer">
+									<label htmlFor="rate_limit">Odredite koliko najviše puta korisnik može ispuniti obrazac.</label>
+									<NumberInput name='rate_limit' control={control}/>
+									{errors.rate_limit && <b className="formErrorMessage">{errors.rate_limit.message}</b>}
+								</div>
+							}
+						</div>				
+					</section>
+					<section>
+						<div className="titleAndShowHideMenu">
+							<button type='button' className={`arrow ${showContentMenu ? 'opened' : 'closed'}`} onClick={() => shouldShowContentMenu(!showContentMenu)}>
+								<Image src='/arrows/show-hide-arrow.png' width={10} height={20} alt='show-hide-arrow' />
+							</button>
+							<h2>Sadržaj obrasca</h2>
+						</div>
+						<div className={`formSectionContent ${showContentMenu ? '' : 'displayNone'}`}>
+							{!fields2.length && <h3>Još nije dodano ni jedno polje</h3>}
+							{fields.map((field, index) => {
+								const allowedToDelete = canFieldBeDeleted(fields2, index)
+								const inputType = watch(`fields.${index}.inputType`)
 
-							const a = watch(`fields.${index}.render.conditional`)
-							if(a===null) setValue(`fields.${index}.render.conditional`, false, {shouldValidate:true})
-							
-							const b = watch(`fields.${index}.required.isRequired`)
-							if(b===null) setValue(`fields.${index}.required.isRequired`, '', {shouldValidate:true})
+								const a = watch(`fields.${index}.render.conditional`)
+								if(a===null) setValue(`fields.${index}.render.conditional`, false, {shouldValidate:true})
+								
+								const b = watch(`fields.${index}.required.isRequired`)
+								if(b===null) setValue(`fields.${index}.required.isRequired`, '', {shouldValidate:true})
 
-							const c = watch(`fields.${index}.multiple`)
-							if(c===null) setValue(`fields.${index}.multiple`, undefined, {shouldValidate:true})
+								const c = watch(`fields.${index}.multiple`)
+								if(c===null) setValue(`fields.${index}.multiple`, undefined, {shouldValidate:true})
 
-							return (
-								<section className="unnested field" key={index}>
-									<div className="fieldSectionHeader">
-										<p>Polje br. {index+1}</p>
-										<div className='fieldNav'>
-											<button className="arrow" disabled={!shouldMoveField(-1, index, fields2)} type='button' onClick={()=>moveField(-1, index, values, reset)}>
-												<Image src='/arrows/arrow.png' width={14} height={14} alt='arrow' style={{objectFit:'contain'}}/>
-											</button>
-											<button className="arrow down" disabled={!shouldMoveField(1, index, fields2)} type='button' onClick={()=>moveField(1, index, values, reset)}>
-												<Image src='/arrows/arrow.png' width={14} height={14} alt='arrow' style={{objectFit:'contain'}}/>
-											</button>
-											<DeleteIcon className={`deleteicon`} onClick={()=>deleteField(values, index, reset)}/>
+								return (
+									<section className="unnested field" key={index}>
+										<div className="fieldSectionHeader">
+											<p>Polje br. {index+1}</p>
+											<div className='fieldNav'>
+												<button className="arrow" disabled={!shouldMoveField(-1, index, fields2)} type='button' onClick={()=>moveField(-1, index, values, reset)}>
+													<Image src='/arrows/arrow.png' width={14} height={14} alt='arrow' style={{objectFit:'contain'}}/>
+												</button>
+												<button className="arrow down" disabled={!shouldMoveField(1, index, fields2)} type='button' onClick={()=>moveField(1, index, values, reset)}>
+													<Image src='/arrows/arrow.png' width={14} height={14} alt='arrow' style={{objectFit:'contain'}}/>
+												</button>
+												<DeleteIcon className={`deleteicon`} onClick={()=>deleteField(values, index, reset)}/>
+											</div>
+											
+										</div>
+										<div className='fieldProperties'>
+										{!allowedToDelete && <b className='warningMessage'>{fieldDeleteWarning}</b>}
+											<div className="labelAndInputContainer">
+												<label htmlFor="name">Naziv polja</label>
+												{allowedToDelete ? <input type='text' {...register(`fields.${index}.label`)} /> : <p className="fakeInput">{fields2[index].label}</p>}
+												{errors.fields?.[index]?.label && <b className="formErrorMessage">{errors.fields[index]?.label?.message}</b>}
+											</div>
+											<div className="labelAndInputContainer radioInputsContainer">
+												<label htmlFor='render'>Kada će se polje prikazivati?</label>
+												<MyBooleanInput 
+													control={control}
+													reversed={true}
+													name={`fields.${index}.render.conditional`}
+													trueText="Uvjetno" falseText="Uvijek"
+													disableTrue={!(index != 0 && fields2.some((field) => field.label != fields2[index].label && ['checkbox', 'radio'].includes(field.inputType)))}
+													onClickFalse={()=>{
+														setValue(`fields.${index}.render.statisfyAll`, false)
+														setValue(`fields.${index}.render.dependencies`, [])
+														if(fields2[index].required.isRequired==='conditional') setValue(`fields.${index}.required.isRequired`, '')
+													}}
+												/>
+												{errors.fields?.[index]?.render?.conditional && <b className='formErrorMessage'>{errors.fields[index]?.render?.conditional?.message}</b>}
+											</div>
+											{fields2[index].render.conditional && <ConditionalDependencyForm index={index} control={control} register={register} errors={errors} fields2={fields2} dependencyName="render" setValue={setValue}/>}
+											{!fields2[index].requireIfRendered &&
+												<>
+													<div className="labelAndInputContainer radioInputsContainer">
+														<label htmlFor='required'>Je li polje obvezno?</label>
+														<div>
+															<span>
+																<input type='radio' {...register(`fields.${index}.required.isRequired`)} value='yes' onClick={() => setValue(`fields.${index}.required.dependencies`, [])} />
+																<p>Da</p>
+															</span>
+															<span>
+																<input type='radio' {...register(`fields.${index}.required.isRequired`)} value='no' onClick={() => setValue(`fields.${index}.required.dependencies`, [])} />
+																<p>Ne</p>
+															</span>
+															<span className={(index != 0 && fields2.some((field) => field.label != fields2[index].label && ['checkbox', 'radio'].includes(field.inputType))) ? '' : 'disabled'}>
+																<input type='radio' {...register(`fields.${index}.required.isRequired`)} value='conditional' />
+																<p>Uvjetno</p>
+															</span>
+														</div>
+														{errors.fields?.[index]?.required?.isRequired && <b className='formErrorMessage'>{errors.fields[index]?.required?.isRequired?.message}</b>}
+													</div>
+													{fields2[index].required.isRequired === 'conditional' && <ConditionalDependencyForm index={index} control={control} register={register} errors={errors} fields2={fields2} />}
+												</>
+											}
+											<div className="labelAndInputContainer">
+												<label htmlFor='inputType'>Vrsta unosa</label>
+												<select {...register(`fields.${index}.inputType`)}>
+													{inputTypes.map(({ type, toDisplay }) => <option key={toDisplay} value={type}>{toDisplay}</option>)}
+												</select>
+												{errors.fields?.[index]?.inputType && <b className="formErrorMessage">{errors.fields?.[index]?.inputType?.message || ''}</b>}
+											</div>
+											{['checkbox', 'radio'].includes(inputType) && <NestedField index={index} control={control} register={register} errors={errors} fields2={fields2} setValue={setValue} />}
+											{inputType === 'file' &&
+												<>
+													<div className="labelAndInputContainer nested">
+														<label htmlFor='fileTypes'>Odaberite dozvoljene vrste datoteka</label>
+														<div className='checkboxContainer'>
+															{fileTypes.map(({ name, type }) => <span key={name}><input type='checkbox' {...register(`fields.${index}.fileTypes`)} value={type} /><p>{name}</p></span>)}
+														</div>
+														{errors.fields?.[index]?.fileTypes && <b className="formErrorMessage">{errors.fields?.[index]?.fileTypes?.message || ''}</b>}
+													</div>
+													<div className="labelAndInputContainer nested radioInputsContainer">
+														<label htmlFor='fileTypes'>Koliko datoteka je moguće priložiti?</label>
+														<MyBooleanInput falseText="Jednu" trueText="Više" name={`fields.${index}.multiple`} control={control} reversed={true}/>
+														{errors.fields?.[index]?.multiple && <b className="formErrorMessage">{errors.fields?.[index]?.multiple?.message}</b>}
+													</div>
+												</>
+											}
 										</div>
 										
-									</div>
-									<div className='fieldProperties'>
-									{!allowedToDelete && <b className='warningMessage'>{fieldDeleteWarning}</b>}
-										<div className="labelAndInputContainer">
-											<label htmlFor="name">Naziv polja</label>
-											{allowedToDelete ? <input type='text' {...register(`fields.${index}.label`)} /> : <p className="fakeInput">{fields2[index].label}</p>}
-											{errors.fields?.[index]?.label && <b className="formErrorMessage">{errors.fields[index]?.label?.message}</b>}
-										</div>
-										<div className="labelAndInputContainer radioInputsContainer">
-											<label htmlFor='render'>Kada će se polje prikazivati?</label>
-											<MyBooleanInput 
-												control={control}
-												reversed={true}
-												name={`fields.${index}.render.conditional`}
-												trueText="Uvjetno" falseText="Uvijek"
-												disableTrue={!(index != 0 && fields2.some((field) => field.label != fields2[index].label && ['checkbox', 'radio'].includes(field.inputType)))}
-												onClickFalse={()=>{
-													setValue(`fields.${index}.render.statisfyAll`, false)
-													setValue(`fields.${index}.render.dependencies`, [])
-													if(fields2[index].required.isRequired==='conditional') setValue(`fields.${index}.required.isRequired`, '')
-												}}
-											/>
-											{errors.fields?.[index]?.render?.conditional && <b className='formErrorMessage'>{errors.fields[index]?.render?.conditional?.message}</b>}
-										</div>
-										{fields2[index].render.conditional && <ConditionalDependencyForm index={index} control={control} register={register} errors={errors} fields2={fields2} dependencyName="render" setValue={setValue}/>}
-										{!fields2[index].requireIfRendered &&
-											<>
-												<div className="labelAndInputContainer radioInputsContainer">
-													<label htmlFor='required'>Je li polje obvezno?</label>
-													<div>
-														<span>
-															<input type='radio' {...register(`fields.${index}.required.isRequired`)} value='yes' onClick={() => setValue(`fields.${index}.required.dependencies`, [])} />
-															<p>Da</p>
-														</span>
-														<span>
-															<input type='radio' {...register(`fields.${index}.required.isRequired`)} value='no' onClick={() => setValue(`fields.${index}.required.dependencies`, [])} />
-															<p>Ne</p>
-														</span>
-														<span className={(index != 0 && fields2.some((field) => field.label != fields2[index].label && ['checkbox', 'radio'].includes(field.inputType))) ? '' : 'disabled'}>
-															<input type='radio' {...register(`fields.${index}.required.isRequired`)} value='conditional' />
-															<p>Uvjetno</p>
-														</span>
-													</div>
-													{errors.fields?.[index]?.required?.isRequired && <b className='formErrorMessage'>{errors.fields[index]?.required?.isRequired?.message}</b>}
-												</div>
-												{fields2[index].required.isRequired === 'conditional' && <ConditionalDependencyForm index={index} control={control} register={register} errors={errors} fields2={fields2} />}
-											</>
-										}
-										<div className="labelAndInputContainer">
-											<label htmlFor='inputType'>Vrsta unosa</label>
-											<select {...register(`fields.${index}.inputType`)}>
-												{inputTypes.map(({ type, toDisplay }) => <option key={toDisplay} value={type}>{toDisplay}</option>)}
-											</select>
-											{errors.fields?.[index]?.inputType && <b className="formErrorMessage">{errors.fields?.[index]?.inputType?.message || ''}</b>}
-										</div>
-										{['checkbox', 'radio'].includes(inputType) && <NestedField index={index} control={control} register={register} errors={errors} fields2={fields2} setValue={setValue} />}
-										{inputType === 'file' &&
-											<>
-												<div className="labelAndInputContainer nested">
-													<label htmlFor='fileTypes'>Odaberite dozvoljene vrste datoteka</label>
-													<div className='checkboxContainer'>
-														{fileTypes.map(({ name, type }) => <span key={name}><input type='checkbox' {...register(`fields.${index}.fileTypes`)} value={type} /><p>{name}</p></span>)}
-													</div>
-													{errors.fields?.[index]?.fileTypes && <b className="formErrorMessage">{errors.fields?.[index]?.fileTypes?.message || ''}</b>}
-												</div>
-												<div className="labelAndInputContainer nested radioInputsContainer">
-													<label htmlFor='fileTypes'>Koliko datoteka je moguće priložiti?</label>
-													<MyBooleanInput falseText="Jednu" trueText="Više" name={`fields.${index}.multiple`} control={control} reversed={true}/>
-													{errors.fields?.[index]?.multiple && <b className="formErrorMessage">{errors.fields?.[index]?.multiple?.message}</b>}
-												</div>
-											</>
-										}
-									</div>
-									
-									{false && allowedToDelete && <DeleteIcon className={`${!allowedToDelete ? 'disabled' : ''}`} onClick={
-										() => {
-											//Ucini da to hoce li neko polje biti obvezno ne ovisi o polju koje ce se obrisati
-											fields2.map((item, i) => {
-												if (field.required.isRequired === 'conditional') {
-													setValue(
-														`fields.${i}.required.dependencies`,
-														item.required.dependencies.filter((dependency) => { dependency.label != fields2[index].label })
-													)
-												}
-												//Ucini da vise prikaz niti jednog polja ne ovisi o polju koje ce se izbrisati
-												if(field.render.conditional) {
-													setValue(
-														`fields.${i}.render.dependencies`,
-														item.render.dependencies.filter((dependency)=>dependency.label != fields2[index].label)
-													)
-													//Ako je polje obvezno pod istim uvjetima pod kojima se prikazuje procisti i niz "necessityRequirements" za svako polje
-													if(!item.requireIfRendered) {
+										{false && allowedToDelete && <DeleteIcon className={`${!allowedToDelete ? 'disabled' : ''}`} onClick={
+											() => {
+												//Ucini da to hoce li neko polje biti obvezno ne ovisi o polju koje ce se obrisati
+												fields2.map((item, i) => {
+													if (field.required.isRequired === 'conditional') {
 														setValue(
 															`fields.${i}.required.dependencies`,
 															item.required.dependencies.filter((dependency) => { dependency.label != fields2[index].label })
 														)
 													}
+													//Ucini da vise prikaz niti jednog polja ne ovisi o polju koje ce se izbrisati
+													if(field.render.conditional) {
+														setValue(
+															`fields.${i}.render.dependencies`,
+															item.render.dependencies.filter((dependency)=>dependency.label != fields2[index].label)
+														)
+														//Ako je polje obvezno pod istim uvjetima pod kojima se prikazuje procisti i niz "necessityRequirements" za svako polje
+														if(!item.requireIfRendered) {
+															setValue(
+																`fields.${i}.required.dependencies`,
+																item.required.dependencies.filter((dependency) => { dependency.label != fields2[index].label })
+															)
+														}
+													}
+												})
+												// S obzirom da prikaz nekog polja i to hoce li biti obavezno moze ovisiti samo o poljima s unaprijed ponudjenim odgovorima, provjerava se je li polje koje ce se izbrisati jedino takvo.
+												//Ako je, ni jedno polje vise ne moze biti uvjetno obavezno, ili se uvjetno prikazivati
+												if (fields2.filter(({ inputType }) => ['radio', 'checkbox'].includes(inputType)).length === 1) {
+													fields2.map((field, i) => { if (field.required.isRequired === 'conditional') {
+														setValue(`fields.${i}.required.isRequired`, '');  
+														setValue(`fields.${i}.render.conditional`, false);
+													}})
 												}
-											})
-											// S obzirom da prikaz nekog polja i to hoce li biti obavezno moze ovisiti samo o poljima s unaprijed ponudjenim odgovorima, provjerava se je li polje koje ce se izbrisati jedino takvo.
-											//Ako je, ni jedno polje vise ne moze biti uvjetno obavezno, ili se uvjetno prikazivati
-											if (fields2.filter(({ inputType }) => ['radio', 'checkbox'].includes(inputType)).length === 1) {
-												fields2.map((field, i) => { if (field.required.isRequired === 'conditional') {
-													setValue(`fields.${i}.required.isRequired`, '');  
-													setValue(`fields.${i}.render.conditional`, false);
-												}})
+												remove(index)
 											}
-											remove(index)
-										}
-									} />}
-								</section>
-							)
-						})}
-						{errors.fields && <b className='formErrorMessage'>{errors.fields.message}</b>}
-						{errors.fields?.root && <b className='formErrorMessage'>{errors.fields.root.message}</b>}
-						<BorderedButton className="addField" onClick={()=>append(emptyField)}>Dodaj novo polje</BorderedButton>
-					</div>
-				</section>
-				<section>
-					<div className="titleAndShowHideMenu">
-						<button type='button' className={`arrow ${showAppearanceMenu ? 'opened' : 'closed' }`} onClick={()=>shouldShowAppearanceMenu(!showAppearanceMenu)}>
-							<Image src='/arrows/show-hide-arrow.png' width={10} height={20} alt='show-hide-arrow'/>
-						</button>
-						<h2>Završne postavke</h2>
-					</div>
-					<div className={`formSectionContent ${showAppearanceMenu ? '' : 'displayNone'}`}>
-						<div className='labelAndInputContainer'>
-							<label htmlFor="alternateThumbnail">Naslovna slika</label>
-							<div>
-								<span>
-									<input type='radio' {...register('thumbnail_setting')} value='default' onClick={()=>{if(values.thumbnail_id) setValue('thumbnail_id', 0); if(values.thumbnail) setValue('thumbnail', undefined)}}/>
-									<p>Koristi zadanu</p>
-								</span>
-								<span>
-									<input type='radio' {...register('thumbnail_setting')} value='existing' onClick={()=>{if(values.thumbnail) setValue('thumbnail', undefined)}}/>
-									<p>Odaberi s popisa</p>
-								</span>
-								<span>
-									<input type='radio' {...register('thumbnail_setting')} value='new' onClick={()=>{if(values.thumbnail_id) setValue('thumbnail_id', 0)}}/>
-									<p>Dodaj novu</p>
-								</span>
-							</div>
-							{errors.thumbnail_setting && <b className='formErrorMessage'>{errors.thumbnail_setting.message}</b>}
+										} />}
+									</section>
+								)
+							})}
+							{errors.fields && <b className='formErrorMessage'>{errors.fields.message}</b>}
+							{errors.fields?.root && <b className='formErrorMessage'>{errors.fields.root.message}</b>}
+							<BorderedButton className="addField" onClick={()=>append(emptyField)}>Dodaj novo polje</BorderedButton>
 						</div>
-						{values.thumbnail_setting === 'existing' && 
-							<div className='labelAndInputContainer'>
-								<label htmlFor='thumbnail_id'>Odaberite naslovnu sliku</label>
-								<ThumbnailMenu control={control} current={values.thumbnail_id || 0} />
-								{errors.thumbnail_id && <b className="formErrorMessage">{errors.thumbnail_id.message}</b>}
-							</div>
-						}
-						{values.thumbnail_setting === 'new' &&
-							<div className='labelAndInputContainer'>
-								<label htmlFor="thumbnail">Priložite naslovnu sliku</label>
-								<FileInput watch={watch} setValue={setValue} field='thumbnail' getValues={getValues}/>
-								{errors.thumbnail && <b className="formErrorMessage">{`${errors.thumbnail.message}`}</b>}
-							</div>
-						}
-						<div className='labelAndInputContainer'>
-							<label htmlFor="sketch">Mogućnosti spremanja</label>
-							<MyBooleanInput name='sketch' control={control} reversed={true} trueText="Spremi kao skicu" falseText="Spremi i objavi obrazac" />
-							{errors.sketch && <b className='formErrorMessage'>{errors.sketch.message}</b>}
+					</section>
+					<section>
+						<div className="titleAndShowHideMenu">
+							<button type='button' className={`arrow ${showAppearanceMenu ? 'opened' : 'closed' }`} onClick={()=>shouldShowAppearanceMenu(!showAppearanceMenu)}>
+								<Image src='/arrows/show-hide-arrow.png' width={10} height={20} alt='show-hide-arrow'/>
+							</button>
+							<h2>Završne postavke</h2>
 						</div>
-					</div>
-				</section>
+						<div className={`formSectionContent ${showAppearanceMenu ? '' : 'displayNone'}`}>
+							<div className='labelAndInputContainer'>
+								<label htmlFor="alternateThumbnail">Naslovna slika</label>
+								<div>
+									<span>
+										<input type='radio' {...register('thumbnail_setting')} value='default' onClick={()=>{if(values.thumbnail_id) setValue('thumbnail_id', 0); if(values.thumbnail) setValue('thumbnail', undefined)}}/>
+										<p>Koristi zadanu</p>
+									</span>
+									<span>
+										<input type='radio' {...register('thumbnail_setting')} value='existing' onClick={()=>{if(values.thumbnail) setValue('thumbnail', undefined)}}/>
+										<p>Odaberi s popisa</p>
+									</span>
+									<span>
+										<input type='radio' {...register('thumbnail_setting')} value='new' onClick={()=>{if(values.thumbnail_id) setValue('thumbnail_id', 0)}}/>
+										<p>Dodaj novu</p>
+									</span>
+								</div>
+								{errors.thumbnail_setting && <b className='formErrorMessage'>{errors.thumbnail_setting.message}</b>}
+							</div>
+							{values.thumbnail_setting === 'existing' && 
+								<div className='labelAndInputContainer'>
+									<label htmlFor='thumbnail_id'>Odaberite naslovnu sliku</label>
+									<ThumbnailMenu control={control} current={values.thumbnail_id || 0} />
+									{errors.thumbnail_id && <b className="formErrorMessage">{errors.thumbnail_id.message}</b>}
+								</div>
+							}
+							{values.thumbnail_setting === 'new' &&
+								<div className='labelAndInputContainer'>
+									<label htmlFor="thumbnail">Priložite naslovnu sliku</label>
+									<FileInput watch={watch} setValue={setValue} field='thumbnail' getValues={getValues}/>
+									{errors.thumbnail && <b className="formErrorMessage">{`${errors.thumbnail.message}`}</b>}
+								</div>
+							}
+							<div className='labelAndInputContainer'>
+								<label htmlFor="sketch">Mogućnosti spremanja</label>
+								<MyBooleanInput name='sketch' control={control} reversed={true} trueText="Spremi kao skicu" falseText="Spremi i objavi obrazac" />
+								{errors.sketch && <b className='formErrorMessage'>{errors.sketch.message}</b>}
+							</div>
+						</div>
+					</section>
+				</div>
+				<div className="border bottom"></div>
 				<div className='buttonContainer'>
 					<button type='submit' /*
 						
@@ -536,7 +540,7 @@ export default function ConfigureForm(props?: {existingSubmissions?: boolean, co
 						Spremi obrazac
 					</button>
 					
-					<button type='button' onClick={()=>reset()}>Odustani</button>
+					<BorderedButton onClick={()=>reset()}>Odustani</BorderedButton>
 				</div>
 			</form>
 		
