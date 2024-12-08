@@ -93,12 +93,12 @@ export function generateZodSchema(fields: Field[]) : {schema: z.ZodObject<any>, 
 		const required = rest.required.isRequired === 'yes' ? true : false
 
 		if(inputType==='checkbox') {
-			if(required) schema=schema.extend({[key] : z.array(z.string()).min(1, missingValueMessage(label))})
+			if(required) schema=schema.extend({[key] : z.array(z.string()).min(1, 'Potrebno je unijeti odabir')})
 			else schema=schema.extend({[key] : z.array(z.string())})
 			if(clientRendering) emptyForm[key]=[]
 		}
 		else if(inputType==='radio') {
-			if(required) schema = schema.extend({[key]: z.string().min(1, missingValueMessage(label)) })
+			if(required) schema = schema.extend({[key]: z.string().min(1, 'Potrebno je unijeti odabir') })
 			else schema = schema.extend({[key]: z.string()})
 			if(clientRendering) emptyForm[key]=''
 		}
