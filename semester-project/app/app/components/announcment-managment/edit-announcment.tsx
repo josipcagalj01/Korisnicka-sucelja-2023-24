@@ -101,7 +101,7 @@ export default function EditAnnouncment({props}: {props:Configuration}) {
 								].join('/'),
 								attachments[i], {
 									access: 'public',
-									handleUploadUrl: '/api/upload-announcment-file',
+									handleUploadUrl: '/api/dodaj-privitak-obavijesti',
 									clientPayload: JSON.stringify({id: id})
 							})
 						}

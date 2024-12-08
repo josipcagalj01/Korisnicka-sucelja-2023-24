@@ -89,7 +89,7 @@ export default function AddAnnouncment({configuration}: {configuration?: Omit<Fo
 					if(thumbnail) {
 						await upload('form-thumbnails/' + values.thumbnail.name, values.thumbnail, {
 							access: 'public',
-							handleUploadUrl: '/api/upload-announcment-thumbnail/',
+							handleUploadUrl: '/api/upload-post-thumbnail/',
 							clientPayload: JSON.stringify({id: newAnnouncmentId})
 						});
 					}
@@ -105,7 +105,7 @@ export default function AddAnnouncment({configuration}: {configuration?: Omit<Fo
 								].join('/'),
 								attachments[i], {
 									access: 'public',
-									handleUploadUrl: '/api/upload-announcment-file',
+									handleUploadUrl: '/api/dodaj-privitak-obavijesti',
 									clientPayload: JSON.stringify({id: newAnnouncmentId})
 							})
 						}
