@@ -23,7 +23,7 @@ main {
 
   width: calc(100% - 40px);
   max-width: var(--max-main-width);
-  margin: 40px auto 40px auto;
+  margin: 32px auto 32px auto;
 }
 
 .displayNone {
@@ -44,7 +44,11 @@ body {
 }
 
 ._80ch {
-  max-width:80ch;
+  max-width:calc(80ch + 40px);
+}
+
+.margin-top-40px {
+	margin-top: 40px;
 }
 
 h1, h2, h3, h4 {
@@ -70,4 +74,16 @@ h4 {
 
 figure {
   position:relative;
+}
+
+.text-align-left {
+  text-align: left;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.text-align-right {
+  text-align: right;
 }
