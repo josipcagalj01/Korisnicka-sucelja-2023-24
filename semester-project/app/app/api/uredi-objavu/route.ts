@@ -3,6 +3,7 @@ import { formSchema } from "../../../lib/manage-announcments/add-update-announcm
 import { getSession } from "../../../lib/getSession";
 import { NextResponse } from "next/server";
 import { del } from '@vercel/blob'
+import { transformStr } from "../../../lib/otherFunctions";
 
 export async function POST(req: Request) {
 	try {
@@ -19,6 +20,16 @@ export async function POST(req: Request) {
 					id: true,
 					title: true,
 					thumbnail_id: true,
+					department: {
+						select: {
+							name: true
+						}
+					},
+					category: {
+						select: {
+							name: true
+						}
+					},
 					form_id: true,
 					form: {
 						select: {
@@ -69,7 +80,7 @@ export async function POST(req: Request) {
 					}
 					else if(key==='existing_attachments') {
 						if(value.length!== announcment.attachments.length) {
-							filesToDelete = announcment.attachments.map(({id})=>id).filter(id=>value.includes(id))
+							filesToDelete = announcment.attachments.map(({id})=>id).filter(id=>!value.includes(id))
 						}
 					}
 					else {
@@ -81,7 +92,7 @@ export async function POST(req: Request) {
 				if(filesToDelete.length) {
 					const ids = filesToDelete.map((id)=>({id: id}))
 					const unusedFiles = await db.announcment_attachment.findMany({where: {OR: ids}})
-					for(let i=0;i<unusedFiles.length;i++) await del('announcment_attachments/'+unusedFiles[i].name)
+					for(let i=0;i<unusedFiles.length;i++) await del(['obavijesti', transformStr(announcment.category.name), transformStr(announcment.department.name), id, unusedFiles[i].name].join('/'))
 					await db.announcment_attachment.deleteMany({where: {OR: ids}})
 				}
 

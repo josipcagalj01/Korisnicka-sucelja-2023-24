@@ -47,7 +47,7 @@ function FileList({setValue, watch, whatToWatch, onDrop }: {setValue: UseFormSet
 	)
 }
 
-function MultipleFileList({attached, watch, setValue, onDrop}: {attached: number[], watch: UseFormWatch<Form>, setValue: UseFormSetValue<Form>, onDrop?: React.DragEventHandler<HTMLDivElement>}) {
+function MultipleFileList({announcmentId, attached, watch, setValue, onDrop}: {announcmentId?:number, attached: number[], watch: UseFormWatch<Form>, setValue: UseFormSetValue<Form>, onDrop?: React.DragEventHandler<HTMLDivElement>}) {
 	const watchingItem = watch('attachments')
 	const {existingAttachments} = useContext(ManageAnnouncmentContext) || {existingAttachments : null}
 	return (
@@ -70,7 +70,7 @@ function MultipleFileList({attached, watch, setValue, onDrop}: {attached: number
 						return (
 							<div className={styles.uploadedFileCard + ' uploadedFileCard'} key={name}>
 								<Image src='/red-x.png' alt='deleteicon' height={15} width={15} className='deleteicon' onClick={()=>{setValue('existing_attachments',attached.filter(a=>a!==id))}}/>
-								<Link href={'/api/datoteka/objave/privitak/' + id} target='_blank'>
+								<Link href={'/api/datoteka/obavijesti/' + announcmentId + '/privitci/' + id} target='_blank'>
 								<figure>
 									<Image src={`/file-type-icons/${fileType}-filetype-icon.png`} alt={extension} fill={true} sizes='64px' style={{ objectFit: 'contain' }}/>
 								</figure>
@@ -125,14 +125,14 @@ export default function ThumbnailInput({watch, setValue, getValues, field, multi
 	)
 }
 
-export function AttachmentInput({existingAttachments, watch, setValue, getValues, field }: {existingAttachments: number[], watch: UseFormWatch<Form>, setValue:UseFormSetValue<Form>, getValues: UseFormGetValues<Form>, field: any}) {
+export function AttachmentInput({announcmentId, existingAttachments, watch, setValue, getValues, field }: {announcmentId?:number, existingAttachments: number[], watch: UseFormWatch<Form>, setValue:UseFormSetValue<Form>, getValues: UseFormGetValues<Form>, field: any}) {
 	function appendFiles(e:React.ChangeEvent<HTMLInputElement>) {
 		if(e.currentTarget.files) setValue(field, Array.from(e.currentTarget.files).concat(getValues(field)), {shouldValidate:true})
 	}
 
 	return (
 		<>
-			<MultipleFileList attached={existingAttachments} watch={watch} setValue={setValue} onDrop={(e)=>{e.preventDefault(); setValue('attachments', Array.from(e.dataTransfer.files).concat(getValues('attachments') || []), {shouldValidate: true})}}/>
+			<MultipleFileList announcmentId={announcmentId} attached={existingAttachments} watch={watch} setValue={setValue} onDrop={(e)=>{e.preventDefault(); setValue('attachments', Array.from(e.dataTransfer.files).concat(getValues('attachments') || []), {shouldValidate: true})}}/>
 			<input type='file' name={field} multiple={true} className='multiple' onChange={(e)=>appendFiles(e)} accept={fileTypes.map(({extension})=>'.'+extension).join(', ')}/>
 		</>
 	)

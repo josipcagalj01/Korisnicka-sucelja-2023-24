@@ -185,7 +185,7 @@ export default function EditAnnouncment({props}: {props:Configuration}) {
 						</div>
 						<div className='labelAndInputContainer'>
 							<label htmlFor='attachments'>Privitci</label>
-							<AttachmentInput existingAttachments={values.existing_attachments} setValue={setValue} getValues={getValues} field='attachments' watch={watch}/>
+							<AttachmentInput announcmentId={id} existingAttachments={values.existing_attachments} setValue={setValue} getValues={getValues} field='attachments' watch={watch}/>
 							{errors.attachments && <b className='formErrorMessage'>{errors.attachments.message}</b>}
 						</div>
 					</div>
